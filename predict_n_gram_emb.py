@@ -75,11 +75,53 @@ def predict(st, folder, model_file, is_single_exec=True):
         f.close()
 
     num_cases = len(df_test.caseid.unique())
-#    num_cases = 3
-    imp = 'Random Choice'
+    variants = [{'imp': 'Random Choice', 'rep': 15},
+                       {'imp': 'Arg Max', 'rep': 1}]
     max_trace_size = 200
     # Generation of predictions
     model = load_model(os.path.join(output_route, model_file))
+    df_test_log = df_test.to_dict('records')
+
+    for var in variants:
+        imp = var['imp']
+        for r in range(0, var['rep']):
+            generated_event_log = generate_traces(model, imp, num_cases, max_trace_size)
+            
+            sim_task = gen.gen_mesurement(df_test_log, generated_event_log, 'task')
+            sim_role = gen.gen_mesurement(df_test_log, generated_event_log, 'user')
+        
+            if is_single_exec:
+                sup.create_csv_file_header(sim_task, os.path.join(output_route, model_name +'_similarity.csv'))
+                sup.create_csv_file_header(generated_event_log,
+                                           os.path.join(output_route, model_name +'_log.csv'))
+    
+            dl_task = np.mean([x['sim_score'] for x in sim_task])
+            dl_user = np.mean([x['sim_score'] for x in sim_role])
+            dl_t = np.mean([x['sim_score_t'] for x in sim_task])
+            mae = np.mean([x['abs_err'] for x in sim_task])
+        
+            print('Demerau-Levinstein task distance:', dl_task, sep=' ')
+            print('Demerau-Levinstein role distance:', dl_user, sep=' ')
+            print('Demerau-Levinstein task penalized:', dl_t, sep=' ')
+            print('MAE:', mae, sep=' ')
+            # Save results
+            measurements=list()
+            measurements.append({**dict(model= os.path.join(output_route, model_file),
+                                        implementation = imp, dl_task=dl_task, 
+                                        dl_user=dl_user, mae=mae, dlt=dl_t), **EXP})
+            if is_single_exec: 
+                sup.create_csv_file_header(measurements, os.path.join('output_files', model_name +'_measures.csv'))
+            else:
+                if os.path.exists(os.path.join('output_files', 'total_measures.csv')):
+                    sup.create_csv_file(measurements, os.path.join('output_files', 'total_measures.csv'), mode='a')
+                else:
+                    sup.create_csv_file_header(measurements, os.path.join('output_files', 'total_measures.csv'))
+
+# =============================================================================
+# Predic traces
+# =============================================================================
+
+def generate_traces(model, imp, num_cases, max_trace_size):
     generated_event_log = list()
     for case in range(0, num_cases):
         X_trace = list()
@@ -94,12 +136,10 @@ def predict(st, folder, model_file, is_single_exec=True):
                 # Use this to get a random choice following as PDF the predictions
                 pos = np.random.choice(np.arange(0, len(y[0][0])), p=y[0][0])
                 pos1 = np.random.choice(np.arange(0, len(y[1][0])), p=y[1][0])
-               
             elif imp == 'Arg Max':
                 # Use this to get the max prediction
                 pos = np.argmax(y[0][0])
-                pos1 = np.random.choice(np.arange(0, len(y[1][0])), p=y[1][0])
-#            values = np.append(Y_ac_rl, y[1][0])
+                pos1 = np.argmax(y[1][0])
             X_trace.append([pos, pos1, y[2][0][0]])
 #            # Add prediction to n_gram
             X_ac_ngram = np.append(X_ac_ngram, [[pos]], axis=1)
@@ -114,46 +154,9 @@ def predict(st, folder, model_file, is_single_exec=True):
             if INDEX_AC[pos] == 'end':
                 break
         generated_event_log.extend(decode_trace(X_trace, case))
-        sup.print_progress((((case+1) / num_cases)* 100), 'Generating process traces ')
+        # sup.print_progress((((case+1) / num_cases)* 100), 'Generating process traces ')
     sup.print_done_task()
-    
-    # Calculate metrics
-    df_test_log = df_test.to_dict('records')
-    JW_sim, DL_sim_task, abs_err, DL_T_sim = gen.gen_mesurement(df_test_log, generated_event_log, 'task')
-    _, DL_sim_role, _, _ = gen.gen_mesurement(df_test_log, generated_event_log, 'user')
-
-    if is_single_exec:
-        sup.create_csv_file_header(DL_sim_task, os.path.join(output_route, model_name +'_dltask_sim.csv'))
-        sup.create_csv_file_header(DL_sim_role, os.path.join(output_route, model_name +'_dlrole_sim.csv'))
-        sup.create_csv_file_header(abs_err, os.path.join(output_route, model_name +'_ae_sim.csv'))
-        sup.create_csv_file_header(generated_event_log,
-                                   os.path.join(output_route, model_name +'_log.csv'))
-
-
-    jw = np.mean([x['sim_score'] for x in JW_sim])
-    dl_task = np.mean([x['sim_score'] for x in DL_sim_task])
-    dl_user = np.mean([x['sim_score'] for x in DL_sim_role])
-    mae = np.mean([x['abs_err'] for x in abs_err])
-
-    print('Jaro-Winkler distance:', jw, sep=' ')
-    print('Demerau-Levinstein task distance:', dl_task, sep=' ')
-    print('Demerau-Levinstein role distance:', dl_user, sep=' ')
-    print('Demerau-Levinstein task penalized:', DL_T_sim, sep=' ')
-    print('MAE:', mae, sep=' ')
-    
-
-    # Save results
-    measurements=list()
-    measurements.append({**dict(jw=jw, dl_task=dl_task, dl_user=dl_user, mae=mae, 
-                                dlt=DL_T_sim, model= os.path.join(output_route, model_file),
-                                implementation = imp), **EXP})
-    if is_single_exec: 
-        sup.create_csv_file_header(measurements, os.path.join('output_files', model_name +'_measures.csv'))
-    else:
-        if os.path.exists(os.path.join('output_files', 'total_measures.csv')):
-            sup.create_csv_file(measurements, os.path.join('output_files', 'total_measures.csv'), mode='a')
-        else:
-            sup.create_csv_file_header(measurements, os.path.join('output_files', 'total_measures.csv'))
+    return generated_event_log
 
 # =============================================================================
 # Decoding

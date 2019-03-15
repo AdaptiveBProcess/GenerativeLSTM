@@ -29,7 +29,7 @@ import nn_support as nsup
 import support as sup
 import math
 
-def training_model(file_name, no_loops, start_timeformat, end_timeformat, args):
+def training_model(file_name, start_timeformat, end_timeformat, args, no_loops=False):
     """Example function with types documented in the docstring.
     Args:
         param1 (int): The first parameter.

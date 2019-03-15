@@ -2,83 +2,91 @@
 """
 @author: Manuel Camargo
 """
-import sys, getopt
+import sys
+import getopt
 import n_gram_emb_training as tr
 import embedding_training as em
 import predict_n_gram_emb as pr
+import predict_prefix as px
+
+
+def catch_parameter(opt):
+    """Change the captured parameters names"""
+    switch = {'-h':'help', '-i':'imp', '-l':'lstm_act',
+              '-d':'dense_act', '-n':'norm_method', '-f':'folder',
+              '-m':'model_file', '-t':'model_type', '-a':'activity',
+              '-e':'file_name', '-b':'n_size', '-c':'l_size', '-o':'optim'}
+    try:
+        return switch[opt]
+    except:
+        raise Exception('Invalid option ' + opt)
 
 # --setup--
 def main(argv):
     """Main aplication method"""
-    start_timeformat = '%Y-%m-%dT%H:%M:%S.%f'
-    end_timeformat = '%Y-%m-%dT%H:%M:%S.%f'
 
-    imp = 1
-    lstm_act = None
-    dense_act = None
-    norm_method = 'max'
-    model_type = ''
-    folder = '20190228_155211821977'
-    model_file = 'model_rd_100 Nadam_53-0.80.h5'
-#    file_name = 'T_BPIC15_5.xes.gz'
-#    file_name = 'BPI_Challenge_2012.xes'
-    file_name = 'BPI_2012_W_complete.xes.gz'
-#    file_name = 'Production.xes.gz'
-#    file_name = 'Helpdesk.xes.gz'
-    activity = 'predict'
-    no_loops = False
-    n_size=5
-    l_size=100
-    optim='Nadam'
-    if argv:
+    timeformat = '%Y-%m-%dT%H:%M:%S.%f'
+    parameters = dict()
+#   Parameters setting manual fixed or catched by console for batch operations
+    if not argv:
+#       Type of LSTM task -> emb_training, training, pred_log, pred_sfx
+        parameters['activity'] = 'training'
+#       General training parameters
+        if parameters['activity'] in ['emb_training', 'training']:
+            parameters['file_name'] = 'Helpdesk.xes.gz'
+#       Specific model training parameters
+            if parameters['activity'] == 'training':
+                parameters['imp'] = 1 # keras lstm implementation 1 cpu, 2 gpu
+                parameters['lstm_act'] = None # optimization function see keras doc
+                parameters['dense_act'] = None # optimization function see keras doc
+                parameters['optim'] = 'Nadam' # optimization function see keras doc
+                parameters['norm_method'] = 'max' # max, lognorm
+                # Model types --> specialized, concatenated, shared_cat, joint, shared
+                parameters['model_type'] = 'concatenated'
+                parameters['n_size'] = 5 # n-gram size
+                parameters['l_size'] = 100 # LSTM layer sizes
+#       Generation parameters
+        if parameters['activity'] in ['pred_log', 'pred_sfx']:
+            parameters['folder'] = '20190306_205146800602'
+            parameters['model_file'] = 'model_rd_50 Nadam_05-1.63.h5'
+
+    else:
+#       Catch parameters by console
         try:
-            opts, args = getopt.getopt(argv,"hi:l:d:n:f:m:t:a:e:b:c:o:",["imp=","lstmact=","denseact=","norm=",'folder=','model=','mtype=','activity=','eventlog=','batchsize=','cellsize=','optimizer='])
+            opts, _ = getopt.getopt(argv, "hi:l:d:n:f:m:t:a:e:b:c:o:",
+                                    ["imp=", "lstmact=", "denseact=", "norm=",
+                                     'folder=', 'model=', 'mtype=',
+                                     'activity=', 'eventlog=', 'batchsize=',
+                                     'cellsize=', 'optimizer='])
+            for opt, arg in opts:
+                parameters[catch_parameter(opt)] = arg
         except getopt.GetoptError:
-            print('test.py -i <implementation> -l <implementation> -d <implementation> -n <implementation>')
+            print('Invalid option')
             sys.exit(2)
-    
-        for opt, arg in opts:
-            if opt == '-h':
-                print('test.py -i <implementation 1-cpu 2-gpu>')
-                sys.exit()
-            elif opt in ("-i", "--imp"):
-                imp = arg
-            elif opt in ("-l", "--lstmact"):
-                lstm_act = arg
-            elif opt in ("-d", "--denseact"):
-                dense_act = arg
-            elif opt in ("-n", "--norm"):
-                norm_method = arg
-            elif opt in ("-f", "--folder"):
-                folder = arg
-            elif opt in ("-m", "--model"):
-                model_file = arg
-            elif opt in ("-t", "--mtype"):
-                model_type = arg
-            elif opt in ("-a", "--activity"):
-                activity = arg
-            elif opt in ("-e", "--eventlog"):
-                file_name = arg
-            elif opt in ("-b", "--batchsize"):
-                n_size = int(arg)
-            elif opt in ("-c", "--cellsize"):
-                l_size = int(arg)
-            elif opt in ("-o", "--optimizer"):
-                optim = arg
 
-    if activity == 'emb':
-        em.training_model(file_name, no_loops, start_timeformat, end_timeformat)
-    elif activity == 'training':
-        args = dict(imp=int(imp),lstm_act=lstm_act,
-                    dense_act=dense_act,norm_method=norm_method,
-                    model_type=model_type, n_size=n_size, l_size=l_size, optim=optim)
-        print(args)
-        tr.training_model(file_name, no_loops, start_timeformat, end_timeformat, args)
-    elif activity == 'predict':
-        print(folder)
-        print(model_file)
-        pr.predict(start_timeformat, folder, model_file, is_single_exec=False)
-    
+#   Execution
+    try:
+        if parameters['activity'] == 'emb_training':
+            print(parameters)
+            em.training_model(parameters['file_name'], timeformat, timeformat)
+        elif parameters['activity'] == 'training':
+            print(parameters)
+            tr.training_model(parameters['file_name'], timeformat, timeformat, parameters)
+        elif parameters['activity'] == 'pred_log':
+            print(parameters['folder'])
+            print(parameters['model_file'])
+            pr.predict(timeformat, parameters['folder'],
+                       parameters['model_file'],
+                       is_single_exec=False)
+        elif parameters['activity'] == 'pred_sfx':
+            print(parameters['folder'])
+            print(parameters['model_file'])
+            px.predict_prefix(timeformat, parameters['folder'],
+                              parameters['model_file'],
+                              is_single_exec=False)
+    except:
+        raise Exception('Missing parameters...')
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])

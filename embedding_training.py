@@ -19,7 +19,7 @@ import math
 from keras.models import Model
 from keras.layers import Input, Embedding, Dot, Reshape
 
-def training_model(file_name, no_loops, start_timeformat, end_timeformat):
+def training_model(file_name, start_timeformat, end_timeformat, no_loops=False):
     """Example function with types documented in the docstring.
     Args:
         param1 (int): The first parameter.
