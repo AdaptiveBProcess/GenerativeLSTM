@@ -1,1 +1,5 @@
 compress_job
+.tmp.drivedownload
+evaluation_generator.py
+experiment_generator.py
+_pycache_
