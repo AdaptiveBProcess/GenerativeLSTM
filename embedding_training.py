@@ -4,32 +4,32 @@ Created on Wed Nov 21 21:23:55 2018
 
 @author: Manuel Camargo
 """
-from support_modules.readers import log_reader as lr
-from support_modules import role_discovery as rl
-import support as sup
-
-import pandas as pd
 import os
-import nn_support as nsup
 import random
-import numpy as np
 import itertools
 import math
+import pandas as pd
+import numpy as np
 
 from keras.models import Model
 from keras.layers import Input, Embedding, Dot, Reshape
 
-def training_model(file_name, start_timeformat, end_timeformat, no_loops=False):
-    """Example function with types documented in the docstring.
-    Args:
-        param1 (int): The first parameter.
-        param2 (str): The second parameter.
-    Returns:
-        bool: The return value. True for success, False otherwise.
-    """
+from support_modules.readers import log_reader as lr
+from support_modules import role_discovery as rl
+from support_modules import support as sup
+from support_modules import nn_support as nsup
 
-    input_file_path = os.path.join('input_files', file_name)
-    log = lr.LogReader(input_file_path, start_timeformat, end_timeformat, one_timestamp=True)
+def training_model(parameters, timeformat, no_loops=False):
+    """Main method of the embedding training module.
+    Args:
+        parameters (str): parameters for training the embeddeding network.
+        timeformat (str): event-log date-time format.
+        no_loops (str): remove loops fom the event-log (optional).
+    """
+    log = lr.LogReader(os.path.join('input_files', parameters['file_name']),
+                       timeformat, timeformat, one_timestamp=True)
+
+    # Pre-processing tasks
     _, resource_table = rl.read_resource_pool(log, sim_percentage=0.50)
     # Role discovery
     log_df_resources = pd.DataFrame.from_records(resource_table)
@@ -48,24 +48,24 @@ def training_model(file_name, start_timeformat, end_timeformat, no_loops=False):
     ac_index['start'] = 0
     ac_index['end'] = len(ac_index)
     index_ac = {v: k for k, v in ac_index.items()}
-    
+
     rl_index = create_index(log_df, 'role')
     rl_index['start'] = 0
     rl_index['end'] = len(rl_index)
     index_rl = {v: k for k, v in rl_index.items()}
-    
-    categories = itertools.product(*[list(ac_index.items()), list(rl_index.items())])
 
     # Define the number of dimensions as the 4th root of the number of categories
-    dim_number = math.ceil(len(list(categories))**0.25)
+    dim_number = math.ceil(len(list(itertools.product(*[list(ac_index.items()),
+                                                        list(rl_index.items())])))**0.25)
 
     ac_weights, rl_weights = train_embedded(log_df, ac_index, rl_index, dim_number)
-    
-    output_file = os.path.join('input_files', 'embedded_matix')
+
     sup.create_file_from_list(reformat_matrix(index_ac, ac_weights),
-                              os.path.join(output_file, 'ac_'+ file_name.split('.')[0]+'.emb'))
+                              os.path.join(os.path.join('input_files', 'embedded_matix'),
+                                           'ac_'+ parameters['file_name'].split('.')[0]+'.emb'))
     sup.create_file_from_list(reformat_matrix(index_rl, rl_weights),
-                              os.path.join(output_file, 'rl_'+ file_name.split('.')[0]+'.emb'))
+                              os.path.join(os.path.join('input_files', 'embedded_matix'),
+                                           'rl_'+ parameters['file_name'].split('.')[0]+'.emb'))
 
 
 # =============================================================================
@@ -73,9 +73,10 @@ def training_model(file_name, start_timeformat, end_timeformat, no_loops=False):
 # =============================================================================
 
 def train_embedded(log_df, ac_index, rl_index, dim_number):
+    """Carry out the training of the embeddings"""
     # Iterate through each book
     pairs = list()
-    for i in range(0,len(log_df)):
+    for i in range(0, len(log_df)):
         # Iterate through the links in the book
         pairs.append((ac_index[log_df.iloc[i]['task']], rl_index[log_df.iloc[i]['role']]))
 
@@ -83,12 +84,11 @@ def train_embedded(log_df, ac_index, rl_index, dim_number):
     model.summary()
 
     n_positive = 1024
-    gen = generate_batch(pairs, ac_index, rl_index, n_positive, negative_ratio = 2)
-    
+    gen = generate_batch(pairs, ac_index, rl_index, n_positive, negative_ratio=2)
     # Train
-    model.fit_generator(gen, epochs = 100, 
-                        steps_per_epoch = len(pairs) // n_positive,
-                        verbose = 2)
+    model.fit_generator(gen, epochs=100,
+                        steps_per_epoch=len(pairs) // n_positive,
+                        verbose=2)
 
 
     # Extract embeddings
@@ -101,39 +101,36 @@ def train_embedded(log_df, ac_index, rl_index, dim_number):
     return ac_weights, rl_weights
 
 
-def generate_batch(pairs, ac_index, rl_index, n_positive = 50, negative_ratio = 1.0, classification = True):
+def generate_batch(pairs, ac_index, rl_index, n_positive=50,
+                   negative_ratio=1.0):
     """Generate batches of samples for training"""
     batch_size = n_positive * (1 + negative_ratio)
     batch = np.zeros((batch_size, 3))
     pairs_set = set(pairs)
     activities = list(ac_index.keys())
-    role = list(rl_index.keys())
-    # Adjust label based on task
-    if classification:
-        neg_label = 0
-    else:
-        neg_label = -1
+    roles = list(rl_index.keys())
     # This creates a generator
     while True:
         # randomly choose positive examples
-        for idx, (ac_index, rl_index) in enumerate(random.sample(pairs, n_positive)):
-            batch[idx, :] = (ac_index, rl_index, 1)
+        idx = 0
+        for idx, (activity, role) in enumerate(random.sample(pairs, n_positive)):
+            batch[idx, :] = (activity, role, 1)
         # Increment idx by 1
         idx += 1
-       
+
         # Add negative examples until reach batch size
         while idx < batch_size:
             # random selection
             random_ac = random.randrange(len(activities))
-            random_rl = random.randrange(len(role))
-            
+            random_rl = random.randrange(len(roles))
+
             # Check to make sure this is not a positive example
             if (random_ac, random_rl) not in pairs_set:
-                
-                # Add to batch and increment index
-                batch[idx, :] = (random_ac, random_rl, neg_label)
+
+                # Add to batch and increment index, label 0 due classification task
+                batch[idx, :] = (random_ac, random_rl, 0)
                 idx += 1
-             
+
         # Make sure to shuffle order
         np.random.shuffle(batch)
         yield {'activity': batch[:, 0], 'role': batch[:, 1]}, batch[:, 2]
@@ -141,37 +138,44 @@ def generate_batch(pairs, ac_index, rl_index, n_positive = 50, negative_ratio = 
 
 def ac_rl_embedding_model(ac_index, rl_index, embedding_size):
     """Model to embed activities and roles using the functional API"""
-    
+
     # Both inputs are 1-dimensional
-    activity = Input(name = 'activity', shape = [1])
-    role = Input(name = 'role', shape = [1])
-    
+    activity = Input(name='activity', shape=[1])
+    role = Input(name='role', shape=[1])
+
     # Embedding the activity (shape will be (None, 1, embedding_size))
-    activity_embedding = Embedding(name = 'activity_embedding',
-                               input_dim = len(ac_index),
-                               output_dim = embedding_size)(activity)
-    
+    activity_embedding = Embedding(name='activity_embedding',
+                                   input_dim=len(ac_index),
+                                   output_dim=embedding_size)(activity)
+
     # Embedding the role (shape will be (None, 1, embedding_size))
-    role_embedding = Embedding(name = 'role_embedding',
-                               input_dim = len(rl_index),
-                               output_dim = embedding_size)(role)
-    
+    role_embedding = Embedding(name='role_embedding',
+                               input_dim=len(rl_index),
+                               output_dim=embedding_size)(role)
+
     # Merge the layers with a dot product along the second axis (shape will be (None, 1, 1))
-    merged = Dot(name = 'dot_product', normalize = True, axes = 2)([activity_embedding, role_embedding])
-    
+    merged = Dot(name='dot_product', normalize=True, axes=2)([activity_embedding, role_embedding])
+
     # Reshape to be a single number (shape will be (None, 1))
-    merged = Reshape(target_shape = [1])(merged)
-    
+    merged = Reshape(target_shape=[1])(merged)
+
     # Otherwise loss function is mean squared error
-    model = Model(inputs = [activity, role], outputs = merged)
-    model.compile(optimizer = 'Adam', loss = 'mse')
-    
+    model = Model(inputs=[activity, role], outputs=merged)
+    model.compile(optimizer='Adam', loss='mse')
+
     return model
 
 # =============================================================================
 # Support
 # =============================================================================
 def reformat_matrix(index, weigths):
+    """Reformating of the embedded matrix for exporting.
+    Args:
+        index: index of activities or roles.
+        weigths: matrix of calculated coordinates.
+    Returns:
+        matrix with indexes.
+    """
     matrix = list()
     for i, _ in enumerate(index):
         data = [i, index[i]]
@@ -179,7 +183,7 @@ def reformat_matrix(index, weigths):
         matrix.append(data)
     return matrix
 
-def create_index(df, column):
+def create_index(log_df, column):
     """Creates an idx for a categorical attribute.
     Args:
         log_df: dataframe.
@@ -187,11 +191,10 @@ def create_index(df, column):
     Returns:
         index of a categorical attribute pairs.
     """
-    subsec_set = set()
-    temp_list = df[[column]].values.tolist()
-    [subsec_set.add((x[0])) for x in temp_list]
+    temp_list = log_df[[column]].values.tolist()
+    subsec_set = {(x[0]) for x in temp_list}
     subsec_set = sorted(list(subsec_set))
     alias = dict()
-    for i in range(0, len(subsec_set)):
+    for i, _ in enumerate(subsec_set):
         alias[subsec_set[i]] = i + 1
     return alias

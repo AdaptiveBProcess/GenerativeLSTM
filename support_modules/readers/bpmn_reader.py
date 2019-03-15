@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import sys
-import types
 import xml.etree.ElementTree as ET
 
 class BpmnReader(object):

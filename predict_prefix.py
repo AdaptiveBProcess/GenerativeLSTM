@@ -14,7 +14,7 @@ import numpy as np
 import math
 
 import jellyfish as jf
-import support as sup
+from support_modules import support as sup
 
 import random
 

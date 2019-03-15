@@ -8,7 +8,7 @@ import os
 from operator import itemgetter
 
 
-import support as sup
+from support_modules import support as sup
 
 
 class LogReader(object):

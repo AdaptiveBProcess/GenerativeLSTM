@@ -24,13 +24,12 @@ def catch_parameter(opt):
 # --setup--
 def main(argv):
     """Main aplication method"""
-
     timeformat = '%Y-%m-%dT%H:%M:%S.%f'
     parameters = dict()
 #   Parameters setting manual fixed or catched by console for batch operations
     if not argv:
 #       Type of LSTM task -> emb_training, training, pred_log, pred_sfx
-        parameters['activity'] = 'training'
+        parameters['activity'] = 'emb_training'
 #       General training parameters
         if parameters['activity'] in ['emb_training', 'training']:
             parameters['file_name'] = 'Helpdesk.xes.gz'
@@ -67,8 +66,10 @@ def main(argv):
 #   Execution
     try:
         if parameters['activity'] == 'emb_training':
+            if parameters['file_name'] == '' or not parameters['file_name']:
+                raise Exception('The file name is missing...')
             print(parameters)
-            em.training_model(parameters['file_name'], timeformat, timeformat)
+            em.training_model(parameters, timeformat)
         elif parameters['activity'] == 'training':
             print(parameters)
             tr.training_model(parameters['file_name'], timeformat, timeformat, parameters)
@@ -85,7 +86,7 @@ def main(argv):
                               parameters['model_file'],
                               is_single_exec=False)
     except:
-        raise Exception('Missing parameters...')
+        raise Exception('Check the parameters structure...')
 
 
 if __name__ == "__main__":

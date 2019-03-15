@@ -25,8 +25,8 @@ from models import model_shared as msh
 from models import model_shared_cat as mshcat
 from models import model_joint as mj
 
-import nn_support as nsup
-import support as sup
+from support_modules import  nn_support as nsup
+from support_modules import  support as sup
 import math
 
 def training_model(file_name, start_timeformat, end_timeformat, args, no_loops=False):

@@ -3,7 +3,7 @@ import scipy
 from scipy.stats import pearsonr
 import networkx as nx
 import matplotlib.pyplot as plt
-import support as sup
+from support_modules import support as sup
 from operator import itemgetter
 import random
 
