@@ -6,7 +6,7 @@ Created on Wed Nov 21 21:23:55 2018
 """
 import os
 import csv
-#from operator import itemgetter
+import math
 
 import keras.utils as ku
 
@@ -27,7 +27,6 @@ from models import model_joint as mj
 
 from support_modules import  nn_support as nsup
 from support_modules import  support as sup
-import math
 
 def training_model(file_name, start_timeformat, end_timeformat, args, no_loops=False):
     """Example function with types documented in the docstring.
@@ -142,27 +141,6 @@ def vectorization(log_df, ac_index, rl_index, args):
     Returns:
         bool: The return value. True for success, False otherwise.
     """
-#    logit = lambda x: math.log1p(x['tbtw'])
-#    log_df['tbtw_log'] = log_df.apply(logit,axis=1)
-#    max_num = np.max(log_df.tbtw_log)
-#    norm = lambda x: x['tbtw_log']/max_num
-#    log_df['tbtw_tnorm'] = log_df.apply(norm,axis=1)
-#    denorm = lambda x: x['tbtw_tnorm'] * max_num
-#    log_df['tbtw_tdenorm'] = log_df.apply(denorm,axis=1)
-#    delogit = lambda x: math.expm1(x['tbtw_tdenorm'])
-#    log_df['tbtw_delog'] = log_df.apply(delogit,axis=1)
-#   
-#    
-#    
-#    fig, ax = plt.subplots(1, 4, figsize=(9, 3), sharey=True)
-#    log_df.hist(column='tbtw_tnorm',bins=20, ax=ax[0])
-#    log_df.hist(column='tbtw_log',bins=20, ax=ax[1])
-#    log_df.hist(column='tbtw_tdenorm',bins=20, ax=ax[2])
-#    log_df.hist(column='tbtw_delog',bins=20, ax=ax[3])
-#
-#    fig.tight_layout()
-#    plt.show()
-
     if args['norm_method'] == 'max':
         max_tbtw = np.max(log_df.tbtw)
         norm = lambda x: x['tbtw']/max_tbtw

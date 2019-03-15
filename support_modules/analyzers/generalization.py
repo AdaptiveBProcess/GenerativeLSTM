@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-#import itertools
 import numpy as np
 import random
 import jellyfish as jf
 from operator import itemgetter
-#from sklearn.metrics import mean_absolute_error
 
 def gen_mesurement(log_data, simulation_data, features, ramp_io_perc = 0.2):
     
@@ -27,21 +25,6 @@ def gen_mesurement(log_data, simulation_data, features, ramp_io_perc = 0.2):
 #    mae = measure_mae(temp_log_data, simulation_data)
 #    DL_T_sim = measure_DL_time(DL_sim)
     return similarity
-
-#def measure_distance_JW(log_data, simulation_data):
-#    similarity = list()
-#    temp_log_data = log_data.copy()
-#    for sim_instance in simulation_data:
-#        max_sim, max_index = 0 , 0
-#        for i in range(0,len(temp_log_data)):
-#            sim = jf.jaro_winkler(sim_instance['profile'], temp_log_data[i]['profile'])
-#            if max_sim < sim:
-#                max_sim = sim
-#                max_index = i
-#        del temp_log_data[max_index]
-#        similarity.append(dict(caseid=sim_instance['caseid'],sim_score=max_sim))
-#    return similarity
-
 
 def measure_distance(log_data, simulation_data):
     similarity = list()
@@ -69,32 +52,6 @@ def measure_distance(log_data, simulation_data):
                                abs_err=abs_err))
         del temp_log_data[min_index]
     return similarity
-
-#def measure_mae(log_data, simulation_data):
-#    abs_err_list = list()
-#    temp_log_data = log_data.copy()
-#    for sim_instance in simulation_data:
-#        min_dist, min_index = jf.damerau_levenshtein_distance(sim_instance['profile'], temp_log_data[0]['profile']) , 0
-#        for i in range(0,len(temp_log_data)):
-#            sim = jf.damerau_levenshtein_distance(sim_instance['profile'], temp_log_data[i]['profile'])
-#            if min_dist > sim:
-#                min_dist = sim
-#                min_index = i
-#        abs_err = abs(temp_log_data[min_index]['tbtw'] - sim_instance['tbtw'])
-#        del temp_log_data[min_index]
-#        abs_err_list.append(dict(caseid=sim_instance['caseid'],abs_err=abs_err))
-#    return abs_err_list
-
-#def measure_DL_time(data):
-#    similarity = list()
-#    for record in data:
-#        length=np.max([len(record['sim_order']), len(record['log_order'])])
-#        sim2 = damerau_levenshtein_distance(record['sim_order'],
-#                                            record['log_order'],
-#                                            record['sim_tbtw'],
-#                                            record['log_tbtw'])
-#        similarity.append(1 - (sim2/length))
-#    return np.mean(similarity)
 
 def create_task_alias(df, features):
     subsec_set = set()
@@ -132,12 +89,12 @@ def reformat_events(data, alias, features):
         temp_data.append(temp_dict)
     return sorted(temp_data, key=itemgetter('start_time'))
 
-"""
-Compute the Damerau-Levenshtein distance between two given
-strings (s1 and s2)
-"""
 #Normalizacion del mae en relacion con el maximo tiempo de las dos trazas
 def damerau_levenshtein_distance(s1, s2, t1, t2):
+    """
+    Compute the Damerau-Levenshtein distance between two given
+    strings (s1 and s2)
+    """
     d = {}
     max_size = max(t1+t2)
     lenstr1 = len(s1)
