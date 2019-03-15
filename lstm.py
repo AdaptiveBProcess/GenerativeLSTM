@@ -4,10 +4,10 @@
 """
 import sys
 import getopt
-import n_gram_emb_training as tr
+import model_training as tr
 import embedding_training as em
 import predict_n_gram_emb as pr
-import predict_prefix as px
+import predict_sufix as px
 
 
 def catch_parameter(opt):
@@ -29,7 +29,7 @@ def main(argv):
 #   Parameters setting manual fixed or catched by console for batch operations
     if not argv:
 #       Type of LSTM task -> emb_training, training, pred_log, pred_sfx
-        parameters['activity'] = 'emb_training'
+        parameters['activity'] = 'training'
 #       General training parameters
         if parameters['activity'] in ['emb_training', 'training']:
             parameters['file_name'] = 'Helpdesk.xes.gz'
