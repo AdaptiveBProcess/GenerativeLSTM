@@ -27,17 +27,16 @@ from support_modules import role_discovery as rl
 from support_modules import nn_support as nsup
 from support_modules import support as sup
 
-def training_model(file_name, start_timeformat, end_timeformat, args, no_loops=False):
-    """Example function with types documented in the docstring.
+def training_model(timeformat, args, no_loops=False):
+    """Main method of the training module.
     Args:
-        param1 (int): The first parameter.
-        param2 (str): The second parameter.
-    Returns:
-        bool: The return value. True for success, False otherwise.
+        timeformat (str): event-log date-time format.
+        args (dict): parameters for training the network.
+        no_loops (boolean): remove loops fom the event-log (optional).
     """
     parameters = dict()
-    input_file_path = os.path.join('input_files', file_name)
-    log = lr.LogReader(input_file_path, start_timeformat, end_timeformat, one_timestamp=True)
+    log = lr.LogReader(os.path.join('input_files', args['file_name']),
+                       timeformat, timeformat, one_timestamp=True)
     _, resource_table = rl.read_resource_pool(log, sim_percentage=0.50)
     # Role discovery
     log_df_resources = pd.DataFrame.from_records(resource_table)
@@ -48,8 +47,6 @@ def training_model(file_name, start_timeformat, end_timeformat, args, no_loops=F
     log_df = log_df[log_df.task != 'Start']
     log_df = log_df[log_df.task != 'End']
     log_df = log_df.reset_index(drop=True)
-
-
 
     if no_loops:
         log_df = nsup.reduce_loops(log_df)
@@ -65,33 +62,28 @@ def training_model(file_name, start_timeformat, end_timeformat, args, no_loops=F
     index_rl = {v: k for k, v in rl_index.items()}
 
     # Load embedded matrix
-    ac_weights = load_embedded(index_ac, 'ac_'+ file_name.split('.')[0]+'.emb')
-    rl_weights = load_embedded(index_rl, 'rl_'+ file_name.split('.')[0]+'.emb')
+    ac_weights = load_embedded(index_ac, 'ac_'+ args['file_name'].split('.')[0]+'.emb')
+    rl_weights = load_embedded(index_rl, 'rl_'+ args['file_name'].split('.')[0]+'.emb')
     # Calculate relative times
     log_df = add_calculated_features(log_df, ac_index, rl_index)
-
     # Split validation datasets
     log_df_train, log_df_test = nsup.split_train_test(log_df, 0.3) # 70%/30%
-
     # Input vectorization
-    x_ac_inp, x_rl_inp, xt_inp, y_ac_inp, y_rl_inp, yt_inp, max_tbtw = vectorization(
-        log_df_train, ac_index,
-        rl_index, args)
-
+    vec = vectorization(log_df_train, ac_index, rl_index, args)
     # Parameters export
     output_folder = os.path.join('output_files', sup.folder_id())
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
         os.makedirs(os.path.join(output_folder, 'parameters'))
 
-    parameters['event_log'] = file_name
+    parameters['event_log'] = args['file_name']
     parameters['exp_desc'] = args
     parameters['index_ac'] = index_ac
     parameters['index_rl'] = index_rl
-    parameters['dim'] = dict(samples=str(x_ac_inp.shape[0]),
-                             time_dim=str(x_ac_inp.shape[1]),
+    parameters['dim'] = dict(samples=str(vec['prefixes']['x_ac_inp'].shape[0]),
+                             time_dim=str(vec['prefixes']['x_ac_inp'].shape[1]),
                              features=str(len(ac_index)))
-    parameters['max_tbtw'] = max_tbtw
+    parameters['max_tbtw'] = vec['max_tbtw']
 
     sup.create_json(parameters, os.path.join(output_folder,
                                              'parameters',
@@ -102,32 +94,27 @@ def training_model(file_name, start_timeformat, end_timeformat, args, no_loops=F
                                             'test_log.csv'))
 
     if args['model_type'] == 'joint':
-        mj.training_model(x_ac_inp, x_rl_inp, xt_inp, y_ac_inp, y_rl_inp,
-                          yt_inp, ac_weights, rl_weights, output_folder, args)
+        mj.training_model(vec, ac_weights, rl_weights, output_folder, args)
     elif args['model_type'] == 'shared':
-        msh.training_model(x_ac_inp, x_rl_inp, xt_inp, y_ac_inp, y_rl_inp,
-                           yt_inp, ac_weights, rl_weights, output_folder, args)
+        msh.training_model(vec, ac_weights, rl_weights, output_folder, args)
     elif args['model_type'] == 'specialized':
-        msp.training_model(x_ac_inp, x_rl_inp, xt_inp, y_ac_inp, y_rl_inp,
-                           yt_inp, ac_weights, rl_weights, output_folder, args)
+        msp.training_model(vec, ac_weights, rl_weights, output_folder, args)
     elif args['model_type'] == 'concatenated':
-        mcat.training_model(x_ac_inp, x_rl_inp, xt_inp, y_ac_inp, y_rl_inp,
-                            yt_inp, ac_weights, rl_weights, output_folder, args)
+        mcat.training_model(vec, ac_weights, rl_weights, output_folder, args)
     elif args['model_type'] == 'shared_cat':
-        mshcat.training_model(x_ac_inp, x_rl_inp, xt_inp, y_ac_inp, y_rl_inp,
-                              yt_inp, ac_weights, rl_weights, output_folder, args)
+        mshcat.training_model(vec, ac_weights, rl_weights, output_folder, args)
 
 # =============================================================================
 # Load embedded matrix
 # =============================================================================
 
 def load_embedded(index, filename):
-    """Example function with types documented in the docstring.
+    """Loading of the embedded matrices.
     Args:
-        param1 (int): The first parameter.
-        param2 (str): The second parameter.
+        index (dict): index of activities or roles.
+        filename (str): filename of the matrix file.
     Returns:
-        bool: The return value. True for success, False otherwise.
+        numpy array: array of weights.
     """
     weights = list()
     input_folder = os.path.join('input_files', 'embedded_matix')
@@ -136,21 +123,22 @@ def load_embedded(index, filename):
         for row in filereader:
             cat_ix = int(row[0])
             if index[cat_ix] == row[1].strip():
-                weights.append(list(map(lambda x: float(x), row[2:])))
+                weights.append([float(x) for x in row[2:]])
         csvfile.close()
     return np.array(weights)
 
 # =============================================================================
 # Pre-processing: n-gram vectorization
 # =============================================================================
-
 def vectorization(log_df, ac_index, rl_index, args):
     """Example function with types documented in the docstring.
     Args:
-        param1 (int): The first parameter.
-        param2 (str): The second parameter.
+        log_df: dataframe.
+        ac_index (dict): index of activities.
+        rl_index (dict): index of roles.
+        args (dict): parameters for training the network
     Returns:
-        bool: The return value. True for success, False otherwise.
+        dict: Dictionary that contains all the LSTM inputs.
     """
     if args['norm_method'] == 'max':
         max_tbtw = np.max(log_df.tbtw)
@@ -165,78 +153,91 @@ def vectorization(log_df, ac_index, rl_index, args):
         log_df['tbtw_norm'] = log_df.apply(norm, axis=1)
         log_df = reformat_events(log_df, ac_index, rl_index)
 
-    x_ac_inp, x_rl_inp, xt_inp = list(), list(), list()
-    y_ac_inp, y_rl_inp, yt_inp = list(), list(), list()
-
+    vec = {'prefixes':dict(), 'next_evt':dict(), 'max_tbtw':max_tbtw}
     # n-gram definition
-    for i in log_df:
-        ac_n_grams = list(ngrams(i['ac_order'], args['n_size'], pad_left=True, left_pad_symbol=0))
-        rl_n_grams = list(ngrams(i['rl_order'], args['n_size'], pad_left=True, left_pad_symbol=0))
-        tn_grams = list(ngrams(i['tbtw'], args['n_size'], pad_left=True, left_pad_symbol=0))
-        for j in range(0, len(ac_n_grams)-1):
-            x_ac_inp.append(list(ac_n_grams[j]))
-            x_rl_inp.append(list(rl_n_grams[j]))
-            xt_inp.append(list(tn_grams[j]))
-            y_ac_inp.append(list(ac_n_grams[j+1])[-1])
-            y_rl_inp.append(list(rl_n_grams[j+1])[-1])
-            yt_inp.append(list(tn_grams[j+1])[-1])
+    for i, _ in enumerate(log_df):
+        ac_n_grams = list(ngrams(log_df[i]['ac_order'], args['n_size'],
+                                 pad_left=True, left_pad_symbol=0))
+        rl_n_grams = list(ngrams(log_df[i]['rl_order'], args['n_size'],
+                                 pad_left=True, left_pad_symbol=0))
+        tn_grams = list(ngrams(log_df[i]['tbtw'], args['n_size'],
+                               pad_left=True, left_pad_symbol=0))
+        st_idx = 0
+        if i == 0:
+            vec['prefixes']['x_ac_inp'] = np.array([ac_n_grams[0]])
+            vec['prefixes']['x_rl_inp'] = np.array([rl_n_grams[0]])
+            vec['prefixes']['xt_inp'] = np.array([tn_grams[0]])
+            vec['next_evt']['y_ac_inp'] = np.array(ac_n_grams[1][-1])
+            vec['next_evt']['y_rl_inp'] = np.array(rl_n_grams[1][-1])
+            vec['next_evt']['yt_inp'] = np.array(tn_grams[1][-1])
+            st_idx = 1
+        for j in range(st_idx, len(ac_n_grams)-1):
+            vec['prefixes']['x_ac_inp'] = np.concatenate((vec['prefixes']['x_ac_inp'],
+                                                          np.array([ac_n_grams[j]])), axis=0)
+            vec['prefixes']['x_rl_inp'] = np.concatenate((vec['prefixes']['x_rl_inp'],
+                                                          np.array([rl_n_grams[j]])), axis=0)
+            vec['prefixes']['xt_inp'] = np.concatenate((vec['prefixes']['xt_inp'],
+                                                        np.array([tn_grams[j]])), axis=0)
+            vec['next_evt']['y_ac_inp'] = np.append(vec['next_evt']['y_ac_inp'],
+                                                    np.array(ac_n_grams[j+1][-1]))
+            vec['next_evt']['y_rl_inp'] = np.append(vec['next_evt']['y_rl_inp'],
+                                                    np.array(rl_n_grams[j+1][-1]))
+            vec['next_evt']['yt_inp'] = np.append(vec['next_evt']['yt_inp'],
+                                                  np.array(tn_grams[j+1][-1]))
 
-    x_ac_inp = np.array(x_ac_inp)
-    x_rl_inp = np.array(x_rl_inp)
-    xt_inp = np.array(xt_inp)
-    xt_inp = xt_inp.reshape((xt_inp.shape[0], xt_inp.shape[1], 1))
+    vec['prefixes']['xt_inp'] = vec['prefixes']['xt_inp'].reshape(
+        (vec['prefixes']['xt_inp'].shape[0],
+         vec['prefixes']['xt_inp'].shape[1], 1))
+    vec['next_evt']['y_ac_inp'] = ku.to_categorical(vec['next_evt']['y_ac_inp'],
+                                                    num_classes=len(ac_index))
+    vec['next_evt']['y_rl_inp'] = ku.to_categorical(vec['next_evt']['y_rl_inp'],
+                                                    num_classes=len(rl_index))
+    return vec
 
-    y_ac_inp = np.array(y_ac_inp)
-    y_rl_inp = np.array(y_rl_inp)
-    yt_inp = np.array(yt_inp)
-
-    y_ac_inp = ku.to_categorical(y_ac_inp, num_classes=len(ac_index))
-    y_rl_inp = ku.to_categorical(y_rl_inp, num_classes=len(rl_index))
-
-    return x_ac_inp, x_rl_inp, xt_inp, y_ac_inp, y_rl_inp, yt_inp, max_tbtw
-
-def add_calculated_features(data, ac_index, rl_index):
-    """Example function with types documented in the docstring.
+def add_calculated_features(log_df, ac_index, rl_index):
+    """Appends the indexes and relative time to the dataframe.
     Args:
-        param1 (int): The first parameter.
-        param2 (str): The second parameter.
+        log_df: dataframe.
+        ac_index (dict): index of activities.
+        rl_index (dict): index of roles.
     Returns:
-        bool: The return value. True for success, False otherwise.
+        Dataframe: The dataframe with the calculated features added.
     """
     ac_idx = lambda x: ac_index[x['task']]
-    data['ac_index'] = data.apply(ac_idx, axis=1)
+    log_df['ac_index'] = log_df.apply(ac_idx, axis=1)
 
     rl_idx = lambda x: rl_index[x['role']]
-    data['rl_index'] = data.apply(rl_idx, axis=1)
+    log_df['rl_index'] = log_df.apply(rl_idx, axis=1)
 
-    data['tbtw'] = 0
-    data['tbtw_norm'] = 0
+    log_df['tbtw'] = 0
+    log_df['tbtw_norm'] = 0
 
-    data = data.to_dict('records')
+    log_df = log_df.to_dict('records')
 
-    data = sorted(data, key=lambda x: (x['caseid'], x['end_timestamp']))
-    for _, group in itertools.groupby(data, key=lambda x: x['caseid']):
+    log_df = sorted(log_df, key=lambda x: (x['caseid'], x['end_timestamp']))
+    for _, group in itertools.groupby(log_df, key=lambda x: x['caseid']):
         trace = list(group)
         for i, _ in enumerate(trace):
             if i != 0:
                 trace[i]['tbtw'] = (trace[i]['end_timestamp'] -
                                     trace[i-1]['end_timestamp']).total_seconds()
 
-    return pd.DataFrame.from_records(data)
+    return pd.DataFrame.from_records(log_df)
 
-def reformat_events(data, ac_index, rl_index):
-    """Example function with types documented in the docstring.
+def reformat_events(log_df, ac_index, rl_index):
+    """Creates series of activities, roles and relative times per trace.
     Args:
-        param1 (int): The first parameter.
-        param2 (str): The second parameter.
+        log_df: dataframe.
+        ac_index (dict): index of activities.
+        rl_index (dict): index of roles.
     Returns:
-        bool: The return value. True for success, False otherwise.
+        list: lists of activities, roles and relative times.
     """
-    data = data.to_dict('records')
+    log_df = log_df.to_dict('records')
 
     temp_data = list()
-    data = sorted(data, key=lambda x: (x['caseid'], x['end_timestamp']))
-    for key, group in itertools.groupby(data, key=lambda x: x['caseid']):
+    log_df = sorted(log_df, key=lambda x: (x['caseid'], x['end_timestamp']))
+    for key, group in itertools.groupby(log_df, key=lambda x: x['caseid']):
         trace = list(group)
         ac_order = [x['ac_index'] for x in trace]
         rl_order = [x['rl_index'] for x in trace]

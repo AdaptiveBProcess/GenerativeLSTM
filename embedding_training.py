@@ -22,9 +22,9 @@ from support_modules import nn_support as nsup
 def training_model(parameters, timeformat, no_loops=False):
     """Main method of the embedding training module.
     Args:
-        parameters (str): parameters for training the embeddeding network.
+        parameters (dict): parameters for training the embeddeding network.
         timeformat (str): event-log date-time format.
-        no_loops (str): remove loops fom the event-log (optional).
+        no_loops (boolean): remove loops fom the event-log (optional).
     """
     log = lr.LogReader(os.path.join('input_files', parameters['file_name']),
                        timeformat, timeformat, one_timestamp=True)

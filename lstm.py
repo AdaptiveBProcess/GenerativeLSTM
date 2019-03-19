@@ -39,9 +39,9 @@ def main(argv):
                 parameters['lstm_act'] = None # optimization function see keras doc
                 parameters['dense_act'] = None # optimization function see keras doc
                 parameters['optim'] = 'Nadam' # optimization function see keras doc
-                parameters['norm_method'] = 'max' # max, lognorm
+                parameters['norm_method'] = 'lognorm' # max, lognorm
                 # Model types --> specialized, concatenated, shared_cat, joint, shared
-                parameters['model_type'] = 'concatenated'
+                parameters['model_type'] = 'shared_cat'
                 parameters['n_size'] = 5 # n-gram size
                 parameters['l_size'] = 100 # LSTM layer sizes
 #       Generation parameters
@@ -72,7 +72,7 @@ def main(argv):
             em.training_model(parameters, timeformat)
         elif parameters['activity'] == 'training':
             print(parameters)
-            tr.training_model(parameters['file_name'], timeformat, timeformat, parameters)
+            tr.training_model(timeformat, parameters)
         elif parameters['activity'] == 'pred_log':
             print(parameters['folder'])
             print(parameters['model_file'])
