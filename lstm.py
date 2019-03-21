@@ -6,7 +6,7 @@ import sys
 import getopt
 import model_training as tr
 import embedding_training as em
-import predict_n_gram_emb as pr
+import predict_log as pr
 import predict_sufix as px
 
 
@@ -29,7 +29,7 @@ def main(argv):
 #   Parameters setting manual fixed or catched by console for batch operations
     if not argv:
 #       Type of LSTM task -> emb_training, training, pred_log, pred_sfx
-        parameters['activity'] = 'training'
+        parameters['activity'] = 'pred_sfx'
 #       General training parameters
         if parameters['activity'] in ['emb_training', 'training']:
             parameters['file_name'] = 'Helpdesk.xes.gz'
@@ -46,8 +46,8 @@ def main(argv):
                 parameters['l_size'] = 100 # LSTM layer sizes
 #       Generation parameters
         if parameters['activity'] in ['pred_log', 'pred_sfx']:
-            parameters['folder'] = '20190306_205146800602'
-            parameters['model_file'] = 'model_rd_50 Nadam_05-1.63.h5'
+            parameters['folder'] = '20190228_155935509575'
+            parameters['model_file'] = 'model_rd_150 Nadam_22-0.59.h5'
 
     else:
 #       Catch parameters by console
@@ -76,15 +76,11 @@ def main(argv):
         elif parameters['activity'] == 'pred_log':
             print(parameters['folder'])
             print(parameters['model_file'])
-            pr.predict(timeformat, parameters['folder'],
-                       parameters['model_file'],
-                       is_single_exec=False)
+            pr.predict(timeformat, parameters, is_single_exec=True)
         elif parameters['activity'] == 'pred_sfx':
             print(parameters['folder'])
             print(parameters['model_file'])
-            px.predict_prefix(timeformat, parameters['folder'],
-                              parameters['model_file'],
-                              is_single_exec=False)
+            px.predict_prefix(timeformat, parameters, is_single_exec=False)
     except:
         raise Exception('Check the parameters structure...')
 

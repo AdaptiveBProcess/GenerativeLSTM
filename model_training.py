@@ -133,7 +133,7 @@ def load_embedded(index, filename):
 def vectorization(log_df, ac_index, rl_index, args):
     """Example function with types documented in the docstring.
     Args:
-        log_df: dataframe.
+        log_df (dataframe): event log data.
         ac_index (dict): index of activities.
         rl_index (dict): index of roles.
         args (dict): parameters for training the network
