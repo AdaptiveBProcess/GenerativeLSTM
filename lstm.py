@@ -33,7 +33,7 @@ def main(argv):
 #       General training parameters
         if parameters['activity'] in ['emb_training', 'training']:
             parameters['file_name'] = 'Helpdesk.xes.gz'
-#       Specific model training parameters
+#           Specific model training parameters
             if parameters['activity'] == 'training':
                 parameters['imp'] = 1 # keras lstm implementation 1 cpu, 2 gpu
                 parameters['lstm_act'] = None # optimization function see keras doc
