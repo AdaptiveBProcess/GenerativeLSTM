@@ -159,7 +159,7 @@ def ac_rl_embedding_model(ac_index, rl_index, embedding_size):
     # Reshape to be a single number (shape will be (None, 1))
     merged = Reshape(target_shape=[1])(merged)
 
-    # Otherwise loss function is mean squared error
+    # Loss function is mean squared error
     model = Model(inputs=[activity, role], outputs=merged)
     model.compile(optimizer='Adam', loss='mse')
 

@@ -7,7 +7,9 @@ import getopt
 import model_training as tr
 import embedding_training as em
 import predict_log as pr
-import predict_sufix as px
+import predict_suffix_full as px
+import predict_next as nx
+
 
 
 def catch_parameter(opt):
@@ -29,7 +31,7 @@ def main(argv):
 #   Parameters setting manual fixed or catched by console for batch operations
     if not argv:
 #       Type of LSTM task -> emb_training, training, pred_log, pred_sfx
-        parameters['activity'] = 'pred_sfx'
+        parameters['activity'] = 'predict_next'
 #       General training parameters
         if parameters['activity'] in ['emb_training', 'training']:
             parameters['file_name'] = 'Helpdesk.xes.gz'
@@ -45,9 +47,9 @@ def main(argv):
                 parameters['n_size'] = 5 # n-gram size
                 parameters['l_size'] = 100 # LSTM layer sizes
 #       Generation parameters
-        if parameters['activity'] in ['pred_log', 'pred_sfx']:
-            parameters['folder'] = '20190228_155935509575'
-            parameters['model_file'] = 'model_rd_150 Nadam_22-0.59.h5'
+        if parameters['activity'] in ['pred_log', 'pred_sfx', 'predict_next']:
+            parameters['folder'] = '20190524_163437607527'
+            parameters['model_file'] = 'model_rd_100 Nadam_01-257024830.67.h5'
 
     else:
 #       Catch parameters by console
@@ -77,10 +79,14 @@ def main(argv):
             print(parameters['folder'])
             print(parameters['model_file'])
             pr.predict(timeformat, parameters, is_single_exec=True)
+        elif parameters['activity'] == 'predict_next':
+            print(parameters['folder'])
+            print(parameters['model_file'])
+            nx.predict_next(timeformat, parameters, is_single_exec=False)
         elif parameters['activity'] == 'pred_sfx':
             print(parameters['folder'])
             print(parameters['model_file'])
-            px.predict_prefix(timeformat, parameters, is_single_exec=False)
+            px.predict_suffix_full(timeformat, parameters, is_single_exec=False)
     except:
         raise Exception('Check the parameters structure...')
 

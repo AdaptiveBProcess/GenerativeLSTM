@@ -26,7 +26,7 @@ TBTW = dict()
 EXP = dict()
 
 def predict_prefix(timeformat, parameters, is_single_exec=True):
-    """Main function of the siffix prediction module.
+    """Main function of the suffix prediction module.
     Args:
         timeformat (str): event-log date-time format.
         parameters (dict): parameters used in the training step.
@@ -42,8 +42,7 @@ def predict_prefix(timeformat, parameters, is_single_exec=True):
 
     START_TIMEFORMAT = timeformat
 
-    imp = 'Arg Max'
-    max_trace_size = 200
+    max_trace_size = 100
 
     output_route = os.path.join('output_files', parameters['folder'])
     model_name, _ = os.path.splitext(parameters['model_file'])
@@ -81,32 +80,41 @@ def predict_prefix(timeformat, parameters, is_single_exec=True):
     ac_alias = create_alias(len(INDEX_AC))
     rl_alias = create_alias(len(INDEX_RL))
 
-    args = dict(df_test=df_test, ac_alias=ac_alias, rl_alias=rl_alias,
+#   Next event selection method and numbers of repetitions
+    variants = [{'imp': 'Random Choice', 'rep': 15},
+                {'imp': 'Arg Max', 'rep': 1}]
+    
+#   Generation of predictions
+    model = load_model(os.path.join(output_route, parameters['model_file']))
+
+    for var in variants:
+        args = dict(df_test=df_test, ac_alias=ac_alias, rl_alias=rl_alias,
                 output_route=output_route, model_file=parameters['model_file'],
-                imp=imp, max_trace_size=max_trace_size)
-    rep = 1
-    for _ in range(0, rep):
-        results = execute_experiments([2, 10, 20], args)
-        # Save results
+                imp=var['imp'], max_trace_size=max_trace_size)
+
         measurements = list()
-        measurements.append({**dict(model=os.path.join(output_route, parameters['model_file']),
-                                    implementation=imp), **results,
-                             **EXP})
-        if is_single_exec:
-            sup.create_csv_file_header(measurements, os.path.join('output_files',
-                                                                  model_name +'_sufix.csv'))
-        else:
-            if os.path.exists(os.path.join('output_files', 'sufix_measures.csv')):
-                sup.create_csv_file(measurements, os.path.join('output_files',
-                                                               'sufix_measures.csv'), mode='a')
-            else:
+        for i in range(0, var['rep']):
+            results = execute_experiments([2, 5, 8, 10, 15, 20], model, args)
+            # Save results
+            measurements.append({**dict(model=os.path.join(output_route, parameters['model_file']),
+                                        implementation=var['imp']), **results,
+                                 **EXP})
+        if measurements:    
+            if is_single_exec:
                 sup.create_csv_file_header(measurements, os.path.join('output_files',
+                                                                      model_name +'_sufix.csv'))
+            else:
+                if os.path.exists(os.path.join('output_files', 'sufix_measures.csv')):
+                    sup.create_csv_file(measurements, os.path.join('output_files',
+                                                                   'sufix_measures.csv'), mode='a')
+                else:
+                    sup.create_csv_file_header(measurements, os.path.join('output_files',
                                                                       'sufix_measures.csv'))
 
 # =============================================================================
 # Generate experiments
 # =============================================================================
-def execute_experiments(prefix_sizes, args):
+def execute_experiments(prefix_sizes, model, args):
     """Example function with types documented in the docstring.
     Args:
         prefix_sizes (list): sizes of prefixes to try.
@@ -115,7 +123,6 @@ def execute_experiments(prefix_sizes, args):
         dict: measurements results.
     """
     results = dict()
-    model = load_model(os.path.join(args['output_route'], args['model_file']))
     for size in prefix_sizes:
         prefixes = create_pref_suf(args['df_test'], args['ac_alias'], args['rl_alias'], size)
         prefixes = predict(model, prefixes, args['ac_alias'],
