@@ -60,7 +60,13 @@ def main(argv):
                                      'activity=', 'eventlog=', 'batchsize=',
                                      'cellsize=', 'optimizer='])
             for opt, arg in opts:
-                parameters[catch_parameter(opt)] = arg
+                key = catch_parameter(opt)
+                if key == 'one_timestamp':
+                    parameters[key] = arg in ['True', 'true', 1]
+                elif key in ['imp', 'n_size', 'l_size']:
+                    parameters[key] = int(arg)
+                else:
+                    parameters[key] = arg
         except getopt.GetoptError:
             print('Invalid option')
             sys.exit(2)
