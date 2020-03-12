@@ -4,7 +4,7 @@
 """
 import sys
 import getopt
-import model_training as tr
+import model_training1 as tr
 import embedding_training as em
 import predict_log as pr
 import predict_suffix_full as px
@@ -61,7 +61,7 @@ def main(argv):
                 parameters['norm_method'] = 'lognorm'  # max, lognorm
                 # Model types --> shared_cat, shared_cat_inter,
                 # seq2seq, seq2seq_inter
-                parameters['model_type'] = 'shared_cat_inter_full'
+                parameters['model_type'] = 'shared_cat_inter'
                 parameters['n_size'] = 15  # n-gram size
                 parameters['l_size'] = 100  # LSTM layer sizes
                 # Generation parameters
@@ -104,7 +104,8 @@ def main(argv):
             em.training_model(parameters)
         elif parameters['activity'] == 'training':
             print(parameters)
-            tr.training_model(parameters)
+            tr.ModelTrainer(parameters)
+            # tr.training_model(parameters)
         elif parameters['activity'] == 'pred_log':
             print(parameters['folder'])
             print(parameters['model_file'])

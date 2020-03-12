@@ -52,7 +52,6 @@ def training_model(parms):
         log = lr.LogReader(os.path.join('input_files', parms['file_name']), parms['read_options'])
         log_df = pd.DataFrame(log.data)
     # Resource pool discovery
-    # _, resource_table = rl.read_resource_pool(log_df, sim_percentage=parms['rp_similarity'], dataframe=True)
     res_analyzer = rl.ResourcePoolAnalyser(log_df, sim_threshold=parms['rp_similarity'])
     # Role discovery
     log_df_resources = pd.DataFrame.from_records(res_analyzer.resource_table)
