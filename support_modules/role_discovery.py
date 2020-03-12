@@ -166,17 +166,24 @@ def read_roles_from_columns(raw_data, filtered_data, separator):
 		records.append(dict(role=role,quantity =quantity,members=members))
 	return records
 
-def read_resource_pool(log, separator=None, drawing=False, sim_percentage=0.7):
+def read_resource_pool(log, separator=None, drawing=False, sim_percentage=0.7, dataframe=False):
+    # Management of log object or dataframe
+    log_data=list()
+    if dataframe:
+        log_data = log.to_dict('records')
+    else:
+        log_data = log.data
+    # Discovery of roles
     if separator == None:
         filtered_list = list()
-        for row in log.data:
+        for row in log_data:
             if row['task'] != 'End' and row['user'] != 'AUTO':
                 filtered_list.append([row['task'],row['user']])
         return role_discovery(filtered_list, drawing, sim_percentage)
     else:
         raw_list = list()
         filtered_list = list()
-        for row in log.data:
+        for row in log_data:
             raw_list.append(row['user'])
         filtered_list = list(set(raw_list))
         return read_roles_from_columns(raw_list, filtered_list, separator)

@@ -4,10 +4,11 @@ Created on Thu Feb 28 10:15:12 2019
 
 @author: Manuel Camargo
 """
+
 import os
 
 from keras.models import Model
-from keras.layers import Input, Embedding
+from keras.layers import Input, Embedding, Concatenate, Bidirectional
 from keras.layers.core import Dense
 from keras.layers.recurrent import LSTM
 from keras.optimizers import Nadam, Adam, SGD, Adagrad
@@ -49,69 +50,52 @@ def training_model(vec, ac_weights, rl_weights, output_folder, args):
 # =============================================================================
 #    Layer 1
 # =============================================================================
-    l1_c1 = LSTM(args['l_size'],
-                  kernel_initializer='glorot_uniform',
-                  return_sequences=True,
-                  dropout=0.2,
-                  implementation=args['imp'])(ac_embedding)
     
-    l1_c2 = LSTM(args['l_size'],
+    merged = Concatenate(name = 'concatenated', axis = 2)([ac_embedding, rl_embedding])
+
+
+    l1_c1 = Bidirectional(LSTM(args['l_size'],
                   kernel_initializer='glorot_uniform',
-                  return_sequences=True,
+                  return_sequences=False,
                   dropout=0.2,
-                  implementation=args['imp'])(rl_embedding)
-
-    if args['lstm_act'] is not None:
-        l1_c3 = LSTM(args['l_size'],
-                     activation=args['lstm_act'],
-                     kernel_initializer='glorot_uniform',
-                     return_sequences=True,
-                     dropout=0.2,
-                     implementation=args['imp'])(t_input)
-    else:
-        l1_c3 = LSTM(args['l_size'],
-                     kernel_initializer='glorot_uniform',
-                     return_sequences=True,
-                     dropout=0.2,
-                     implementation=args['imp'])(t_input)
-
+                  implementation=args['imp']))(merged)
+    
+    l1_c3 = Bidirectional(LSTM(args['l_size'],
+                 activation=args['lstm_act'],
+                 kernel_initializer='glorot_uniform',
+                 return_sequences=False,
+                 dropout=0.2,
+                 implementation=args['imp']))(t_input)
+    
 # =============================================================================
 #    Batch Normalization Layer
 # =============================================================================
     batch1 = BatchNormalization()(l1_c1)
-    batch2 = BatchNormalization()(l1_c2)
     batch3 = BatchNormalization()(l1_c3)
     
 # =============================================================================
 # The layer specialized in prediction
 # =============================================================================
-    l2_c1 = LSTM(args['l_size'],
-                    kernel_initializer='glorot_uniform',
-                    return_sequences=False,
-                    dropout=0.2,
-                    implementation=args['imp'])(batch1)
- 
-#   The layer specialized in role prediction
-    l2_c2 = LSTM(args['l_size'],
-                    kernel_initializer='glorot_uniform',
-                    return_sequences=False,
-                    dropout=0.2,
-                    implementation=args['imp'])(batch2)
-    
-#   The layer specialized in role prediction
-    if args['lstm_act'] is not None:
-        l2_3 = LSTM(args['l_size'],
-                    activation=args['lstm_act'],
-                    kernel_initializer='glorot_uniform',
-                    return_sequences=False,
-                    dropout=0.2,
-                    implementation=args['imp'])(batch3)
-    else:
-        l2_3 = LSTM(args['l_size'],
-                    kernel_initializer='glorot_uniform',
-                    return_sequences=False,
-                    dropout=0.2,
-                    implementation=args['imp'])(batch3)
+#    l2_c1 = LSTM(args['l_size'],
+#                    kernel_initializer='glorot_uniform',
+#                    return_sequences=False,
+#                    dropout=0.2,
+#                    implementation=args['imp'])(batch1)
+# 
+##   The layer specialized in role prediction
+#    l2_c2 = LSTM(args['l_size'],
+#                    kernel_initializer='glorot_uniform',
+#                    return_sequences=False,
+#                    dropout=0.2,
+#                    implementation=args['imp'])(batch1)
+#    
+##   The layer specialized in role prediction
+#    l2_3 = LSTM(args['l_size'],
+#                    activation=args['lstm_act'],
+#                    kernel_initializer='glorot_uniform',
+#                    return_sequences=False,
+#                    dropout=0.2,
+#                    implementation=args['imp'])(batch3)
     
 
     
@@ -121,21 +105,21 @@ def training_model(vec, ac_weights, rl_weights, output_folder, args):
     act_output = Dense(ac_weights.shape[0],
                        activation='softmax',
                        kernel_initializer='glorot_uniform',
-                       name='act_output')(l2_c1)
+                       name='act_output')(batch1)
 
     role_output = Dense(rl_weights.shape[0],
                        activation='softmax',
                        kernel_initializer='glorot_uniform',
-                       name='role_output')(l2_c2)
+                       name='role_output')(batch1)
 
     if args['dense_act'] is not None:
         time_output = Dense(1, activation=args['dense_act'],
                             kernel_initializer='glorot_uniform',
-                            name='time_output')(l2_3)
+                            name='time_output')(batch3)
     else:
         time_output = Dense(1,
                             kernel_initializer='glorot_uniform',
-                            name='time_output')(l2_3)
+                            name='time_output')(batch3)
 
     model = Model(inputs=[ac_input, rl_input, t_input], outputs=[act_output, role_output, time_output])
 
@@ -155,8 +139,8 @@ def training_model(vec, ac_weights, rl_weights, output_folder, args):
     model.summary()
     
     early_stopping = EarlyStopping(monitor='val_loss', patience=42)
-
-    # Output file
+#
+#    # Output file
     output_file_path = os.path.join(output_folder,
                                     'model_rd_' + str(args['l_size']) +
                                     ' ' + args['optim'] +

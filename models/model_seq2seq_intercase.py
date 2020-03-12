@@ -1,19 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Feb 28 10:15:12 2019
+Created on Sun Sep 22 20:52:26 2019
 
 @author: Manuel Camargo
 """
-
 import os
+#import datetime
 
 from keras.models import Model
-from keras.layers import Input, Embedding, Concatenate
-from keras.layers.core import Dense
-from keras.layers.recurrent import LSTM
 from keras.optimizers import Nadam, Adam, SGD, Adagrad
+from keras.layers import Input, LSTM, Dense, Embedding, Concatenate
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
-from keras.layers.normalization import BatchNormalization
 
 from support_modules.callbacks import time_callback as tc
 from support_modules.callbacks import clean_models_callback as cm
@@ -28,13 +25,14 @@ def training_model(vec, ac_weights, rl_weights, output_folder, args):
     """
 
     print('Build model...')
-    print(args)
 # =============================================================================
 #     Input layer
 # =============================================================================
-    ac_input = Input(shape=(vec['prefixes']['activities'].shape[1], ), name='ac_input')
-    rl_input = Input(shape=(vec['prefixes']['roles'].shape[1], ), name='rl_input')
-    t_input = Input(shape=(vec['prefixes']['times'].shape[1], 1), name='t_input')
+    ac_input = Input(shape=(vec['encoder_input_data']['activities'].shape[1], ), name='ac_input')
+    rl_input = Input(shape=(vec['encoder_input_data']['roles'].shape[1], ), name='rl_input')
+    t_input = Input(shape=(vec['encoder_input_data']['times'].shape[1], 1), name='t_input')
+    int_input = Input(shape=(vec['encoder_input_data']['inter_attr'].shape[1],
+                             vec['encoder_input_data']['inter_attr'].shape[2]), name='int_input')
 
 # =============================================================================
 #    Embedding layer for categorical attributes        
@@ -42,89 +40,77 @@ def training_model(vec, ac_weights, rl_weights, output_folder, args):
     ac_embedding = Embedding(ac_weights.shape[0],
                             ac_weights.shape[1],
                             weights=[ac_weights],
-                            input_length=vec['prefixes']['activities'].shape[1],
+                            input_length=vec['encoder_input_data']['activities'].shape[1],
                             trainable=False, name='ac_embedding')(ac_input)
 
     rl_embedding = Embedding(rl_weights.shape[0],
                             rl_weights.shape[1],
                             weights=[rl_weights],
-                            input_length=vec['prefixes']['roles'].shape[1],
+                            input_length=vec['encoder_input_data']['roles'].shape[1],
                             trainable=False, name='rl_embedding')(rl_input)
-# =============================================================================
-#    Layer 1
-# =============================================================================
-    
-    merged = Concatenate(name = 'concatenated', axis = 2)([ac_embedding, rl_embedding])
 
+# =============================================================================
+#    Concatenation layer
+# =============================================================================
+
+    merged1 = Concatenate(name = 'conc_categorical', axis = 2)([ac_embedding, rl_embedding, int_input])
+    merged2 = Concatenate(name = 'conc_continuous', axis = 2)([t_input, int_input])
+
+
+# =============================================================================
+#    Encoder
+# =============================================================================
 
     l1_c1 = LSTM(args['l_size'],
                   kernel_initializer='glorot_uniform',
                   return_sequences=True,
                   dropout=0.2,
-                  implementation=args['imp'])(merged)
+                  implementation=args['imp'])(merged1)
     
     l1_c3 = LSTM(args['l_size'],
                  activation=args['lstm_act'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=True,
                  dropout=0.2,
-                 implementation=args['imp'])(t_input)
-    
+                 implementation=args['imp'])(merged2)
+
 # =============================================================================
-#    Batch Normalization Layer
-# =============================================================================
-    batch1 = BatchNormalization()(l1_c1)
-    batch3 = BatchNormalization()(l1_c3)
-    
-# =============================================================================
-# The layer specialized in prediction
+#    Decoder
 # =============================================================================
     l2_c1 = LSTM(args['l_size'],
-                    kernel_initializer='glorot_uniform',
-                    return_sequences=False,
-                    dropout=0.2,
-                    implementation=args['imp'])(batch1)
- 
+                    return_sequences=True,
+                    implementation=args['imp'])(l1_c1)
+  
 #   The layer specialized in role prediction
     l2_c2 = LSTM(args['l_size'],
-                    kernel_initializer='glorot_uniform',
-                    return_sequences=False,
+                    return_sequences=True,
                     dropout=0.2,
-                    implementation=args['imp'])(batch1)
-    
-#   The layer specialized in role prediction
-    l2_3 = LSTM(args['l_size'],
+                    implementation=args['imp'])(l1_c1)
+
+    l2_c3 = LSTM(args['l_size'],
                     activation=args['lstm_act'],
-                    kernel_initializer='glorot_uniform',
-                    return_sequences=False,
+                    return_sequences=True,
                     dropout=0.2,
-                    implementation=args['imp'])(batch3)
-    
+                    implementation=args['imp'])(l1_c3)
 
     
 # =============================================================================
-# Output Layer
+#    Output
 # =============================================================================
-    act_output = Dense(ac_weights.shape[0],
-                       activation='softmax',
-                       kernel_initializer='glorot_uniform',
+    act_output = Dense(len(args['index_ac']), activation='softmax',
                        name='act_output')(l2_c1)
-
-    role_output = Dense(rl_weights.shape[0],
-                       activation='softmax',
-                       kernel_initializer='glorot_uniform',
-                       name='role_output')(l2_c2)
-
+    rl_output = Dense(len(args['index_rl']), activation='softmax',
+                       name='rl_output')(l2_c2)
     if ('dense_act' in args) and (args['dense_act'] is not None):
         time_output = Dense(1, activation=args['dense_act'],
                             kernel_initializer='glorot_uniform',
-                            name='time_output')(l2_3)
+                            name='time_output')(l2_c3)
     else:
         time_output = Dense(1,
                             kernel_initializer='glorot_uniform',
-                            name='time_output')(l2_3)
+                            name='time_output')(l2_c3)
 
-    model = Model(inputs=[ac_input, rl_input, t_input], outputs=[act_output, role_output, time_output])
+    model = Model(inputs=[ac_input, rl_input, t_input, int_input], outputs=[act_output, rl_output, time_output])
 
     if args['optim'] == 'Nadam':
         opt = Nadam(learning_rate=0.002, beta_1=0.9, beta_2=0.999)
@@ -135,11 +121,13 @@ def training_model(vec, ac_weights, rl_weights, output_folder, args):
     elif args['optim'] == 'Adagrad':
         opt = Adagrad(learning_rate=0.01)
 
-    model.compile(loss={'act_output':'categorical_crossentropy', 'role_output':'categorical_crossentropy', 'time_output':'mae'}, optimizer=opt)
+    model.compile(loss={'act_output':'categorical_crossentropy',
+                        'rl_output':'categorical_crossentropy',
+                        'time_output':'mae'}, metrics=['accuracy'], optimizer=opt)
     
-    model.summary()
-    
-    early_stopping = EarlyStopping(monitor='val_loss', patience=50)
+    print(model.summary())    
+
+    early_stopping = EarlyStopping(monitor='val_loss', patience=42)
     cb = tc.TimingCallback(output_folder)
     clean_models = cm.CleanSavedModelsCallback(output_folder, 2) 
 
@@ -147,7 +135,6 @@ def training_model(vec, ac_weights, rl_weights, output_folder, args):
     output_file_path = os.path.join(output_folder,
                                     'model_' + str(args['model_type']) +
                                     '_{epoch:02d}-{val_loss:.2f}.h5')
-
     # Saving
     model_checkpoint = ModelCheckpoint(output_file_path,
                                        monitor='val_loss',
@@ -157,22 +144,24 @@ def training_model(vec, ac_weights, rl_weights, output_folder, args):
                                        mode='auto')
     lr_reducer = ReduceLROnPlateau(monitor='val_loss',
                                    factor=0.5,
-                                   patience=10,
+                                   patience=40,
                                    verbose=0,
                                    mode='auto',
                                    min_delta=0.0001,
                                    cooldown=0,
                                    min_lr=0)
+    
 
-    batch_size = vec['prefixes']['activities'].shape[1]
-    model.fit({'ac_input':vec['prefixes']['activities'],
-               'rl_input':vec['prefixes']['roles'],
-               't_input':vec['prefixes']['times']},
-              {'act_output':vec['next_evt']['activities'],
-               'role_output':vec['next_evt']['roles'],
-               'time_output':vec['next_evt']['times']},
+    batch_size = vec['encoder_input_data']['activities'].shape[1]
+    model.fit({'ac_input':vec['encoder_input_data']['activities'],
+               'rl_input':vec['encoder_input_data']['roles'],
+               't_input':vec['encoder_input_data']['times'],
+               'int_input':vec['encoder_input_data']['inter_attr']},
+              {'act_output':vec['decoder_target_data']['activities'],
+               'rl_output':vec['decoder_target_data']['roles'],
+               'time_output':vec['decoder_target_data']['times']},
+              batch_size=batch_size,
+              epochs=1000,
               validation_split=0.2,
               verbose=2,
-              callbacks=[early_stopping, model_checkpoint, lr_reducer, cb, clean_models],
-              batch_size=batch_size,
-              epochs=500)
+              callbacks=[early_stopping, model_checkpoint, lr_reducer, cb, clean_models])
