@@ -35,7 +35,7 @@ def main(argv):
                     'lifecycle:transition': 'event_type',
                     'Resource': 'user'}
     # Similarity btw the resources profile execution (Song e.t. all)
-    parameters['rp_similarity'] = 0.85
+    parameters['rp_sim'] = 0.85
     # Parameters setting manual fixed or catched by console
     if not argv:
         # Event-log reading parameters
@@ -61,7 +61,7 @@ def main(argv):
                 parameters['norm_method'] = 'lognorm'  # max, lognorm
                 # Model types --> shared_cat, shared_cat_inter,
                 # seq2seq, seq2seq_inter
-                parameters['model_type'] = 'shared_cat_inter'
+                parameters['model_type'] = 'shared_cat_inter_full'
                 parameters['n_size'] = 15  # n-gram size
                 parameters['l_size'] = 100  # LSTM layer sizes
                 # Generation parameters
