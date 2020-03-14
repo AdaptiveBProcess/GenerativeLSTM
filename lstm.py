@@ -4,11 +4,12 @@
 """
 import sys
 import getopt
-import model_training1 as tr
 import embedding_training as em
 import predict_log as pr
 import predict_suffix_full as px
 import predict_next as nx
+from training import model_training as tr
+
 
 from support_modules.intercase_features import feature_engineering as fe
 
@@ -61,7 +62,7 @@ def main(argv):
                 parameters['norm_method'] = 'lognorm'  # max, lognorm
                 # Model types --> shared_cat, shared_cat_inter,
                 # seq2seq, seq2seq_inter
-                parameters['model_type'] = 'shared_cat_inter_full'
+                parameters['model_type'] = 'shared_cat_inter'
                 parameters['n_size'] = 15  # n-gram size
                 parameters['l_size'] = 100  # LSTM layer sizes
                 # Generation parameters
@@ -96,34 +97,30 @@ def main(argv):
             sys.exit(2)
 
 #   Execution
-    try:
-        if parameters['activity'] == 'emb_training':
-            if parameters['file_name'] == '' or not parameters['file_name']:
-                raise Exception('The file name is missing...')
-            print(parameters)
-            em.training_model(parameters)
-        elif parameters['activity'] == 'training':
-            print(parameters)
-            tr.ModelTrainer(parameters)
-            # tr.training_model(parameters)
-        elif parameters['activity'] == 'pred_log':
-            print(parameters['folder'])
-            print(parameters['model_file'])
-            pr.predict(parameters, is_single_exec=True)
-        elif parameters['activity'] == 'predict_next':
-            print(parameters['folder'])
-            print(parameters['model_file'])
-            nx.predict_next(parameters, is_single_exec=False)
-        elif parameters['activity'] == 'pred_sfx':
-            print(parameters['folder'])
-            print(parameters['model_file'])
-            px.predict_suffix_full(parameters, is_single_exec=False)
-        elif parameters['activity'] == 'f_dist':
-            print(parameters)
-            fe.extract_features(parameters)
-
-    except:
-        raise Exception('Check the parameters structure...')
+    if parameters['activity'] == 'emb_training':
+        if parameters['file_name'] == '' or not parameters['file_name']:
+            raise Exception('The file name is missing...')
+        print(parameters)
+        em.training_model(parameters)
+    elif parameters['activity'] == 'training':
+        print(parameters)
+        tr.ModelTrainer(parameters)
+        # tr.training_model(parameters)
+    elif parameters['activity'] == 'pred_log':
+        print(parameters['folder'])
+        print(parameters['model_file'])
+        pr.predict(parameters, is_single_exec=True)
+    elif parameters['activity'] == 'predict_next':
+        print(parameters['folder'])
+        print(parameters['model_file'])
+        nx.predict_next(parameters, is_single_exec=False)
+    elif parameters['activity'] == 'pred_sfx':
+        print(parameters['folder'])
+        print(parameters['model_file'])
+        px.predict_suffix_full(parameters, is_single_exec=False)
+    elif parameters['activity'] == 'f_dist':
+        print(parameters)
+        fe.extract_features(parameters)
 
 
 if __name__ == "__main__":
