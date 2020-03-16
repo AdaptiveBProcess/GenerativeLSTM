@@ -18,7 +18,7 @@ from keras.layers.normalization import BatchNormalization
 from support_modules.callbacks import time_callback as tc
 from support_modules.callbacks import clean_models_callback as cm
 
-def training_model(vec, ac_weights, rl_weights, output_folder, args):
+def _training_model(vec, ac_weights, rl_weights, output_folder, args):
     """Example function with types documented in the docstring.
     Args:
         param1 (int): The first parameter.
@@ -37,7 +37,7 @@ def training_model(vec, ac_weights, rl_weights, output_folder, args):
     t_input = Input(shape=(vec['prefixes']['times'].shape[1], 1), name='t_input')
 
 # =============================================================================
-#    Embedding layer for categorical attributes        
+#    Embedding layer for categorical attributes
 # =============================================================================
     ac_embedding = Embedding(ac_weights.shape[0],
                             ac_weights.shape[1],
@@ -53,7 +53,7 @@ def training_model(vec, ac_weights, rl_weights, output_folder, args):
 # =============================================================================
 #    Layer 1
 # =============================================================================
-    
+
     merged = Concatenate(name = 'concatenated', axis = 2)([ac_embedding, rl_embedding])
 
 
@@ -62,46 +62,44 @@ def training_model(vec, ac_weights, rl_weights, output_folder, args):
                   return_sequences=True,
                   dropout=0.2,
                   implementation=args['imp'])(merged)
-    
+
     l1_c3 = LSTM(args['l_size'],
                  activation=args['lstm_act'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=True,
                  dropout=0.2,
                  implementation=args['imp'])(t_input)
-    
+
 # =============================================================================
 #    Batch Normalization Layer
 # =============================================================================
     batch1 = BatchNormalization()(l1_c1)
     batch3 = BatchNormalization()(l1_c3)
-    
+
 # =============================================================================
 # The layer specialized in prediction
 # =============================================================================
     l2_c1 = LSTM(args['l_size'],
-                    kernel_initializer='glorot_uniform',
-                    return_sequences=False,
-                    dropout=0.2,
-                    implementation=args['imp'])(batch1)
- 
+                 kernel_initializer='glorot_uniform',
+                 return_sequences=False,
+                 dropout=0.2,
+                 implementation=args['imp'])(batch1)
+
 #   The layer specialized in role prediction
     l2_c2 = LSTM(args['l_size'],
-                    kernel_initializer='glorot_uniform',
-                    return_sequences=False,
-                    dropout=0.2,
-                    implementation=args['imp'])(batch1)
-    
+                 kernel_initializer='glorot_uniform',
+                 return_sequences=False,
+                 dropout=0.2,
+                 implementation=args['imp'])(batch1)
+
 #   The layer specialized in role prediction
     l2_3 = LSTM(args['l_size'],
-                    activation=args['lstm_act'],
-                    kernel_initializer='glorot_uniform',
-                    return_sequences=False,
-                    dropout=0.2,
-                    implementation=args['imp'])(batch3)
-    
+                activation=args['lstm_act'],
+                kernel_initializer='glorot_uniform',
+                return_sequences=False,
+                dropout=0.2,
+                implementation=args['imp'])(batch3)
 
-    
 # =============================================================================
 # Output Layer
 # =============================================================================
@@ -111,9 +109,9 @@ def training_model(vec, ac_weights, rl_weights, output_folder, args):
                        name='act_output')(l2_c1)
 
     role_output = Dense(rl_weights.shape[0],
-                       activation='softmax',
-                       kernel_initializer='glorot_uniform',
-                       name='role_output')(l2_c2)
+                        activation='softmax',
+                        kernel_initializer='glorot_uniform',
+                        name='role_output')(l2_c2)
 
     if ('dense_act' in args) and (args['dense_act'] is not None):
         time_output = Dense(1, activation=args['dense_act'],
@@ -136,12 +134,12 @@ def training_model(vec, ac_weights, rl_weights, output_folder, args):
         opt = Adagrad(learning_rate=0.01)
 
     model.compile(loss={'act_output':'categorical_crossentropy', 'role_output':'categorical_crossentropy', 'time_output':'mae'}, optimizer=opt)
-    
+
     model.summary()
-    
+
     early_stopping = EarlyStopping(monitor='val_loss', patience=50)
     cb = tc.TimingCallback(output_folder)
-    clean_models = cm.CleanSavedModelsCallback(output_folder, 2) 
+    clean_models = cm.CleanSavedModelsCallback(output_folder, 2)
 
     # Output file
     output_file_path = os.path.join(output_folder,

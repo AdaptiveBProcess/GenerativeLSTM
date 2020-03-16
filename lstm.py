@@ -4,11 +4,13 @@
 """
 import sys
 import getopt
-import embedding_training as em
-import predict_log as pr
-import predict_suffix_full as px
-import predict_next as nx
+
+from prediction import predict_log as pr
+from prediction import predict_suffix_full as px
+from prediction import predict_next as nx
+
 from training import model_training as tr
+from training import embedding_training as em
 
 
 from support_modules.intercase_features import feature_engineering as fe
@@ -40,19 +42,19 @@ def main(argv):
     # Parameters setting manual fixed or catched by console
     if not argv:
         # Event-log reading parameters
-        parameters['one_timestamp'] = False  # Only one timestamp in the log
+        parameters['one_timestamp'] = True  # Only one timestamp in the log
         parameters['read_options'] = {
             'timeformat': '%Y-%m-%dT%H:%M:%S.%f',
             'column_names': column_names,
             'one_timestamp': parameters['one_timestamp'],
-            'reorder': False}
+            'ns_include': True}
         # Type of LSTM task -> emb_training, training, pred_log
         # pred_sfx, predict_next, f_dist
         parameters['activity'] = 'training'
         # General training parameters
         if parameters['activity'] in ['emb_training', 'training', 'f_dist']:
             # Event-log parameters
-            parameters['file_name'] = 'Production_inter.csv'
+            parameters['file_name'] = 'BPI_Challenge_2013_closed_problems.xes'
             # Specific model training parameters
             if parameters['activity'] == 'training':
                 parameters['imp'] = 1  # keras lstm implementation 1 cpu,2 gpu
@@ -62,8 +64,8 @@ def main(argv):
                 parameters['norm_method'] = 'lognorm'  # max, lognorm
                 # Model types --> shared_cat, shared_cat_inter,
                 # seq2seq, seq2seq_inter
-                parameters['model_type'] = 'shared_cat_inter'
-                parameters['n_size'] = 15  # n-gram size
+                parameters['model_type'] = 'shared_cat'
+                parameters['n_size'] = 5  # n-gram size
                 parameters['l_size'] = 100  # LSTM layer sizes
                 # Generation parameters
         if parameters['activity'] in ['pred_log', 'pred_sfx',

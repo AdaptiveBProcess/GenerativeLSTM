@@ -28,7 +28,7 @@ def training_model(parameters):
     parameters['read_options']['filter_d_attrib'] = True
     log = lr.LogReader(os.path.join('input_files', parameters['file_name']), parameters['read_options'])
     # Pre-processing tasks
-    res_analyzer = rl.ResourcePoolAnalyser(log, sim_threshold=parameters['rp_similarity'])
+    res_analyzer = rl.ResourcePoolAnalyser(log, sim_threshold=parameters['rp_sim'])
 #    for x in [0.8, 0.85, 0.9]:
 #        resource_pool, resource_table = rl.read_resource_pool(log, sim_percentage=x)
 #        print(pd.DataFrame.from_records(resource_pool))

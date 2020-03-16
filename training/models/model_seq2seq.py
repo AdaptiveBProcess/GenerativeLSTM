@@ -15,7 +15,7 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from support_modules.callbacks import time_callback as tc
 from support_modules.callbacks import clean_models_callback as cm
 
-def training_model(vec, ac_weights, rl_weights, output_folder, args):
+def _training_model(vec, ac_weights, rl_weights, output_folder, args):
     """Example function with types documented in the docstring.
     Args:
         param1 (int): The first parameter.

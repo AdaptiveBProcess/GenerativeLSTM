@@ -17,11 +17,7 @@ from support_modules import support as sup
 
 from training import examples_creator as exc
 from training import features_manager as feat
-
-from training.models import model_shared_cat as mshcat
-from training.models import model_shared_cat_intercase as mshcati
-from training.models import model_seq2seq as seq
-from training.models import model_seq2seq_intercase as seqi
+from training import model_loader as mload
 
 
 class ModelTrainer():
@@ -47,9 +43,15 @@ class ModelTrainer():
         # Embedded dimensions
         self.ac_weights = list()
         self.rl_weights = list()
-
+        # Preprocess the event-log
         self.preprocess(params)
-        self.train(params)
+        # Train model
+        m_loader = mload.ModelLoader(params)
+        m_loader.train(params['model_type'],
+                       self.examples,
+                       self.ac_weights,
+                       self.rl_weights,
+                       self.output_folder)
 
     def preprocess(self, params):
         # Features treatement
@@ -71,35 +73,6 @@ class ModelTrainer():
             self.index_rl, 'rl_' + params['file_name'].split('.')[0]+'.emb')
         # Export parameters
         self.export_parms(params)
-
-    def train(self, parms):
-        if parms['model_type'] == 'shared_cat':
-            mshcat.training_model(self.examples,
-                                  self.ac_weights,
-                                  self.rl_weights,
-                                  self.output_folder,
-                                  parms)
-        elif parms['model_type'] == 'shared_cat_inter':
-            mshcati.training_model(self.examples,
-                                   self.ac_weights,
-                                   self.rl_weights,
-                                   self.output_folder,
-                                   parms)
-        elif parms['model_type'] == 'seq2seq':
-            seq.training_model(self.examples,
-                               self.ac_weights,
-                               self.rl_weights,
-                               self.output_folder,
-                               parms)
-        elif parms['model_type'] == 'seq2seq_inter':
-            seqi.training_model(self.examples,
-                                self.ac_weights,
-                                self.rl_weights,
-                                self.output_folder,
-                                parms)
-        # elif parms['model_type'] == 'shared_cat_inter_full':
-        #     log_df = nsup.feat_sel_eval_correlation(log_df, 0.8, keep_cols=keep_cols)
-        #     fi.calculate_importances(log_df, keep_cols)
 
     @staticmethod
     def load_log(params):
@@ -164,9 +137,6 @@ class ModelTrainer():
                           .sort_values(key, ascending=True)
                           .reset_index(drop=True))
 
-# =============================================================================
-# Load embedded matrix
-# =============================================================================
     @staticmethod
     def load_embedded(index, filename):
         """Loading of the embedded matrices.
@@ -186,9 +156,6 @@ class ModelTrainer():
                     weights.append([float(x) for x in row[2:]])
             csvfile.close()
         return np.array(weights)
-# =============================================================================
-# Support
-# =============================================================================
 
     def export_parms(self, parms):
         if not os.path.exists(self.output_folder):
@@ -217,6 +184,7 @@ class ModelTrainer():
                                                 'parameters',
                                                 'test_log.csv'))
 
+
 class LogLoader():
 
     def __init__(self, path, read_options):
@@ -231,7 +199,7 @@ class LogLoader():
     def _get_loader(self, model_type):
         if model_type in ['seq2seq_inter_full', 'shared_cat_inter_full']:
             return self._load_to_inter_full
-        elif model_type in ['seq2seq_inter', 'shared_cat_inter']:
+        elif model_type in ['seq2seq_inter', 'shared_cat_inter', 'shared_cat']:
             return self._load_to_inter
         else:
             raise ValueError(model_type)
