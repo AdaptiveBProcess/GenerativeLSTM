@@ -122,7 +122,8 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
                             kernel_initializer='glorot_uniform',
                             name='time_output')(l2_3)
 
-    model = Model(inputs=[ac_input, rl_input, t_input], outputs=[act_output, role_output, time_output])
+    model = Model(inputs=[ac_input, rl_input, t_input],
+                  outputs=[act_output, role_output, time_output])
 
     if args['optim'] == 'Nadam':
         opt = Nadam(learning_rate=0.002, beta_1=0.9, beta_2=0.999)
@@ -133,7 +134,9 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
     elif args['optim'] == 'Adagrad':
         opt = Adagrad(learning_rate=0.01)
 
-    model.compile(loss={'act_output':'categorical_crossentropy', 'role_output':'categorical_crossentropy', 'time_output':'mae'}, optimizer=opt)
+    model.compile(loss={'act_output': 'categorical_crossentropy',
+                        'role_output': 'categorical_crossentropy',
+                        'time_output': 'mae'}, optimizer=opt)
 
     model.summary()
 

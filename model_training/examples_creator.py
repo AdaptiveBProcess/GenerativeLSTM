@@ -50,10 +50,14 @@ class SequencesCreator():
         Returns:
             dict: Dictionary that contains all the LSTM inputs.
         """
-        equi = {'ac_index':'activities', 'rl_index':'roles', 'dur_norm':'times'}
+        equi = {'ac_index': 'activities',
+                'rl_index': 'roles',
+                'dur_norm': 'times'}
         self.log = nsup.scale_feature(self.log, 'dur', parms['norm_method'])
         columns = list(equi.keys())
-        vec = {'prefixes':dict(), 'next_evt':dict(), 'max_dur':np.max(self.log.dur)}
+        vec = {'prefixes': dict(),
+               'next_evt': dict(),
+               'max_dur': np.max(self.log.dur)}
         self.log = self.reformat_events(columns, parms['one_timestamp'])
         # n-gram definition
         for i, _ in enumerate(self.log):

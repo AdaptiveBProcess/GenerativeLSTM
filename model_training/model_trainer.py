@@ -15,14 +15,14 @@ from support_modules import nn_support as nsup
 from support_modules import support as sup
 
 
-from training import examples_creator as exc
-from training import features_manager as feat
-from training import model_loader as mload
+from model_training import examples_creator as exc
+from model_training import features_manager as feat
+from model_training import model_loader as mload
 
 
 class ModelTrainer():
     """
-
+    This is the man class encharged of the model training
     """
 
     def __init__(self, params):
@@ -211,6 +211,7 @@ class LogLoader():
         self.read_options['filter_d_attrib'] = False
         log = lr.LogReader(self.path, self.read_options)
         log_df = pd.DataFrame(log.data)
+        log_df = log_df[~log_df.task.isin(['Start', 'End'])]
         # Scale loaded inter-case features
         colnames = list(log_df.columns.difference(keep_cols))
         for col in colnames:
@@ -221,4 +222,5 @@ class LogLoader():
         self.read_options['filter_d_attrib'] = True
         log = lr.LogReader(self.path, self.read_options)
         log_df = pd.DataFrame(log.data)
+        log_df = log_df[~log_df.task.isin(['Start', 'End'])]
         return log_df

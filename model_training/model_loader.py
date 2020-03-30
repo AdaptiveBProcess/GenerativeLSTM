@@ -4,10 +4,10 @@ Created on Mon Mar 16 09:53:54 2020
 
 @author: Manuel Camargo
 """
-from training.models import model_shared_cat as mshcat
-from training.models import model_shared_cat_intercase as mshcati
-from training.models import model_seq2seq as seq
-from training.models import model_seq2seq_intercase as seqi
+from model_training.models import model_shared_cat as mshcat
+from model_training.models import model_shared_cat_intercase as mshcati
+from model_training.models import model_seq2seq as seq
+from model_training.models import model_seq2seq_intercase as seqi
 
 
 class ModelLoader():
