@@ -17,22 +17,24 @@ from keras.layers import Input, Embedding, Dot, Reshape
 from support_modules.readers import log_reader as lr
 from support_modules import role_discovery as rl
 from support_modules import support as sup
-from support_modules import nn_support as nsup
 
-def training_model(parameters, timeformat, no_loops=False):
+def training_model(parameters):
     """Main method of the embedding training module.
     Args:
         parameters (dict): parameters for training the embeddeding network.
         timeformat (str): event-log date-time format.
         no_loops (boolean): remove loops fom the event-log (optional).
     """
-    log = lr.LogReader(os.path.join('input_files', parameters['file_name']),
-                       timeformat, timeformat, one_timestamp=True)
-
+    parameters['read_options']['filter_d_attrib'] = True
+    log = lr.LogReader(os.path.join('input_files', parameters['file_name']), parameters['read_options'])
     # Pre-processing tasks
-    _, resource_table = rl.read_resource_pool(log, sim_percentage=0.50)
+    res_analyzer = rl.ResourcePoolAnalyser(log, sim_threshold=parameters['rp_sim'])
+#    for x in [0.8, 0.85, 0.9]:
+#        resource_pool, resource_table = rl.read_resource_pool(log, sim_percentage=x)
+#        print(pd.DataFrame.from_records(resource_pool))
+
     # Role discovery
-    log_df_resources = pd.DataFrame.from_records(resource_table)
+    log_df_resources = pd.DataFrame.from_records(res_analyzer.resource_table)
     log_df_resources = log_df_resources.rename(index=str, columns={"resource": "user"})
     # Dataframe creation
     log_df = pd.DataFrame.from_records(log.data)
@@ -41,8 +43,6 @@ def training_model(parameters, timeformat, no_loops=False):
     log_df = log_df[log_df.task != 'End']
     log_df = log_df.reset_index(drop=True)
 
-    if no_loops:
-        log_df = nsup.reduce_loops(log_df)
     # Index creation
     ac_index = create_index(log_df, 'task')
     ac_index['start'] = 0

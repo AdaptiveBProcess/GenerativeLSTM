@@ -116,3 +116,12 @@ def copy(source, destiny):
         os.system('copy "' + source + '" "' + destiny + '"')
     else:
         os.system('cp "' + source + '" "' + destiny + '"')
+
+# #reduce list of lists with no repetitions
+# @staticmethod
+# def string_list_to_float(input):
+#     text = str(input).replace('[', '').replace(']', '')
+#     temp_list = list()
+#     for number in text.split(','):
+#         temp_list.append(float(number))
+    # return temp_list

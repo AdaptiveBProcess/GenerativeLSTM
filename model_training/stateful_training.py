@@ -16,11 +16,7 @@ import numpy as np
 
 from nltk.util import ngrams
 
-from models import model_specialized as msp
-from models import model_concatenated as mcat
-from models import model_shared as msh
-from models import model_shared_cat as mshcat
-from models import model_joint as mj
+from models import model_shared_stateful as stf
 
 from support_modules.readers import log_reader as lr
 from support_modules import role_discovery as rl
@@ -80,8 +76,8 @@ def training_model(timeformat, args, no_loops=False):
     parameters['exp_desc'] = args
     parameters['index_ac'] = index_ac
     parameters['index_rl'] = index_rl
-    parameters['dim'] = dict(samples=str(vec['prefixes']['x_ac_inp'].shape[0]),
-                             time_dim=str(vec['prefixes']['x_ac_inp'].shape[1]),
+    parameters['dim'] = dict(samples=str(np.sum([x.shape[0] for x in vec['prefixes']['x_ac_inp']])),
+                             time_dim=str(vec['prefixes']['x_ac_inp'][0].shape[1]),
                              features=str(len(ac_index)))
     parameters['max_tbtw'] = vec['max_tbtw']
 
@@ -92,17 +88,9 @@ def training_model(timeformat, args, no_loops=False):
                                os.path.join(output_folder,
                                             'parameters',
                                             'test_log.csv'))
+#    print([x.shape for x in vec['prefixes']['x_ac_inp']])
+    stf.training_model(vec, ac_weights, rl_weights, output_folder, args)
 
-    if args['model_type'] == 'joint':
-        mj.training_model(vec, ac_weights, rl_weights, output_folder, args)
-    elif args['model_type'] == 'shared':
-        msh.training_model(vec, ac_weights, rl_weights, output_folder, args)
-    elif args['model_type'] == 'specialized':
-        msp.training_model(vec, ac_weights, rl_weights, output_folder, args)
-    elif args['model_type'] == 'concatenated':
-        mcat.training_model(vec, ac_weights, rl_weights, output_folder, args)
-    elif args['model_type'] == 'shared_cat':
-        mshcat.training_model(vec, ac_weights, rl_weights, output_folder, args)
 
 # =============================================================================
 # Load embedded matrix
@@ -155,6 +143,13 @@ def vectorization(log_df, ac_index, rl_index, args):
 
     vec = {'prefixes':dict(), 'next_evt':dict(), 'max_tbtw':max_tbtw}
     # n-gram definition
+    vec['prefixes']['x_ac_inp'] = list()
+    vec['prefixes']['x_rl_inp'] = list() 
+    vec['prefixes']['xt_inp'] = list()
+    vec['next_evt']['y_ac_inp'] = list()
+    vec['next_evt']['y_rl_inp'] = list()
+    vec['next_evt']['yt_inp'] = list()
+    
     for i, _ in enumerate(log_df):
         ac_n_grams = list(ngrams(log_df[i]['ac_order'], args['n_size'],
                                  pad_left=True, left_pad_symbol=0))
@@ -162,37 +157,30 @@ def vectorization(log_df, ac_index, rl_index, args):
                                  pad_left=True, left_pad_symbol=0))
         tn_grams = list(ngrams(log_df[i]['tbtw'], args['n_size'],
                                pad_left=True, left_pad_symbol=0))
-        st_idx = 0
-        if i == 0:
-            vec['prefixes']['x_ac_inp'] = np.array([ac_n_grams[0]])
-            vec['prefixes']['x_rl_inp'] = np.array([rl_n_grams[0]])
-            vec['prefixes']['xt_inp'] = np.array([tn_grams[0]])
-            vec['next_evt']['y_ac_inp'] = np.array(ac_n_grams[1][-1])
-            vec['next_evt']['y_rl_inp'] = np.array(rl_n_grams[1][-1])
-            vec['next_evt']['yt_inp'] = np.array(tn_grams[1][-1])
-            st_idx = 1
-        for j in range(st_idx, len(ac_n_grams)-1):
-            vec['prefixes']['x_ac_inp'] = np.concatenate((vec['prefixes']['x_ac_inp'],
-                                                          np.array([ac_n_grams[j]])), axis=0)
-            vec['prefixes']['x_rl_inp'] = np.concatenate((vec['prefixes']['x_rl_inp'],
-                                                          np.array([rl_n_grams[j]])), axis=0)
-            vec['prefixes']['xt_inp'] = np.concatenate((vec['prefixes']['xt_inp'],
-                                                        np.array([tn_grams[j]])), axis=0)
-            vec['next_evt']['y_ac_inp'] = np.append(vec['next_evt']['y_ac_inp'],
-                                                    np.array(ac_n_grams[j+1][-1]))
-            vec['next_evt']['y_rl_inp'] = np.append(vec['next_evt']['y_rl_inp'],
-                                                    np.array(rl_n_grams[j+1][-1]))
-            vec['next_evt']['yt_inp'] = np.append(vec['next_evt']['yt_inp'],
-                                                  np.array(tn_grams[j+1][-1]))
-
-    vec['prefixes']['xt_inp'] = vec['prefixes']['xt_inp'].reshape(
-        (vec['prefixes']['xt_inp'].shape[0],
-         vec['prefixes']['xt_inp'].shape[1], 1))
-    vec['next_evt']['y_ac_inp'] = ku.to_categorical(vec['next_evt']['y_ac_inp'],
-                                                    num_classes=len(ac_index))
-    vec['next_evt']['y_rl_inp'] = ku.to_categorical(vec['next_evt']['y_rl_inp'],
-                                                    num_classes=len(rl_index))
+        x_ac_inp = np.array([ac_n_grams[0]])
+        x_rl_inp = np.array([rl_n_grams[0]])
+        xt_inp = np.array([tn_grams[0]])
+        y_ac_inp = np.array(ac_n_grams[1][-1])
+        y_rl_inp = np.array(rl_n_grams[1][-1])
+        yt_inp = np.array(tn_grams[1][-1])
+        for j in range(1, len(ac_n_grams)-1):
+            x_ac_inp = np.concatenate((x_ac_inp, np.array([ac_n_grams[j]])), axis=0)
+            x_rl_inp = np.concatenate((x_rl_inp, np.array([rl_n_grams[j]])), axis=0)
+            xt_inp = np.concatenate((xt_inp, np.array([tn_grams[j]])), axis=0)
+            y_ac_inp = np.append(y_ac_inp, np.array(ac_n_grams[j+1][-1]))
+            y_rl_inp = np.append(y_rl_inp, np.array(rl_n_grams[j+1][-1]))
+            yt_inp = np.append(yt_inp, np.array(tn_grams[j+1][-1]))
+        xt_inp = xt_inp.reshape((xt_inp.shape[0], xt_inp.shape[1], 1))
+        y_ac_inp = ku.to_categorical(y_ac_inp, num_classes=len(ac_index))
+        y_rl_inp = ku.to_categorical(y_rl_inp, num_classes=len(rl_index))
+        vec['prefixes']['x_ac_inp'].append(x_ac_inp)
+        vec['prefixes']['x_rl_inp'].append(x_rl_inp) 
+        vec['prefixes']['xt_inp'].append(xt_inp)
+        vec['next_evt']['y_ac_inp'].append(y_ac_inp)
+        vec['next_evt']['y_rl_inp'].append(y_rl_inp)
+        vec['next_evt']['yt_inp'].append(yt_inp)
     return vec
+
 
 def add_calculated_features(log_df, ac_index, rl_index):
     """Appends the indexes and relative time to the dataframe.
