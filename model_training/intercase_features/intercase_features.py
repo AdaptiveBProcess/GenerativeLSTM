@@ -16,16 +16,16 @@ from support_modules import role_discovery as rl
 from support_modules.readers import log_reader as lr
 
 
-def calculate_intercase_features(args, log, df_resources):
+def calculate_intercase_features(one_timestamp, log, df_resources):
     """Main method of intercase features calculations.
     Args:
         args (dict): parameters for training the network.
     """
     # Event indexing
     log['event_id'] = log.index
-    log = calculate_event_duration(log, args)
+    log = calculate_event_duration(log, one_timestamp)
     # splitt events in start and complete
-    splitted_events = splitt_events(log, args)
+    splitted_events = splitt_events(log, one_timestamp)
     # Matching events with slices
     ranges = match_slices(splitted_events)
     # Reshaping of ranges
@@ -46,10 +46,6 @@ def calculate_intercase_features(args, log, df_resources):
     expanded_log = calculate_work_item_features(expanded_log, df_resources)
     # Event level features calculation
     log = calculate_event_features(expanded_log, log)
-    log = nsup.scale_feature(log, 'ev_et', 'max', True)
-    log = nsup.scale_feature(log, 'ev_et_t', 'max', True)
-    log = nsup.scale_feature(log, 'ev_rp_occ', 'max', True)
-    log = nsup.scale_feature(log, 'ev_acc_t', 'activity', True)
     return log
     
 
@@ -143,9 +139,9 @@ def calculate_event_features(expanded_log, log):
     log['ev_rd_p'].fillna(0, inplace=True)
     return log
     
-def calculate_event_duration(log, args):
+def calculate_event_duration(log, one_timestamp):
     log = log.to_dict('records')
-    if args['one_timestamp']:
+    if one_timestamp:
         log = sorted(log, key=lambda x: x['caseid'])
         for key, group in itertools.groupby(log, key=lambda x: x['caseid']):
             events = list(group)
@@ -168,11 +164,11 @@ def calculate_event_duration(log, args):
     return pd.DataFrame.from_dict(sorted(log, key=lambda x: x['event_id']))
     
 
-def splitt_events(log, args):
+def splitt_events(log, one_timestamp):
     log = log.to_dict('records')
     splitted_events = list()
     # Define date-time ranges in event log   
-    if args['one_timestamp']:
+    if one_timestamp:
         log = sorted(log, key=lambda x: x['caseid'])
         for key, group in itertools.groupby(log, key=lambda x: x['caseid']):
             events = list(group)

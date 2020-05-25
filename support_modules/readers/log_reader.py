@@ -218,6 +218,7 @@ class LogReader(object):
                                                     format=self.timeformat)
             log['end_timestamp'] = pd.to_datetime(log['end_timestamp'],
                                                   format=self.timeformat)
+        log['user'].fillna('SYS', inplace=True)
         self.data = log.to_dict('records')
         self.append_csv_start_end()
         self.split_event_transitions()

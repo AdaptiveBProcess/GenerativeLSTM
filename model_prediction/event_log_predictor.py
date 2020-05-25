@@ -29,7 +29,7 @@ class EventLogPredictor():
         return predictor(params)
 
     def _get_predictor(self, model_type):
-        if model_type in ['shared_cat', 'shared_cat_inter']:
+        if model_type in ['shared_cat', 'shared_cat_rd', 'shared_cat_inter']:
             return self._predict_event_log_shared_cat
         else:
             raise ValueError(model_type)
@@ -52,7 +52,7 @@ class EventLogPredictor():
                 (1, parms['dim']['time_dim']), dtype=np.float32)
             x_t_ngram = np.zeros(
                 (1, parms['dim']['time_dim'], 1), dtype=np.float32)
-
+            # TODO: add intercase support
             for _ in range(1, self.max_trace_size):
                 predictions = self.model.predict([x_ac_ngram, x_rl_ngram, x_t_ngram])
                 if self.imp == 'Random Choice':
@@ -97,12 +97,7 @@ class EventLogPredictor():
         for i, _ in enumerate(trace):
             event = trace[i]
             if parms['index_ac'][event[0]] != 'end':
-                if parms['norm_method'] == 'activity':
-                    tbtw = (event[2] * parms['max_dur'][event[0]])
-                elif parms['norm_method'] == 'lognorm':
-                    tbtw = math.expm1(event[2] * parms['max_dur'])
-                else:
-                    tbtw = np.rint(event[2] * parms['max_dur'])
+                tbtw = EventLogPredictor.rescale(event[2], parms)
                 if i == 0:
                     now = datetime.datetime.now()
                     now.strftime(parms['read_options']['timeformat'])
@@ -117,3 +112,27 @@ class EventLogPredictor():
                                       tbtw_raw=event[2],
                                       tbtw=tbtw))
         return log_trace
+
+    @staticmethod
+    def rescale(value, parms):
+        if parms['norm_method'] == 'lognorm':
+            max_value = parms['scale_args']['max_value']
+            min_value = parms['scale_args']['min_value']
+            value = (value * (max_value - min_value)) + min_value
+            value = np.expm1(value)
+        elif parms['norm_method'] == 'normal':
+            max_value = parms['scale_args']['max_value']
+            min_value = parms['scale_args']['min_value']
+            value = (value * (max_value - min_value)) + min_value
+        elif parms['norm_method'] == 'standard':
+            mean = parms['scale_args']['mean']
+            std = parms['scale_args']['std']
+            value = (value * std) + mean
+        elif parms['norm_method'] == 'max':
+            max_value = parms['scale_args']['max_value']
+            value = np.rint(value * max_value)
+        elif parms['norm_method'] is None:
+            value = value
+        else:
+            raise ValueError(parms['norm_method'])
+        return value

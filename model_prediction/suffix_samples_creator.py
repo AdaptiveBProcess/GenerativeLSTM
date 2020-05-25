@@ -33,10 +33,24 @@ class SuffixSamplesCreator():
             return self._suffix_shared_cat
         elif model_type == 'shared_cat_inter':
             return self._suffix_shared_cat_inter
+        elif model_type == 'shared_cat_inter_full':
+            return self._suffix_shared_cat_inter_full
+        elif model_type == 'shared_cat_rd':
+            return self._suffix_shared_cat_rd
+        elif model_type == 'shared_cat_wl':
+            return self._suffix_shared_cat_wl
+        elif model_type == 'shared_cat_cx':
+            return self._suffix_shared_cat_cx
         elif model_type == 'seq2seq':
             return self._suffix_seq2seq
         elif model_type == 'seq2seq_inter':
             return self._suffix_seq2seq_inter
+        elif model_type == 'cnn_lstm':
+            return self._suffix_shared_cat
+        elif model_type == 'cnn_lstm_inter':
+            return self._suffix_shared_cat_inter
+        elif model_type == 'cnn_lstm_inter_full':
+            return self._suffix_shared_cat_inter_full
         else:
             raise ValueError(model_type)
 
@@ -75,16 +89,59 @@ class SuffixSamplesCreator():
     def _suffix_shared_cat_inter(self, parms):
         """Extraction of prefixes and expected suffixes from event log.
         Args:
-            self.log (dataframe): testing dataframe in pandas format.
-            ac_index (dict): index of activities.
-            rl_index (dict): index of roles.
-            pref_size (int): size of the prefixes to extract.
+            parameters: dict of parametsrs settings
         Returns:
             list: list of prefixes and expected sufixes.
         """
-        columns = ['caseid', 'task', 'user', 'start_timestamp', 'end_timestamp',
-                   'dur_log', 'role', 'event_id', 'ev_duration', 'dur', 'ev_rd']
-        columns = [x for x in list(self.log.columns) if x not in columns]
+        columns = ['ev_rd_norm', 'ev_rp_occ_norm','ev_et_norm', 'ev_et_t_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_samples_creation(columns, parms)
+
+    def _suffix_shared_cat_inter_full(self, parms):
+        """Example function with types documented in the docstring.
+        Returns:
+            dict: Dictionary that contains all the LSTM inputs.
+        """
+        # columns to keep
+        columns = ['acc_cycle_norm', 'daytime_norm', 'ev_rd_norm',
+                   'ev_rp_occ_norm', 'ev_et_norm', 'ev_et_t_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_samples_creation(columns, parms)
+
+    def _suffix_shared_cat_rd(self, parms):
+        """Extraction of prefixes and expected suffixes from event log.
+        Args:
+            parameters: dict of parametsrs settings
+        Returns:
+            list: list of prefixes and expected sufixes.
+        """
+        columns = ['ev_rd_norm', 'ev_rp_occ_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_samples_creation(columns, parms)
+
+    def _suffix_shared_cat_wl(self, parms):
+        """Extraction of prefixes and expected suffixes from event log.
+        Args:
+            parameters: dict of parametsrs settings
+        Returns:
+            list: list of prefixes and expected sufixes.
+        """
+        columns = ['ev_et_norm', 'ev_et_t_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_samples_creation(columns, parms)
+
+    def _suffix_shared_cat_cx(self, parms):
+        """Extraction of prefixes and expected suffixes from event log.
+        Args:
+            parameters: dict of parametsrs settings
+        Returns:
+            list: list of prefixes and expected sufixes.
+        """
+        columns = ['acc_cycle_norm', 'daytime_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_samples_creation(columns, parms)
+
+    def process_samples_creation(self, columns, parms):
         self.log = self.reformat_events(columns, parms['one_timestamp'])
         spl = {'prefixes': dict(), 'suffixes': dict()}
         # n-gram definition

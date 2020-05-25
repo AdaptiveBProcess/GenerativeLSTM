@@ -7,7 +7,6 @@ import getopt
 
 from model_prediction import model_predictor as pr
 from model_training import model_trainer as tr
-from model_training import embedding_training as em
 
 
 def catch_parameter(opt):
@@ -34,9 +33,6 @@ def main(argv):
                     'Resource': 'user'}
     # Similarity btw the resources profile execution (Song e.t. all)
     parameters['rp_sim'] = 0.85
-    # variants and repetitions to be tested
-    parameters['variants'] = [{'imp': 'Random Choice', 'rep': 1},
-                              {'imp': 'Arg Max', 'rep': 1}]
     # Parameters setting manual fixed or catched by console
     if not argv:
         # Event-log reading parameters
@@ -46,32 +42,34 @@ def main(argv):
             'column_names': column_names,
             'one_timestamp': parameters['one_timestamp'],
             'ns_include': True}
-        # Type of LSTM task -> emb_training, training, pred_log
-        # pred_sfx, predict_next, f_dist
-        parameters['activity'] = 'pred_sfx'
+        # Type of LSTM task -> training, pred_log
+        # pred_sfx, predict_next
+        parameters['activity'] = 'training'
         # General training parameters
-        if parameters['activity'] in ['emb_training', 'training', 'f_dist']:
+        if parameters['activity'] in ['emb_training', 'training']:
             # Event-log parameters
-            parameters['file_name'] = 'BPI_Challenge_2013_closed_problems.xes'
+            parameters['file_name'] = 'inter_BPI_Challenge_2017.csv'
             # Specific model training parameters
             if parameters['activity'] == 'training':
                 parameters['imp'] = 1  # keras lstm implementation 1 cpu,2 gpu
                 parameters['lstm_act'] = 'relu'  # optimization function Keras
                 parameters['dense_act'] = None  # optimization function Keras
                 parameters['optim'] = 'Adam'  # optimization function Keras
-                parameters['norm_method'] = 'lognorm'  # max, lognorm
-                # Model types --> shared_cat, shared_cat_inter,
-                # seq2seq, seq2seq_inter
-                parameters['model_type'] = 'shared_cat'
-                parameters['n_size'] = 5  # n-gram size
+                parameters['norm_method'] = 'max'  # max, lognorm
+                # Model types --> shared_cat, shared_cat_inter, shared_cat_rd
+                # seq2seq, seq2seq_inter, cnn_lstm_inter
+                parameters['model_type'] = 'cnn_lstm_inter_full'
+                parameters['n_size'] = 10  # n-gram size
                 parameters['l_size'] = 100  # LSTM layer sizes
                 # Generation parameters
         if parameters['activity'] in ['pred_log', 'pred_sfx', 'predict_next']:
-            parameters['folder'] = '20200327_185514220611'
-            parameters['model_file'] = 'model_shared_cat_99-1.00.h5'
-            parameters['is_single_exec'] = True  # single or batch execution
+            parameters['folder'] = '20200505_181929922800'
+            parameters['model_file'] = 'model_shared_cat_inter_72-0.64.h5'
+            parameters['is_single_exec'] = False  # single or batch execution
             parameters['max_trace_size'] = 100
-
+            # variants and repetitions to be tested
+            parameters['variants'] = [{'imp': 'Random Choice', 'rep': 0},
+                                      {'imp': 'Arg Max', 'rep': 1}]
     else:
         # Catch parameters by console
         try:
@@ -99,16 +97,16 @@ def main(argv):
                                           'one_timestamp':
                                               parameters['one_timestamp'],
                                               'ns_include': True}
+            if parameters['activity'] in ['pred_log', 'pred_sfx',
+                                          'predict_next']:
+                # variants and repetitions to be tested
+                parameters['variants'] = [{'imp': 'Random Choice', 'rep': 10},
+                                          {'imp': 'Arg Max', 'rep': 0}]
         except getopt.GetoptError:
             print('Invalid option')
             sys.exit(2)
 #   Execution
-    if parameters['activity'] == 'emb_training':
-        if parameters['file_name'] == '' or not parameters['file_name']:
-            raise Exception('The file name is missing...')
-        print(parameters)
-        em.training_model(parameters)
-    elif parameters['activity'] == 'training':
+    if parameters['activity'] == 'training':
         print(parameters)
         tr.ModelTrainer(parameters)
     elif parameters['activity'] in ['predict_next', 'pred_sfx', 'pred_log']:

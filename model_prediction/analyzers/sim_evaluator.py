@@ -13,6 +13,9 @@ from scipy.optimize import linear_sum_assignment
 
 from model_prediction.analyzers import alpha_oracle as ao
 from model_prediction.analyzers.alpha_oracle import Rel
+# import alpha_oracle as ao
+# from alpha_oracle import Rel
+
 
 import pandas as pd
 import numpy as np
@@ -27,6 +30,8 @@ class Evaluator():
     def _get_metric_evaluator(self, metric):
         if metric == 'accuracy':
             return self._accuracy_evaluation
+        if metric == 'mae_next':
+            return self._mae_next_evaluation
         elif metric == 'similarity':
             return self._similarity_evaluation
         elif metric == 'mae_suffix':
@@ -57,10 +62,22 @@ class Evaluator():
         data['accuracy'] = np.divide(data['sum'], data['count'])
         return data
 
-    def _similarity_evaluation(self, data, feature):
+    def _mae_next_evaluation(self, data, feature):
         data = data.copy()
         data = data[[(feature + '_expect'), (feature + '_pred'),
                      'run_num', 'implementation']]
+        ae = (lambda x: np.abs(x[feature + '_expect'] - x[feature + '_pred']))
+        data['ae'] = data.apply(ae, axis=1)
+        data = (data.groupby(['implementation', 'run_num'])['ae']
+                .agg(['mean'])
+                .reset_index()
+                .rename(columns={'mean': 'mae'}))
+        return data
+
+    def _similarity_evaluation(self, data, feature):
+        data = data.copy()
+        data = data[[(feature + '_expect'), (feature + '_pred'),
+                     'run_num', 'implementation', 'pref_size']]
         # append all values and create alias
         values = (data[feature + '_pred'].tolist() +
                   data[feature + '_expect'].tolist())
@@ -82,23 +99,43 @@ class Evaluator():
                                                         x.suff_pred), axis=1))
 
         # agregate similarities
-        data = (data.groupby(['implementation', 'run_num'])['similarity']
+        data = (data.groupby(['implementation', 'run_num', 'pref_size'])['similarity']
                 .agg(['mean'])
                 .reset_index()
                 .rename(columns={'mean': 'similarity'}))
+        data = (pd.pivot_table(data,
+                               values='similarity',
+                               index=['run_num', 'implementation'],
+                               columns=['pref_size'],
+                               aggfunc=np.mean,
+                               fill_value=0,
+                               margins=True,
+                               margins_name='mean')
+                .reset_index())
+        data = data[data.run_num != 'mean']
         return data
 
     def _mae_remaining_evaluation(self, data, feature):
         data = data.copy()
         data = data[[(feature + '_expect'), (feature + '_pred'),
-                     'run_num', 'implementation']]
+                     'run_num', 'implementation', 'pref_size']]
         ae = (lambda x: np.abs(np.sum(x[feature + '_expect']) -
                                np.sum(x[feature + '_pred'])))
         data['ae'] = data.apply(ae, axis=1)
-        data = (data.groupby(['implementation', 'run_num'])['ae']
+        data = (data.groupby(['implementation', 'run_num', 'pref_size'])['ae']
                 .agg(['mean'])
                 .reset_index()
                 .rename(columns={'mean': 'mae'}))
+        data = (pd.pivot_table(data,
+                               values='mae',
+                               index=['run_num', 'implementation'],
+                               columns=['pref_size'],
+                               aggfunc=np.mean,
+                               fill_value=0,
+                               margins=True,
+                               margins_name='mean')
+                .reset_index())
+        data = data[data.run_num != 'mean']
         return data
 
 # =============================================================================
@@ -547,11 +584,3 @@ class Evaluator():
                           **temp_dict}
             temp_data.append(temp_dict)
         return sorted(temp_data, key=itemgetter('start_time'))
-
-
-# results = pd.read_csv('C:/Users/Manuel Camargo/Documents/Repositorio/experiments/sc_lstm_dev/test_data.csv')
-# results['end_timestamp'] =  pd.to_datetime(results['end_timestamp'], format='%Y-%m-%dT%H:%M:%S.%f')
-
-# evaluator = Evaluator()
-# print(evaluator.measure('mae_log', results))
-
