@@ -28,7 +28,12 @@ class SuffixPredictor():
         return predictor(params)
 
     def _get_predictor(self, model_type):
-        if model_type in ['shared_cat', 'shared_cat_inter']:
+        if model_type in ['shared_cat', 'shared_cat_rd',
+                          'shared_cat_wl', 'shared_cat_inter',
+                          'shared_cat_inter_full',
+                          'cnn_lstm_inter', 'cnn_lstm_inter_full',
+                          'cnn_lstm', 'shared_cat_cx',
+                          'shared_cat_city', 'shared_cat_snap']:
             return self._predict_suffix_shared_cat
         elif model_type in ['seq2seq', 'seq2seq_inter']:
             return self._predict_suffix_seq2seq
@@ -63,9 +68,17 @@ class SuffixPredictor():
                     np.zeros(parms['dim']['time_dim']),
                     np.array(self.spl['prefixes']['times'][i]),
                     axis=0)[-parms['dim']['time_dim']:].reshape((parms['dim']['time_dim'], 1))])
-            if parms['model_type'] == 'shared_cat':
+            if parms['model_type'] in ['shared_cat', 'cnn_lstm']:
                 inputs = [x_ac_ngram, x_rl_ngram, x_t_ngram]
-            elif parms['model_type'] == 'shared_cat_inter':
+            elif parms['model_type'] in ['shared_cat_inter',
+                                         'shared_cat_inter_full',
+                                         'shared_cat_rd',
+                                         'shared_cat_wl',
+                                         'shared_cat_cx',
+                                         'cnn_lstm_inter',
+                                         'cnn_lstm_inter_full',
+                                         'shared_cat_city',
+                                         'shared_cat_snap']:
                 inter_attr_num = self.spl['prefixes']['inter_attr'][i].shape[1]
                 x_inter_ngram = np.array([np.append(
                         np.zeros((parms['dim']['time_dim'], inter_attr_num)),
@@ -95,9 +108,17 @@ class SuffixPredictor():
                 x_rl_ngram = np.delete(x_rl_ngram, 0, 1)
                 x_t_ngram = np.append(x_t_ngram, [predictions[2]], axis=1)
                 x_t_ngram = np.delete(x_t_ngram, 0, 1)
-                if parms['model_type'] == 'shared_cat':
+                if parms['model_type'] in ['shared_cat', 'cnn_lstm']:
                     inputs = [x_ac_ngram, x_rl_ngram, x_t_ngram]
-                elif parms['model_type'] == 'shared_cat_inter':
+                elif parms['model_type'] in ['shared_cat_inter',
+                                             'shared_cat_inter_full',
+                                             'shared_cat_rd',
+                                             'shared_cat_wl',
+                                             'shared_cat_cx',
+                                             'cnn_lstm_inter',
+                                             'cnn_lstm_inter_full',
+                                             'shared_cat_city',
+                                             'shared_cat_snap']:
                     x_inter_ngram = np.append(x_inter_ngram, [predictions[3]], axis=1)
                     x_inter_ngram = np.delete(x_inter_ngram, 0, 1)
                     inputs = [x_ac_ngram, x_rl_ngram, x_t_ngram, x_inter_ngram]
@@ -105,19 +126,7 @@ class SuffixPredictor():
                 # otherwise until the defined max_size
                 ac_suf.append(pos)
                 rl_suf.append(pos1)
-                time_pred = predictions[2][0][0]
-                if parms['norm_method'] == 'lognorm':
-                    acum_dur.append(np.expm1(time_pred * parms['max_dur']))
-                else:
-                    acum_dur.append(np.rint(time_pred * parms['max_dur']))
-    
-                time_expected = 0
-                if parms['norm_method'] == 'lognorm':
-                    time_expected = np.expm1(np.multiply(
-                            self.spl['suffixes']['times'][i], parms['max_dur']))
-                else:
-                    time_expected = np.rint(np.multiply(
-                            self.spl['suffixes']['times'][i], parms['max_dur']))
+                acum_dur.append(self.rescale(predictions[2][0][0], parms))
                 if parms['index_ac'][pos] == 'end':
                     break
             results.append({
@@ -127,9 +136,9 @@ class SuffixPredictor():
                 'rl_pref': self.spl['prefixes']['roles'][i],
                 'rl_pred': rl_suf,
                 'rl_expect': self.spl['suffixes']['roles'][i],
-                'tm_pref': self.spl['prefixes']['times'][i],
+                'tm_pref': [self.rescale(x, parms) for x in self.spl['prefixes']['times'][i]],
                 'tm_pred': acum_dur,
-                'tm_expect': time_expected,
+                'tm_expect': [self.rescale(x, parms) for x in self.spl['suffixes']['times'][i]],
                 'pref_size': pref_size})
         sup.print_done_task()
         return results
@@ -234,3 +243,27 @@ class SuffixPredictor():
             else:
                 idx += 1
         return idx
+
+    @staticmethod
+    def rescale(value, parms):
+        if parms['norm_method'] == 'lognorm':
+            max_value = parms['scale_args']['max_value']
+            min_value = parms['scale_args']['min_value']
+            value = (value * (max_value - min_value)) + min_value
+            value = np.expm1(value)
+        elif parms['norm_method'] == 'normal':
+            max_value = parms['scale_args']['max_value']
+            min_value = parms['scale_args']['min_value']
+            value = (value * (max_value - min_value)) + min_value
+        elif parms['norm_method'] == 'standard':
+            mean = parms['scale_args']['mean']
+            std = parms['scale_args']['std']
+            value = (value * std) + mean
+        elif parms['norm_method'] == 'max':
+            max_value = parms['scale_args']['max_value']
+            value = np.rint(value * max_value)
+        elif parms['norm_method'] is None:
+            value = value
+        else:
+            raise ValueError(parms['norm_method'])
+        return value

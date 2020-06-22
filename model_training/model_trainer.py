@@ -6,18 +6,21 @@ Created on Thu Mar 12 15:07:19 2020
 """
 import os
 import csv
+import itertools
 
 import pandas as pd
 import numpy as np
+
+from operator import itemgetter
 
 from support_modules.readers import log_reader as lr
 from support_modules import nn_support as nsup
 from support_modules import support as sup
 
-
 from model_training import examples_creator as exc
 from model_training import features_manager as feat
 from model_training import model_loader as mload
+from model_training import embedding_training as em
 
 
 class ModelTrainer():
@@ -48,37 +51,52 @@ class ModelTrainer():
         # Train model
         m_loader = mload.ModelLoader(params)
         m_loader.train(params['model_type'],
-                       self.examples,
-                       self.ac_weights,
-                       self.rl_weights,
-                       self.output_folder)
+                        self.examples,
+                        self.ac_weights,
+                        self.rl_weights,
+                        self.output_folder)
 
     def preprocess(self, params):
         # Features treatement
         inp = feat.FeaturesMannager(params)
-        self.log = inp.calculate(params, self.log)
+        self.log, params['scale_args'] = inp.calculate(self.log)
         # indexes creation
         self.indexing()
         # split validation
-        self.split_train_test(0.3, params['one_timestamp'])
+        # self.split_train_test(0.3, params['one_timestamp'])
+        self.split_timeline(0.3, params['one_timestamp'])
         # create examples
         seq_creator = exc.SequencesCreator(self.log_train,
-                                           self.ac_index,
-                                           self.rl_index)
+                                            self.ac_index,
+                                            self.rl_index)
         self.examples = seq_creator.vectorize(params['model_type'], params)
         # Load embedded matrix
-        self.ac_weights = self.load_embedded(
-            self.index_ac, 'ac_' + params['file_name'].split('.')[0]+'.emb')
-        self.rl_weights = self.load_embedded(
-            self.index_rl, 'rl_' + params['file_name'].split('.')[0]+'.emb')
+        ac_emb_name = 'ac_' + params['file_name'].split('.')[0]+'.emb'
+        rl_emb_name = 'rl_' + params['file_name'].split('.')[0]+'.emb'
+        if os.path.exists(os.path.join('input_files',
+                                        'embedded_matix',
+                                        ac_emb_name)):
+            self.ac_weights = self.load_embedded(self.index_ac, ac_emb_name)
+            self.rl_weights = self.load_embedded(self.index_rl, rl_emb_name)
+        else:
+            em.training_model(params,
+                              self.log,
+                              self.ac_index, self.index_ac, 
+                              self.rl_index, self.index_rl)
+            self.ac_weights = self.load_embedded(self.index_ac, ac_emb_name)
+            self.rl_weights = self.load_embedded(self.index_rl, rl_emb_name)
         # Export parameters
         self.export_parms(params)
 
     @staticmethod
     def load_log(params):
-        loader = LogLoader(os.path.join('input_files', params['file_name']),
+        params['read_options']['filter_d_attrib'] = False
+        log = lr.LogReader(os.path.join('input_files', params['file_name']),
                            params['read_options'])
-        return loader.load(params['model_type'])
+        log_df = pd.DataFrame(log.data)
+        log_df.drop(columns=['Unnamed: 0', 'role'], inplace=True)
+        log_df = log_df[~log_df.task.isin(['Start', 'End'])]
+        return log_df
 
     def indexing(self):
         # Activities index creation
@@ -136,6 +154,57 @@ class ModelTrainer():
         self.log_train = (df_train
                           .sort_values(key, ascending=True)
                           .reset_index(drop=True))
+        
+    def split_timeline(self, percentage: float, one_timestamp: bool) -> None:
+        """
+        Split an event log dataframe to peform split-validation
+
+        Parameters
+        ----------
+        percentage : float, validation percentage.
+        one_timestamp : bool, Support only one timestamp.
+        """
+        log = self.log.to_dict('records')
+        log = sorted(log, key=lambda x: x['caseid'])
+        for key, group in itertools.groupby(log, key=lambda x: x['caseid']):
+            events = list(group)
+            events = sorted(events, key=itemgetter('end_timestamp'))
+            length = len(events)
+            for i in range(0, len(events)):
+                events[i]['pos_trace'] = i + 1
+                events[i]['trace_len'] = length
+        log = pd.DataFrame.from_dict(log)
+        log.sort_values(by='end_timestamp', ascending=False, inplace=True)
+
+        num_events = int(np.round(len(log)*percentage))
+
+        df_test = log.iloc[:num_events]
+        df_train = log.iloc[num_events:]
+
+        # Incomplete final traces
+        df_train = df_train.sort_values(by=['caseid','pos_trace'], ascending=True)
+        inc_traces = pd.DataFrame(df_train.groupby('caseid')
+                                  .last()
+                                  .reset_index())
+        inc_traces = inc_traces[inc_traces.pos_trace != inc_traces.trace_len]
+        inc_traces = inc_traces['caseid'].to_list()
+        
+        # Drop incomplete traces
+        df_test = df_test[~df_test.caseid.isin(inc_traces)]
+        df_test = df_test.drop(columns=['trace_len','pos_trace'])
+
+        df_train = df_train[~df_train.caseid.isin(inc_traces)]
+        df_train = df_train.drop(columns=['trace_len','pos_trace'])
+        
+        key = 'end_timestamp' if one_timestamp else 'start_timestamp'
+        self.log_test = (df_test
+                         .sort_values(key, ascending=True)
+                         .reset_index(drop=True))
+        self.log_train = (df_train
+                          .sort_values(key, ascending=True)
+                          .reset_index(drop=True))
+
+
 
     @staticmethod
     def load_embedded(index, filename):
@@ -164,17 +233,24 @@ class ModelTrainer():
 
         parms['index_ac'] = self.index_ac
         parms['index_rl'] = self.index_rl
-        if parms['model_type'] in ['shared_cat', 'shared_cat_inter']:
+        if parms['model_type'] in ['shared_cat', 'shared_cat_inter',
+                                   'shared_cat_rd', 'shared_cat_wl',
+                                   'shared_cat_cx', 'cnn_lstm',
+                                   'shared_cat_city', 'shared_cat_snap',
+                                   'shared_cat_inter_full',
+                                   'cnn_lstm_inter', 
+                                   'cnn_lstm_inter_full']:
+            shape = self.examples['prefixes']['activities'].shape
             parms['dim'] = dict(
-                samples=str(self.examples['prefixes']['activities'].shape[0]),
-                time_dim=str(self.examples['prefixes']['activities'].shape[1]),
+                samples=str(shape[0]),
+                time_dim=str(shape[1]),
                 features=str(len(self.ac_index)))
         else:
+            shape = self.examples['encoder_input_data']['activities'].shape
             parms['dim'] = dict(
-                samples=str(self.examples['encoder_input_data']['activities'].shape[0]),
-                time_dim=str(self.examples['encoder_input_data']['activities'].shape[1]),
+                samples=str(shape[0]),
+                time_dim=str(shape[1]),
                 features=str(len(self.ac_index)))
-        parms['max_dur'] = self.examples['max_dur']
 
         sup.create_json(parms, os.path.join(self.output_folder,
                                             'parameters',
@@ -183,44 +259,3 @@ class ModelTrainer():
                                    os.path.join(self.output_folder,
                                                 'parameters',
                                                 'test_log.csv'))
-
-
-class LogLoader():
-
-    def __init__(self, path, read_options):
-        """constructor"""
-        self.path = path
-        self.read_options = read_options
-
-    def load(self, model_type):
-        loader = self._get_loader(model_type)
-        return loader()
-
-    def _get_loader(self, model_type):
-        if model_type in ['seq2seq_inter_full', 'shared_cat_inter_full']:
-            return self._load_to_inter_full
-        elif model_type in ['seq2seq_inter', 'shared_cat_inter', 'shared_cat']:
-            return self._load_to_inter
-        else:
-            raise ValueError(model_type)
-
-    def _load_to_inter_full(self):
-        keep_cols = ['caseid', 'task', 'user', 'start_timestamp',
-                     'end_timestamp', 'ac_index', 'event_id', 'rl_index',
-                     'Unnamed: 0', 'dur', 'ev_duration', 'role', 'ev_rd']
-        self.read_options['filter_d_attrib'] = False
-        log = lr.LogReader(self.path, self.read_options)
-        log_df = pd.DataFrame(log.data)
-        log_df = log_df[~log_df.task.isin(['Start', 'End'])]
-        # Scale loaded inter-case features
-        colnames = list(log_df.columns.difference(keep_cols))
-        for col in colnames:
-            log_df = nsup.scale_feature(log_df, col, 'max', True)
-        return log_df
-
-    def _load_to_inter(self):
-        self.read_options['filter_d_attrib'] = True
-        log = lr.LogReader(self.path, self.read_options)
-        log_df = pd.DataFrame(log.data)
-        log_df = log_df[~log_df.task.isin(['Start', 'End'])]
-        return log_df

@@ -7,7 +7,7 @@ import getopt
 
 from model_prediction import model_predictor as pr
 from model_training import model_trainer as tr
-from model_training import embedding_training as em
+from intercase_feat import intercase_feat_extraction as itf
 
 
 def catch_parameter(opt):
@@ -17,7 +17,7 @@ def catch_parameter(opt):
               '-d': 'dense_act', '-p': 'optim', '-n': 'norm_method',
               '-m': 'model_type', '-z': 'n_size', '-y': 'l_size',
               '-c': 'folder', '-b': 'model_file', '-x': 'is_single_exec',
-              '-t': 'max_trace_size'}
+              '-t': 'max_trace_size', '-e': 'splits', '-g': 'sub_group'}
     try:
         return switch[opt]
     except:
@@ -34,9 +34,6 @@ def main(argv):
                     'Resource': 'user'}
     # Similarity btw the resources profile execution (Song e.t. all)
     parameters['rp_sim'] = 0.85
-    # variants and repetitions to be tested
-    parameters['variants'] = [{'imp': 'Random Choice', 'rep': 1},
-                              {'imp': 'Arg Max', 'rep': 1}]
     # Parameters setting manual fixed or catched by console
     if not argv:
         # Event-log reading parameters
@@ -46,51 +43,59 @@ def main(argv):
             'column_names': column_names,
             'one_timestamp': parameters['one_timestamp'],
             'ns_include': True}
-        # Type of LSTM task -> emb_training, training, pred_log
-        # pred_sfx, predict_next, f_dist
-        parameters['activity'] = 'pred_sfx'
+        # Type of LSTM task -> training, pred_log
+        # pred_sfx, predict_next, inter_case
+        parameters['activity'] = 'inter_case'
         # General training parameters
-        if parameters['activity'] in ['emb_training', 'training', 'f_dist']:
+        if parameters['activity'] in ['emb_training', 'training']:
             # Event-log parameters
-            parameters['file_name'] = 'BPI_Challenge_2013_closed_problems.xes'
+            parameters['file_name'] = 'inter_Helpdesk.csv'
             # Specific model training parameters
             if parameters['activity'] == 'training':
                 parameters['imp'] = 1  # keras lstm implementation 1 cpu,2 gpu
                 parameters['lstm_act'] = 'relu'  # optimization function Keras
                 parameters['dense_act'] = None  # optimization function Keras
                 parameters['optim'] = 'Adam'  # optimization function Keras
-                parameters['norm_method'] = 'lognorm'  # max, lognorm
-                # Model types --> shared_cat, shared_cat_inter,
-                # seq2seq, seq2seq_inter
-                parameters['model_type'] = 'shared_cat'
-                parameters['n_size'] = 5  # n-gram size
+                parameters['norm_method'] = 'max'  # max, lognorm
+                # Model types --> shared_cat, shared_cat_inter, shared_cat_rd
+                # seq2seq, seq2seq_inter, cnn_lstm_inter
+                parameters['model_type'] = 'cnn_lstm_inter_full'
+                parameters['n_size'] = 10  # n-gram size
                 parameters['l_size'] = 100  # LSTM layer sizes
                 # Generation parameters
-        if parameters['activity'] in ['pred_log', 'pred_sfx', 'predict_next']:
-            parameters['folder'] = '20200327_185514220611'
-            parameters['model_file'] = 'model_shared_cat_99-1.00.h5'
-            parameters['is_single_exec'] = True  # single or batch execution
+        elif parameters['activity'] in ['pred_log', 'pred_sfx', 'predict_next']:
+            parameters['folder'] = '20200505_181929922800'
+            parameters['model_file'] = 'model_shared_cat_inter_72-0.64.h5'
+            parameters['is_single_exec'] = False  # single or batch execution
             parameters['max_trace_size'] = 100
-
+            # variants and repetitions to be tested
+            parameters['variants'] = [{'imp': 'Random Choice', 'rep': 0},
+                                      {'imp': 'Arg Max', 'rep': 1}]
+        elif parameters['activity'] == 'inter_case':
+            parameters['file_name'] = 'Helpdesk.xes'
+            parameters['splits'] = 10
+            parameters['sub_group'] = 'inter' # pd, rw, inter
+        else:
+            raise ValueError(parameters['activity']) 
     else:
         # Catch parameters by console
         try:
             opts, _ = getopt.getopt(
                 argv,
-                "ho:a:f:i:l:d:p:n:m:z:y:c:b:x:t:",
+                "ho:a:f:i:l:d:p:n:m:z:y:c:b:x:t:e:",
                 ['one_timestamp=', 'activity=',
                  'file_name=', 'imp=', 'lstm_act=',
                  'dense_act=', 'optim=', 'norm_method=',
                  'model_type=', 'n_size=', 'l_size=',
                  'folder=', 'model_file=', 'is_single_exec=',
-                 'max_trace_size='])
+                 'max_trace_size=', 'splits=', 'sub_group='])
             for opt, arg in opts:
                 key = catch_parameter(opt)
                 if arg in ['None', 'none']:
                     parameters[key] = None
                 elif key in ['is_single_exec', 'one_timestamp']:
                     parameters[key] = arg in ['True', 'true', 1]
-                elif key in ['imp', 'n_size', 'l_size', 'max_trace_size']:
+                elif key in ['imp', 'n_size', 'l_size', 'max_trace_size', 'splits']:
                     parameters[key] = int(arg)
                 else:
                     parameters[key] = arg
@@ -99,23 +104,25 @@ def main(argv):
                                           'one_timestamp':
                                               parameters['one_timestamp'],
                                               'ns_include': True}
+            if parameters['activity'] in ['pred_log', 'pred_sfx',
+                                          'predict_next']:
+                # variants and repetitions to be tested
+                parameters['variants'] = [{'imp': 'Random Choice', 'rep': 10},
+                                          {'imp': 'Arg Max', 'rep': 0}]
         except getopt.GetoptError:
             print('Invalid option')
             sys.exit(2)
 #   Execution
-    if parameters['activity'] == 'emb_training':
-        if parameters['file_name'] == '' or not parameters['file_name']:
-            raise Exception('The file name is missing...')
-        print(parameters)
-        em.training_model(parameters)
-    elif parameters['activity'] == 'training':
+    if parameters['activity'] == 'training':
         print(parameters)
         tr.ModelTrainer(parameters)
     elif parameters['activity'] in ['predict_next', 'pred_sfx', 'pred_log']:
         print(parameters['folder'])
         print(parameters['model_file'])
         pr.ModelPredictor(parameters)
-
+    elif parameters['activity'] == 'inter_case':
+        print(parameters)
+        itf.extract_features(parameters)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

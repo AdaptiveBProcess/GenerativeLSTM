@@ -11,6 +11,7 @@ from keras.models import Model
 from keras.layers import Input, Embedding, Concatenate
 from keras.layers.core import Dense
 from keras.layers.recurrent import LSTM
+from keras.layers import Conv1D, MaxPooling1D
 from keras.optimizers import Nadam, Adam, SGD, Adagrad
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from keras.layers.normalization import BatchNormalization
@@ -41,7 +42,7 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
                     name='t_input')
     inter_input = Input(shape=(vec['prefixes']['inter_attr'].shape[1],
                             vec['prefixes']['inter_attr'].shape[2]),
-                     name='inter_input')
+                        name='inter_input')
 
 # =============================================================================
 #    Embedding layer for categorical attributes
@@ -76,19 +77,36 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
                  dropout=0.2,
                  implementation=args['imp'])(merged1)
 
+    l1_c1d_1 = Conv1D(filters=1,
+                   kernel_size=round(vec['prefixes']['times'].shape[1]/3),
+                   kernel_initializer='glorot_uniform',
+                   padding='same',
+                   activation=args['lstm_act'],
+                   strides=1)(inter_input)
+
+    l1_c1d_2 = Conv1D(filters=1,
+                   kernel_size=round(vec['prefixes']['times'].shape[1]/3),
+                   kernel_initializer='glorot_uniform',
+                   padding='same',
+                   activation=args['lstm_act'],
+                   strides=1)(merged2)
+
+    pooling1 = MaxPooling1D(pool_size=2)(l1_c1d_1)
+    pooling2 = MaxPooling1D(pool_size=2)(l1_c1d_2)
+
     l1_c2 = LSTM(args['l_size'],
                  activation=args['lstm_act'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=True,
                  dropout=0.2,
-                 implementation=args['imp'])(inter_input)
+                 implementation=args['imp'])(pooling1)
 
     l1_c3 = LSTM(args['l_size'],
                  activation=args['lstm_act'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=True,
                  dropout=0.2,
-                 implementation=args['imp'])(merged2)
+                 implementation=args['imp'])(pooling2)
 
 # =============================================================================
 #    Batch Normalization Layer
@@ -96,6 +114,7 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
     batch1 = BatchNormalization()(l1_c1)
     batch2 = BatchNormalization()(l1_c2)
     batch3 = BatchNormalization()(l1_c3)
+
 
 # =============================================================================
 # The layer specialized in prediction
@@ -113,7 +132,7 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
                  dropout=0.2,
                  implementation=args['imp'])(batch1)
 
-#   The layer specialized in role prediction
+#   The layer specialized in intercase prediction
     l2_c3 = LSTM(args['l_size'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=False,

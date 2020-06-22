@@ -32,6 +32,24 @@ class NextEventSamplesCreator():
             return self._sample_next_event_shared_cat
         elif model_type == 'shared_cat_inter':
             return self._sample_next_event_shared_cat_inter
+        elif model_type == 'shared_cat_inter_full':
+            return self._sample_next_event_shared_cat_inter_full
+        elif model_type == 'shared_cat_rd':
+            return self._sample_next_event_shared_cat_rd
+        elif model_type == 'shared_cat_wl':
+            return self._sample_next_event_shared_cat_wl
+        elif model_type == 'shared_cat_cx':
+            return self._sample_next_event_shared_cat_cx
+        elif model_type == 'cnn_lstm':
+            return self._sample_next_event_shared_cat
+        elif model_type == 'cnn_lstm_inter':
+            return self._sample_next_event_shared_cat_inter
+        elif model_type == 'cnn_lstm_inter_full':
+            return self._sample_next_event_shared_cat_inter_full
+        elif model_type == 'shared_cat_city':
+            return self._sample_next_event_shared_cat_city
+        elif model_type == 'shared_cat_snap':
+            return self._sample_next_event_shared_cat_snap
         else:
             raise ValueError(model_type)
 
@@ -69,19 +87,79 @@ class NextEventSamplesCreator():
         return examples
 
     def _sample_next_event_shared_cat_inter(self, parms):
+        """Example function with types documented in the docstring.
+        Returns:
+            dict: Dictionary that contains all the LSTM inputs.
+        """
+        # columns to keep
+        columns = ['ev_rd_norm', 'ev_rp_occ_norm','ev_et_norm', 'ev_et_t_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_samples_creation(columns, parms)
+
+    def _sample_next_event_shared_cat_inter_full(self, parms):
+        """Example function with types documented in the docstring.
+        Returns:
+            dict: Dictionary that contains all the LSTM inputs.
+        """
+        # columns to keep
+        columns = ['acc_cycle_norm', 'daytime_norm', 'ev_rd_norm',
+                   'ev_rp_occ_norm', 'ev_et_norm', 'ev_et_t_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_samples_creation(columns, parms)
+
+    def _sample_next_event_shared_cat_rd(self, parms):
+        """Example function with types documented in the docstring.
+        Returns:
+            dict: Dictionary that contains all the LSTM inputs.
+        """
+        # columns to keep
+        columns = ['ev_rd_norm', 'ev_rp_occ_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_samples_creation(columns, parms)
+
+    def _sample_next_event_shared_cat_wl(self, parms):
+        """Example function with types documented in the docstring.
+        Returns:
+            dict: Dictionary that contains all the LSTM inputs.
+        """
+        # columns to keep
+        columns = ['ev_et_norm', 'ev_et_t_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_samples_creation(columns, parms)
+    
+    def _sample_next_event_shared_cat_cx(self, parms):
         """Extraction of prefixes and expected suffixes from event log.
         Args:
-            df_test (dataframe): testing dataframe in pandas format.
-            ac_index (dict): index of activities.
-            rl_index (dict): index of roles.
-            pref_size (int): size of the prefixes to extract.
+            parameters: dict of parametsrs settings
         Returns:
             list: list of prefixes and expected sufixes.
         """
-        columns = ['caseid', 'task', 'user', 'start_timestamp',
-                   'end_timestamp', 'dur_log', 'role', 'event_id',
-                   'ev_duration', 'dur', 'ev_rd']
-        columns = [x for x in list(self.log.columns) if x not in columns]
+        columns = ['acc_cycle_norm', 'daytime_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_samples_creation(columns, parms)
+
+    def _sample_next_event_shared_cat_city(self, parms):
+        """Example function with types documented in the docstring.
+        Returns:
+            dict: Dictionary that contains all the LSTM inputs.
+        """
+        # columns to keep
+        columns = ['city1_norm','city2_norm','city3_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_samples_creation(columns, parms)
+    
+    def _sample_next_event_shared_cat_snap(self, parms):
+        """Extraction of prefixes and expected suffixes from event log.
+        Args:
+            parameters: dict of parametsrs settings
+        Returns:
+            list: list of prefixes and expected sufixes.
+        """
+        columns = ['snap1_norm','snap2_norm','snap3_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_samples_creation(columns, parms)
+
+    def process_samples_creation(self, columns, parms):
         self.log = self.reformat_events(columns, parms['one_timestamp'])
         examples = {'prefixes': dict(), 'next_evt': dict()}
         # n-gram definition
@@ -92,20 +170,22 @@ class NextEventSamplesCreator():
         for i, _ in enumerate(self.log):
             for x in columns:
                 serie = [self.log[i][x][:idx]
-                         for idx in range(1, len(self.log[i][x]))]
+                          for idx in range(1, len(self.log[i][x]))]
                 y_serie = [x[-1] for x in serie]
                 serie = serie[:-1]
                 y_serie = y_serie[1:]
                 if x in list(equi.keys()):
                     examples['prefixes'][equi[x]] = (
-                        examples['prefixes'][equi[x]] + serie if i > 0 else serie)
+                        examples['prefixes'][equi[x]] + serie
+                        if i > 0 else serie)
                     examples['next_evt'][equi[x]] = (
-                        examples['next_evt'][equi[x]] + y_serie if i > 0 else y_serie)
+                        examples['next_evt'][equi[x]] + y_serie
+                        if i > 0 else y_serie)
                 else:
                     x_inter_dict[x] = (x_inter_dict[x] + serie
-                                       if i > 0 else serie)
+                                        if i > 0 else serie)
                     y_inter_dict[x] = (y_inter_dict[x] + y_serie
-                                       if i > 0 else y_serie)
+                                        if i > 0 else y_serie)
         # Reshape intercase attributes (prefixes, n-gram size, # attributes)
         examples['prefixes']['inter_attr'] = list()
         x_inter_dict = pd.DataFrame(x_inter_dict)

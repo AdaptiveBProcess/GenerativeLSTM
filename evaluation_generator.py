@@ -41,59 +41,82 @@ def create_folder_list(path, num_models):
                     file_list.append(dict(folder=d, file=f['filename']))
     return file_list
 
+# =============================================================================
+# Sbatch files creator
+# =============================================================================
+
+def sbatch_creator(file_list, activity):
+    exp_name = activity[:4]
+    for file in file_list:
+        if imp == 2:
+            default = ['#!/bin/bash',
+                       '#SBATCH --partition=gpu',
+                       '#SBATCH --gres=gpu:tesla:1',
+                       '#SBATCH -J ' + exp_name,
+                       '#SBATCH -N 1',
+                       '#SBATCH --mem=7000',
+                       '#SBATCH -t 24:00:00',
+                       'module load cuda/10.0',
+                       'module load python/3.6.3/virtenv',
+                       'source activate lstm_pip'
+                       ]
+        else:
+            default = ['#!/bin/bash',
+                       '#SBATCH --partition=main',
+                       '#SBATCH -J ' + exp_name,
+                       '#SBATCH -N 1',
+                       '#SBATCH --mem=7000',
+                       '#SBATCH -t 24:00:00',
+                       'module load cuda/10.0',
+                       'module load python/3.6.3/virtenv',
+                       'source activate lstm_pip'
+                       ]
+    
+        default.append('python lstm.py' +
+                       ' -a ' + activity +
+                       ' -c ' + file['folder'] +
+                       ' -b "' + file['file'] + '"' +
+                       ' -o True' +
+                       ' -x False' +
+                       ' -t 100')
+        file_name = sup.folder_id()
+        sup.create_text_file(default, os.path.join(output_folder, file_name))
+    
+# =============================================================================
+# Sbatch files submission
+# =============================================================================
+
+
+def sbatch_submit(in_batch, bsize=10):
+    file_list = create_file_list(output_folder)
+    print('Number of experiments:', len(file_list), sep=' ')
+    for i, _ in enumerate(file_list):
+        if in_batch:
+            if (i % bsize) == 0:
+                time.sleep(20)
+                os.system('sbatch '+os.path.join(output_folder, file_list[i]))
+            else:
+                os.system('sbatch '+os.path.join(output_folder, file_list[i]))
+        else:
+            os.system('sbatch '+os.path.join(output_folder, file_list[i]))
+
 # kernel
 # repeat_num = 1
 
 
 imp = 1
-exp_name = 'help_next'
 models_folder = 'output_files'
 file_list = create_folder_list(models_folder, 2)
 
 output_folder = 'jobs_files'
 
+activities = ['predict_next', 'pred_sfx']
+
 for _, _, files in os.walk(output_folder):
     for file in files:
         os.unlink(os.path.join(output_folder, file))
 
-for file in file_list:
-    if imp == 2:
-        default = ['#!/bin/bash',
-                   '#SBATCH --partition=gpu',
-                   '#SBATCH --gres=gpu:tesla:1',
-                   '#SBATCH -J ' + exp_name,
-                   '#SBATCH -N 1',
-                   '#SBATCH --mem=7000',
-                   '#SBATCH -t 24:00:00',
-                   'module load  python/3.6.3/virtenv',
-                   'source activate lstm_dev_cpu'
-                   ]
-    else:
-        default = ['#!/bin/bash',
-                   '#SBATCH --partition=main',
-                   '#SBATCH -J ' + exp_name,
-                   '#SBATCH -N 1',
-                   '#SBATCH --mem=7000',
-                   '#SBATCH -t 24:00:00',
-                   'module load  python/3.6.3/virtenv',
-                   'source activate lstm_dev_cpu'
-                   ]
-
-    default.append('python lstm.py' +
-                   ' -a predict_next' +
-                   ' -c ' + file['folder'] +
-                   ' -b "' + file['file'] + '"' +
-                   ' -o True' +
-                   ' -x False' +
-                   ' -t 100')
-    file_name = sup.folder_id()
-    sup.create_text_file(default, os.path.join(output_folder, file_name))
-
-file_list = create_file_list(output_folder)
-print('Number of experiments: ' + str(len(file_list)))
-for i, _ in enumerate(file_list):
-    if (i % 10) == 0:
-        time.sleep(20)
-        os.system('sbatch ' + os.path.join(output_folder, file_list[i]))
-    else:
-        os.system('sbatch ' + os.path.join(output_folder, file_list[i]))
+for activity in activities:
+    sbatch_creator(file_list, activity)
+    # submission
+sbatch_submit(True)

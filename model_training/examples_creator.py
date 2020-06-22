@@ -6,11 +6,15 @@ Created on Sat Mar 14 19:13:15 2020
 """
 import itertools
 import numpy as np
+# import pandas as pd
 
 from nltk.util import ngrams
 import keras.utils as ku
 
-from support_modules import nn_support as nsup
+# from support_modules import nn_support as nsup
+# import support as sup
+# import pandas as pd
+# import json
 
 
 class SequencesCreator():
@@ -27,19 +31,35 @@ class SequencesCreator():
 
     def _get_vectorizer(self, model_type):
         if model_type == 'shared_cat':
-            return self._vectorize_shared_cat
+            return self._vectorize_seq
         elif model_type == 'shared_cat_inter':
-            return self._vectorize_shared_cat_inter
+            return self._vectorize_seq_inter
+        elif model_type == 'shared_cat_rd':
+            return self._vectorize_seq_rd
+        elif model_type == 'shared_cat_wl':
+            return self._vectorize_seq_wl
+        elif model_type == 'shared_cat_cx':
+            return self._vectorize_seq_cx
+        elif model_type == 'cnn_lstm':
+            return self._vectorize_seq
+        elif model_type == 'cnn_lstm_inter':
+            return self._vectorize_seq_inter
         elif model_type == 'seq2seq':
             return self._vectorize_seq2seq
         elif model_type == 'seq2seq_inter':
             return self._vectorize_seq2seq_inter
         elif model_type == 'shared_cat_inter_full':
-            return self._vectorize_shared_cat_inter_full
+            return self._vectorize_seq_inter_full
+        elif model_type == 'cnn_lstm_inter_full':
+            return self._vectorize_seq_inter_full
+        elif model_type == 'shared_cat_city':
+            return self._vectorize_seq_city
+        elif model_type == 'shared_cat_snap':
+            return self._vectorize_seq_snap
         else:
             raise ValueError(model_type)
 
-    def _vectorize_shared_cat(self, parms):
+    def _vectorize_seq(self, parms):
         """
         Example function with types documented in the docstring.
         parms:
@@ -53,22 +73,22 @@ class SequencesCreator():
         equi = {'ac_index': 'activities',
                 'rl_index': 'roles',
                 'dur_norm': 'times'}
-        self.log = nsup.scale_feature(self.log, 'dur', parms['norm_method'])
         columns = list(equi.keys())
         vec = {'prefixes': dict(),
-               'next_evt': dict(),
-               'max_dur': np.max(self.log.dur)}
+               'next_evt': dict()}
         self.log = self.reformat_events(columns, parms['one_timestamp'])
         # n-gram definition
         for i, _ in enumerate(self.log):
             for x in columns:
                 serie = list(ngrams(self.log[i][x], parms['n_size'],
-                                     pad_left=True, left_pad_symbol=0))
+                                    pad_left=True, left_pad_symbol=0))
                 y_serie = [x[-1] for x in serie]
                 serie = serie[:-1]
                 y_serie = y_serie[1:]
-                vec['prefixes'][equi[x]] = vec['prefixes'][equi[x]] + serie if i > 0 else serie
-                vec['next_evt'][equi[x]] = vec['next_evt'][equi[x]] + y_serie if i > 0 else y_serie
+                vec['prefixes'][equi[x]] = (vec['prefixes'][equi[x]] + serie
+                                            if i > 0 else serie)
+                vec['next_evt'][equi[x]] = (vec['next_evt'][equi[x]] + y_serie
+                                            if i > 0 else y_serie)
 
         # Transform task, dur and role prefixes in vectors
         for value in equi.values():
@@ -85,40 +105,77 @@ class SequencesCreator():
             vec['next_evt']['roles'], num_classes=len(self.rl_index))
         return vec
 
-    def _vectorize_shared_cat_inter(self, parms):
-        """Example function with types documented in the docstring.
-        parms:
-            log_df (dataframe): event log data.
-            ac_index (dict): index of activities.
-            rl_index (dict): index of roles.
-            parms (dict): parms for training the network
-        Returns:
-            dict: Dictionary that contains all the LSTM inputs.
-        """
-    #    log_df = log_df[log_df.caseid=='Case28']
-        self.log = nsup.scale_feature(self.log, 'dur', parms['norm_method'])
-        columns = ['caseid', 'task', 'user', 'start_timestamp', 'end_timestamp',
-                   'dur_log', 'role', 'event_id', 'ev_duration', 'dur', 'ev_rd']
-        columns = [x for x in list(self.log.columns) if x not in columns]
-        vec = {'prefixes':dict(), 'next_evt':dict(), 'max_dur':np.max(self.log.dur)}
+    def _vectorize_seq_inter(self, parms):
+        # columns to keep
+        columns = ['ev_rd_norm', 'ev_rp_occ_norm', 'ev_et_norm', 'ev_et_t_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_intercases(columns, parms)
+
+    def _vectorize_seq_inter_full(self, parms):
+        # columns to keep
+        columns = ['acc_cycle_norm', 'daytime_norm', 'ev_rd_norm',
+                   'ev_rp_occ_norm', 'ev_et_norm', 'ev_et_t_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_intercases(columns, parms)
+
+    def _vectorize_seq_rd(self, parms):
+        # columns to keep
+        columns = ['ev_rd_norm', 'ev_rp_occ_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_intercases(columns, parms)
+
+    def _vectorize_seq_wl(self, parms):
+        # columns to keep
+        columns = ['ev_et_norm', 'ev_et_t_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_intercases(columns, parms)
+
+    def _vectorize_seq_cx(self, parms):
+        # columns to keep
+        columns = ['acc_cycle_norm', 'daytime_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_intercases(columns, parms)
+
+    def _vectorize_seq_city(self, parms):
+        # columns to keep
+        columns = ['city1_norm','city2_norm','city3_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_intercases(columns, parms)
+
+    def _vectorize_seq_snap(self, parms):
+        # columns to keep
+        columns = ['snap1_norm','snap2_norm','snap3_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_intercases(columns, parms)
+
+    def process_intercases(self, columns, parms):
+        vec = {'prefixes': dict(),
+               'next_evt': dict()}
         self.log = self.reformat_events(columns, parms['one_timestamp'])
         # n-gram definition
-        equi = {'ac_index':'activities', 'rl_index':'roles', 'dur_norm':'times'}
+        equi = {'ac_index': 'activities',
+                'rl_index': 'roles',
+                'dur_norm': 'times'}
         x_inter_dict = dict()
         y_inter_dict = dict()
         for i, _ in enumerate(self.log):
             for x in columns:
                 serie = list(ngrams(self.log[i][x], parms['n_size'],
-                                     pad_left=True, left_pad_symbol=0))
+                                    pad_left=True, left_pad_symbol=0))
                 y_serie = [x[-1] for x in serie]
                 serie = serie[:-1]
                 y_serie = y_serie[1:]
                 if x in list(equi.keys()):
-                    vec['prefixes'][equi[x]] = vec['prefixes'][equi[x]] + serie if i > 0 else serie
-                    vec['next_evt'][equi[x]] = vec['next_evt'][equi[x]] + y_serie if i > 0 else y_serie
+                    vec['prefixes'][equi[x]] = (
+                        vec['prefixes'][equi[x]] + serie if i > 0 else serie)
+                    vec['next_evt'][equi[x]] = (
+                        vec['next_evt'][equi[x]] + y_serie
+                        if i > 0 else y_serie)
                 else:
-                    x_inter_dict[x] = x_inter_dict[x] + serie if i > 0 else serie
-                    y_inter_dict[x] = y_inter_dict[x] + y_serie if i > 0 else y_serie
+                    x_inter_dict[x] = (
+                        x_inter_dict[x] + serie if i > 0 else serie)
+                    y_inter_dict[x] = (
+                        y_inter_dict[x] + y_serie if i > 0 else y_serie)
         # Transform task, dur and role prefixes in vectors
         for value in equi.values():
             vec['prefixes'][value] = np.array(vec['prefixes'][value])
@@ -126,24 +183,23 @@ class SequencesCreator():
         # Reshape dur (prefixes, n-gram size, 1) i.e. time distribute
         vec['prefixes']['times'] = vec['prefixes']['times'].reshape(
                 (vec['prefixes']['times'].shape[0],
-                 vec['prefixes']['times'].shape[1], 1))
+                  vec['prefixes']['times'].shape[1], 1))
         # one-hot encode target values
-        vec['next_evt']['activities'] = ku.to_categorical(vec['next_evt']['activities'],
-                                                        num_classes=len(self.ac_index))
-        vec['next_evt']['roles'] = ku.to_categorical(vec['next_evt']['roles'],
-                                                        num_classes=len(self.rl_index))
+        vec['next_evt']['activities'] = ku.to_categorical(
+            vec['next_evt']['activities'], num_classes=len(self.ac_index))
+        vec['next_evt']['roles'] = ku.to_categorical(
+            vec['next_evt']['roles'], num_classes=len(self.rl_index))
         # Reshape intercase attributes (prefixes, n-gram size, number of attributes)
         for key, value in x_inter_dict.items():
             x_inter_dict[key] = np.array(value)
-            x_inter_dict[key] = x_inter_dict[key].reshape((x_inter_dict[key].shape[0],
-                       x_inter_dict[key].shape[1], 1))
+            x_inter_dict[key] = x_inter_dict[key].reshape(
+                (x_inter_dict[key].shape[0], x_inter_dict[key].shape[1], 1))
         vec['prefixes']['inter_attr'] = np.dstack(list(x_inter_dict.values()))
         # Reshape y intercase attributes (suffixes, number of attributes)
         for key, value in y_inter_dict.items():
             x_inter_dict[key] = np.array(value)
         vec['next_evt']['inter_attr'] = np.dstack(list(y_inter_dict.values()))[0]
         return vec
-
 
     def _vectorize_seq2seq(self, parms):
         """Example function with types documented in the docstring.
@@ -156,35 +212,56 @@ class SequencesCreator():
             dict: Dictionary that contains all the LSTM inputs.
         """
         columns = ['ac_index', 'rl_index', 'dur_norm']
-        self.log = nsup.scale_feature(self.log, 'dur', parms['norm_method'])
         examples = {'encoder_input_data': dict(),
-                    'decoder_target_data': dict(),
-                    'max_dur': np.max(self.log.dur)}
+                    'decoder_input_data': dict(),
+                    'decoder_target_data': dict()}
         self.log = self.reformat_events(columns, parms['one_timestamp'])
-        max_length = np.max([len(x['ac_index']) for x in
-                             self.reformat_events(['ac_index'],
-                                                  parms['one_timestamp'])])
+        max_length = np.max([len(x['ac_index']) for x in self.log])
         # n-gram definition
-        equi = {'ac_index':'activities', 'rl_index':'roles', 'dur_norm':'times'}
+        equi = {'ac_index': 'activities',
+                'rl_index': 'roles',
+                'dur_norm': 'times'}
         for i, _ in enumerate(self.log):
             for x in columns:
-                serie, y_serie = list(), list()
+                serie_e, serie_d, serie_dt = list(), list(), list()
                 for idx in range(1, len(self.log[i][x])):
-                    serie.append([0]*(max_length - idx) + self.log[i][x][:idx])
-                    y_serie.append(self.log[i][x][idx:] + [0]*(max_length - len(self.log[i][x][idx:])))
-                examples['encoder_input_data'][equi[x]] = examples['encoder_input_data'][equi[x]] + serie if i > 0 else serie
-                examples['decoder_target_data'][equi[x]] = examples['decoder_target_data'][equi[x]] + y_serie if i > 0 else y_serie
+                    serie_e.append(
+                        [0]*(max_length - idx) + self.log[i][x][:idx])
+                    serie_d.append(
+                        self.log[i][x][idx:] +
+                        [0]*(max_length - len(self.log[i][x][idx:])))
+                    serie_dt.append(
+                        self.log[i][x][idx+1:] +
+                        [0]*((max_length - len(self.log[i][x][idx:]))+1))
+                examples['encoder_input_data'][equi[x]] = (
+                    examples['encoder_input_data'][equi[x]] + serie_e
+                    if i > 0 else serie_e)
+                examples['decoder_input_data'][equi[x]] = (
+                    examples['decoder_input_data'][equi[x]] + serie_d
+                    if i > 0 else serie_d)
+                examples['decoder_target_data'][equi[x]] = (
+                    examples['decoder_target_data'][equi[x]] + serie_dt
+                    if i > 0 else serie_dt)
         for value in equi.values():
-            examples['encoder_input_data'][value]= np.array(examples['encoder_input_data'][value])
-            examples['decoder_target_data'][value]= np.array(examples['decoder_target_data'][value])
+            examples['encoder_input_data'][value]= np.array(
+                examples['encoder_input_data'][value])
+            examples['decoder_input_data'][value]= np.array(
+                examples['decoder_input_data'][value])
+            examples['decoder_target_data'][value]= np.array(
+                examples['decoder_target_data'][value])
         # Reshape dur (prefixes, n-gram size, 1) i.e. time distribute
-        examples['encoder_input_data']['times'] = examples['encoder_input_data']['times'].reshape(
+        examples['encoder_input_data']['times'] = (
+            examples['encoder_input_data']['times'].reshape(
                 (examples['encoder_input_data']['times'].shape[0],
-                 examples['encoder_input_data']['times'].shape[1], 1))
-        examples['decoder_target_data']['times'] = examples['decoder_target_data']['times'].reshape(
+                 examples['encoder_input_data']['times'].shape[1], 1)))
+        examples['decoder_input_data']['times'] = (
+            examples['decoder_input_data']['times'].reshape(
+                (examples['decoder_input_data']['times'].shape[0],
+                 examples['decoder_input_data']['times'].shape[1], 1)))
+        examples['decoder_target_data']['times'] = (
+            examples['decoder_target_data']['times'].reshape(
                 (examples['decoder_target_data']['times'].shape[0],
-                 examples['decoder_target_data']['times'].shape[1], 1))
-
+                 examples['decoder_target_data']['times'].shape[1], 1)))
         # One hot encode decoder_target_data
         examples['decoder_target_data']['activities'] = ku.to_categorical(
             examples['decoder_target_data']['activities'],
@@ -207,11 +284,11 @@ class SequencesCreator():
             dict: Dictionary that contains all the LSTM inputs.
         """
     #    log_df = log_df[log_df.caseid=='Case28']
-        self.log = nsup.scale_feature(self.log, 'dur', parms['norm_method'])
         columns = ['caseid', 'task', 'user', 'start_timestamp', 'end_timestamp',
                    'dur_log', 'role', 'event_id', 'ev_duration', 'dur', 'ev_rd']
         columns = [x for x in list(self.log.columns) if x not in columns]
-        examples = {'encoder_input_data':dict(), 'decoder_target_data':dict(), 'max_dur':np.max(self.log.dur)}
+        examples = {'encoder_input_data': dict(),
+                    'decoder_target_data': dict()}
         self.log = self.reformat_events(columns, parms['one_timestamp'])
         max_length = np.max([len(x['ac_index']) for x in
                              self.reformat_events(['ac_index'],
@@ -255,9 +332,6 @@ class SequencesCreator():
         examples['encoder_input_data']['inter_attr'] = np.dstack(list(x_inter_dict.values()))
     #    examples['decoder_target_data']['inter_attr'] = np.dstack(list(y_inter_dict.values()))[0]
         return examples
-
-    def _vectorize_shared_cat_inter_full(self, parms):
-        return 'tara!!'
 
     # =============================================================================
     # Reformat events

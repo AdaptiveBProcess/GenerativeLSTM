@@ -8,13 +8,12 @@ import os
 import json
 
 import pandas as pd
+import numpy as np
 
 from keras.models import load_model
 
 from support_modules.readers import log_reader as lr
-from support_modules import nn_support as nsup
 from support_modules import support as sup
-
 
 from model_prediction import interfaces as it
 from model_prediction.analyzers import sim_evaluator as ev
@@ -22,7 +21,7 @@ from model_prediction.analyzers import sim_evaluator as ev
 
 class ModelPredictor():
     """
-    This is the man class encharged of the model training
+    This is the man class encharged of the model evaluation
     """
 
     def __init__(self, parms):
@@ -45,10 +44,9 @@ class ModelPredictor():
     def execute_predictive_task(self):
         # load parameters
         self.load_parameters()
-        print(self.parms)
         # scale features
-        self.log = nsup.scale_feature(self.log, 'dur',
-                                      self.parms['norm_method'])
+        self.log = self.scale_feature(self.log, 'dur',
+                                      self.parms)
         # create examples for next event and suffix
         if self.parms['activity'] == 'pred_log':
             self.parms['num_cases'] = len(self.log.caseid.unique())
@@ -70,7 +68,6 @@ class ModelPredictor():
             data = self.append_sources(self.log, self.predictions)
             data['caseid'] = data['caseid'].astype(str)
             evaluator.evaluate(self.parms, data)
-            # data.to_csv('test_data.csv')
         else:
             evaluator.evaluate(self.parms, self.predictions)
 
@@ -100,7 +97,8 @@ class ModelPredictor():
                 del data['activity']
             self.parms = {**self.parms, **{k: v for k, v in data.items()}}
             self.parms['dim'] = {k: int(v) for k, v in data['dim'].items()}
-            self.parms['max_dur'] = float(data['max_dur'])
+            self.parms['scale_args'] = {k: float(v)
+                                        for k, v in data['scale_args'].items()}
             self.parms['index_ac'] = {int(k): v
                                       for k, v in data['index_ac'].items()}
             self.parms['index_rl'] = {int(k): v
@@ -147,6 +145,48 @@ class ModelPredictor():
         predictions = predictions.drop(columns=['tbtw_raw', 'tbtw'])
         return log.append(predictions, ignore_index=True)
 
+    @staticmethod
+    def scale_feature(log, feature, parms, replace=False):
+        """Scales a number given a technique.
+        Args:
+            log: Event-log to be scaled.
+            feature: Feature to be scaled.
+            method: Scaling method max, lognorm, normal, per activity.
+            replace (optional): replace the original value or keep both.
+        Returns:
+            Scaleded value between 0 and 1.
+        """
+        method = parms['norm_method']
+        scale_args = parms['scale_args']
+        if method == 'lognorm':
+            log[feature + '_log'] = np.log1p(log[feature])
+            max_value = scale_args['max_value']
+            min_value = scale_args['min_value']
+            log[feature+'_norm'] = np.divide(
+                    np.subtract(log[feature+'_log'], min_value), (max_value - min_value))
+            log = log.drop((feature + '_log'), axis=1)
+        elif method == 'normal':
+            max_value = scale_args['max_value']
+            min_value = scale_args['min_value']
+            log[feature+'_norm'] = np.divide(
+                    np.subtract(log[feature], min_value), (max_value - min_value))
+        elif method == 'standard':
+            mean = scale_args['mean']
+            std = scale_args['std']
+            log[feature + '_norm'] = np.divide(np.subtract(log[feature], mean),
+                                               std)
+        elif method == 'max':
+            max_value = scale_args['max_value']
+            log[feature + '_norm'] = (np.divide(log[feature], max_value)
+                                      if max_value > 0 else 0)
+        elif method is None:
+            log[feature+'_norm'] = log[feature]
+        else:
+            raise ValueError(method)
+        if replace:
+            log = log.drop(feature, axis=1)
+        return log
+
 
 class EvaluateTask():
 
@@ -169,15 +209,15 @@ class EvaluateTask():
         evaluator = ev.Evaluator()
         ac_sim = evaluator.measure('accuracy', data, 'ac')
         rl_sim = evaluator.measure('accuracy', data, 'rl')
-        # tm_mae = evaluator.measure('mae_suffix', data, 'tm')
+        tm_mae = evaluator.measure('mae_next', data, 'tm')
         exp_desc = pd.DataFrame([exp_desc])
         exp_desc = pd.concat([exp_desc]*len(ac_sim), ignore_index=True)
         ac_sim = pd.concat([ac_sim, exp_desc], axis=1).to_dict('records')
         rl_sim = pd.concat([rl_sim, exp_desc], axis=1).to_dict('records')
-        # tm_mae = pd.concat([tm_mae, exp_desc], axis=1).to_dict('records')
+        tm_mae = pd.concat([tm_mae, exp_desc], axis=1).to_dict('records')
         self.save_results(ac_sim, 'ac', parms)
         self.save_results(rl_sim, 'rl', parms)
-        # self.save_results(tm_mae, 'tm', parms)
+        self.save_results(tm_mae, 'tm', parms)
 
     def _evaluate_pred_sfx(self, data, parms):
         exp_desc = self.clean_parameters(parms.copy())
@@ -251,3 +291,4 @@ class EvaluateTask():
                         measurements,
                         os.path.join('output_files',
                                      feature+'_'+parms['activity']+'.csv'))
+
