@@ -193,7 +193,7 @@ class LogReader(object):
         reads and parse all the events information from a csv file
         """
         sup.print_performed_task('Reading log traces ')
-        log = pd.read_csv(self.input)
+        log = pd.read_csv(self.input, dtype={'user': str})
         if self.one_timestamp:
             self.column_names['Complete Timestamp'] = 'end_timestamp'
             log = log.rename(columns=self.column_names)

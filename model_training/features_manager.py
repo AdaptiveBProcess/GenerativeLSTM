@@ -62,6 +62,12 @@ class FeaturesMannager():
         elif self.model_type in ['shared_cat_wl']:
             columns.extend(['ev_et', 'ev_et_t'])
             log = log[columns]
+        elif self.model_type in ['shared_cat_city']:
+            columns.extend(['city1','city2','city3'])
+            log = log[columns]
+        elif self.model_type in ['shared_cat_snap']:
+            columns.extend(['snap1','snap2','snap3'])
+            log = log[columns]
         else:
             raise ValueError(model_type)
         return log
@@ -132,6 +138,10 @@ class FeaturesMannager():
             return self._scale_wl
         elif model_type == 'shared_cat_cx':
             return self._scale_cx
+        elif model_type == 'shared_cat_city':
+            return self._scale_city
+        elif model_type == 'shared_cat_snap':
+            return self._scale_snap
         else:
             raise ValueError(model_type)
 
@@ -167,6 +177,18 @@ class FeaturesMannager():
         log, scale_args = self.scale_feature(log, 'dur', self.norm_method)
         log, _ = self.scale_feature(log, 'acc_cycle', self.norm_method, True)
         log, _ = self.scale_feature(log, 'daytime', 'day_secs', True)
+        return log, scale_args
+
+    def _scale_city(self, log):
+        log, scale_args = self.scale_feature(log, 'dur', self.norm_method)
+        for col in ['city1','city2','city3']:
+            log, _ = self.scale_feature(log, col, self.norm_method, True)
+        return log, scale_args
+
+    def _scale_snap(self, log):
+        log, scale_args = self.scale_feature(log, 'dur', self.norm_method)
+        for col in ['snap1','snap2','snap3']:
+            log, _ = self.scale_feature(log, col, self.norm_method, True)
         return log, scale_args
 
     # =========================================================================

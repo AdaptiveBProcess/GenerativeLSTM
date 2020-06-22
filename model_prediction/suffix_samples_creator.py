@@ -51,6 +51,10 @@ class SuffixSamplesCreator():
             return self._suffix_shared_cat_inter
         elif model_type == 'cnn_lstm_inter_full':
             return self._suffix_shared_cat_inter_full
+        elif model_type == 'shared_cat_city':
+            return self._suffix_shared_cat_city
+        elif model_type == 'shared_cat_snap':
+            return self._suffix_shared_cat_snap
         else:
             raise ValueError(model_type)
 
@@ -138,6 +142,28 @@ class SuffixSamplesCreator():
             list: list of prefixes and expected sufixes.
         """
         columns = ['acc_cycle_norm', 'daytime_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_samples_creation(columns, parms)
+
+    def _suffix_shared_cat_city(self, parms):
+        """Extraction of prefixes and expected suffixes from event log.
+        Args:
+            parameters: dict of parametsrs settings
+        Returns:
+            list: list of prefixes and expected sufixes.
+        """
+        columns = ['city1_norm','city2_norm','city3_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_samples_creation(columns, parms)
+
+    def _suffix_shared_cat_snap(self, parms):
+        """Extraction of prefixes and expected suffixes from event log.
+        Args:
+            parameters: dict of parametsrs settings
+        Returns:
+            list: list of prefixes and expected sufixes.
+        """
+        columns = ['snap1_norm','snap2_norm','snap3_norm',
                    'ac_index', 'rl_index', 'dur_norm']
         return self.process_samples_creation(columns, parms)
 

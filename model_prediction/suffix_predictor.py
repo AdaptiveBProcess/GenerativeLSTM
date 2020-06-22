@@ -32,7 +32,8 @@ class SuffixPredictor():
                           'shared_cat_wl', 'shared_cat_inter',
                           'shared_cat_inter_full',
                           'cnn_lstm_inter', 'cnn_lstm_inter_full',
-                          'cnn_lstm', 'shared_cat_cx']:
+                          'cnn_lstm', 'shared_cat_cx',
+                          'shared_cat_city', 'shared_cat_snap']:
             return self._predict_suffix_shared_cat
         elif model_type in ['seq2seq', 'seq2seq_inter']:
             return self._predict_suffix_seq2seq
@@ -75,7 +76,9 @@ class SuffixPredictor():
                                          'shared_cat_wl',
                                          'shared_cat_cx',
                                          'cnn_lstm_inter',
-                                         'cnn_lstm_inter_full']:
+                                         'cnn_lstm_inter_full',
+                                         'shared_cat_city',
+                                         'shared_cat_snap']:
                 inter_attr_num = self.spl['prefixes']['inter_attr'][i].shape[1]
                 x_inter_ngram = np.array([np.append(
                         np.zeros((parms['dim']['time_dim'], inter_attr_num)),
@@ -113,7 +116,9 @@ class SuffixPredictor():
                                              'shared_cat_wl',
                                              'shared_cat_cx',
                                              'cnn_lstm_inter',
-                                             'cnn_lstm_inter_full']:
+                                             'cnn_lstm_inter_full',
+                                             'shared_cat_city',
+                                             'shared_cat_snap']:
                     x_inter_ngram = np.append(x_inter_ngram, [predictions[3]], axis=1)
                     x_inter_ngram = np.delete(x_inter_ngram, 0, 1)
                     inputs = [x_ac_ngram, x_rl_ngram, x_t_ngram, x_inter_ngram]

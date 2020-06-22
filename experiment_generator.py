@@ -135,14 +135,14 @@ def sbatch_creator(configs):
             exp_name = (os.path.splitext(log)[0]
                         .lower()
                         .split(' ')[0][:4] + arch + 'i')
-        elif configs[i]['model_type'] in ['shared_cat_rd']:
+        elif configs[i]['model_type'] in ['shared_cat_snap']:
             exp_name = (os.path.splitext(log)[0]
                         .lower()
-                        .split(' ')[0][:4] + arch + 'r')
-        elif configs[i]['model_type'] in ['shared_cat_cx']:
+                        .split(' ')[0][:4] + arch + 's')
+        elif configs[i]['model_type'] in ['shared_cat_city']:
             exp_name = (os.path.splitext(log)[0]
                         .lower()
-                        .split(' ')[0][:4] + arch + 'x')
+                        .split(' ')[0][:4] + arch + 'c')
         if imp == 2:
             default = ['#!/bin/bash',
                        '#SBATCH --partition=gpu',
@@ -229,7 +229,7 @@ imp = 1  # keras lstm implementation 1 cpu, 2 gpu
 
 # Same experiment for both models
 if arch == 'sh':
-    model_type = ['shared_cat_cx', 'shared_cat_wl']
+    model_type = ['shared_cat_city', 'shared_cat_snap']
 else:
     model_type = ['seq2seq_inter', 'seq2seq']
 

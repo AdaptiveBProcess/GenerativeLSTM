@@ -236,6 +236,7 @@ class ModelTrainer():
         if parms['model_type'] in ['shared_cat', 'shared_cat_inter',
                                    'shared_cat_rd', 'shared_cat_wl',
                                    'shared_cat_cx', 'cnn_lstm',
+                                   'shared_cat_city', 'shared_cat_snap',
                                    'shared_cat_inter_full',
                                    'cnn_lstm_inter', 
                                    'cnn_lstm_inter_full']:

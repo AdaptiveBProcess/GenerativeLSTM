@@ -52,7 +52,10 @@ class SequencesCreator():
             return self._vectorize_seq_inter_full
         elif model_type == 'cnn_lstm_inter_full':
             return self._vectorize_seq_inter_full
-
+        elif model_type == 'shared_cat_city':
+            return self._vectorize_seq_city
+        elif model_type == 'shared_cat_snap':
+            return self._vectorize_seq_snap
         else:
             raise ValueError(model_type)
 
@@ -130,6 +133,18 @@ class SequencesCreator():
     def _vectorize_seq_cx(self, parms):
         # columns to keep
         columns = ['acc_cycle_norm', 'daytime_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_intercases(columns, parms)
+
+    def _vectorize_seq_city(self, parms):
+        # columns to keep
+        columns = ['city1_norm','city2_norm','city3_norm',
+                   'ac_index', 'rl_index', 'dur_norm']
+        return self.process_intercases(columns, parms)
+
+    def _vectorize_seq_snap(self, parms):
+        # columns to keep
+        columns = ['snap1_norm','snap2_norm','snap3_norm',
                    'ac_index', 'rl_index', 'dur_norm']
         return self.process_intercases(columns, parms)
 

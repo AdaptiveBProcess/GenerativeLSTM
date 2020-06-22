@@ -33,6 +33,10 @@ class ModelLoader():
             return mshcati._training_model
         elif model_type == 'shared_cat_cx':
             return mshcati._training_model
+        elif model_type == 'shared_cat_city':
+            return mshcati._training_model
+        elif model_type == 'shared_cat_snap':
+            return mshcati._training_model
         elif model_type == 'cnn_lstm':
             return cnnl._training_model
         elif model_type == 'cnn_lstm_inter':

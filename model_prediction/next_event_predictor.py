@@ -30,7 +30,8 @@ class NextEventPredictor():
                           'shared_cat_wl', 'shared_cat_inter',
                           'shared_cat_inter_full',
                           'cnn_lstm_inter', 'cnn_lstm_inter_full',
-                          'cnn_lstm', 'shared_cat_cx']:
+                          'cnn_lstm', 'shared_cat_cx',
+                          'shared_cat_city', 'shared_cat_snap']:
             return self._predict_next_event_shared_cat
         else:
             raise ValueError(model_type)
@@ -75,7 +76,9 @@ class NextEventPredictor():
                                               'shared_cat_wl',
                                               'shared_cat_cx',
                                               'cnn_lstm_inter',
-                                              'cnn_lstm_inter_full']:
+                                              'cnn_lstm_inter_full',
+                                              'shared_cat_city',
+                                              'shared_cat_snap']:
                 # times input shape(1,5,1)
                 inter_attr_num = (self.spl['prefixes']['inter_attr'][i]
                                   .shape[1])
