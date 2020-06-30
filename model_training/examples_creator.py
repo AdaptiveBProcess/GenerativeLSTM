@@ -19,9 +19,10 @@ import keras.utils as ku
 
 class SequencesCreator():
 
-    def __init__(self, log, ac_index, rl_index):
+    def __init__(self, log, one_timestamp, ac_index, rl_index):
         """constructor"""
         self.log = log
+        self.one_timestamp = one_timestamp
         self.ac_index = ac_index
         self.rl_index = rl_index
 
@@ -59,6 +60,54 @@ class SequencesCreator():
         else:
             raise ValueError(model_type)
 
+    # def _vectorize_seq(self, parms):
+    #     """
+    #     Example function with types documented in the docstring.
+    #     parms:
+    #         log_df (dataframe): event log data.
+    #         ac_index (dict): index of activities.
+    #         rl_index (dict): index of roles.
+    #         parms (dict): parms for training the network
+    #     Returns:
+    #         dict: Dictionary that contains all the LSTM inputs.
+    #     """
+    #     # TODO: reorganizar este metoo para poder vectorizar los tiempos
+    #     # con uno o dos features de tiempo, posiblemente la idea es 
+    #     # hacer equi como si fueran intercases.
+    #     equi = {'ac_index': 'activities', 'rl_index': 'roles',
+    #             'dur_norm': 'times'}
+    #     columns = list(equi.keys())
+    #     vec = {'prefixes': dict(),
+    #            'next_evt': dict()}
+    #     self.log = self.reformat_events(columns, parms['one_timestamp'])
+    #     # n-gram definition
+    #     for i, _ in enumerate(self.log):
+    #         for x in columns:
+    #             serie = list(ngrams(self.log[i][x], parms['n_size'],
+    #                                 pad_left=True, left_pad_symbol=0))
+    #             y_serie = [x[-1] for x in serie]
+    #             serie = serie[:-1]
+    #             y_serie = y_serie[1:]
+    #             vec['prefixes'][equi[x]] = (vec['prefixes'][equi[x]] + serie
+    #                                         if i > 0 else serie)
+    #             vec['next_evt'][equi[x]] = (vec['next_evt'][equi[x]] + y_serie
+    #                                         if i > 0 else y_serie)
+
+    #     # Transform task, dur and role prefixes in vectors
+    #     for value in equi.values():
+    #         vec['prefixes'][value] = np.array(vec['prefixes'][value])
+    #         vec['next_evt'][value] = np.array(vec['next_evt'][value])
+    #     # Reshape dur (prefixes, n-gram size, 1) i.e. time distribute
+    #     vec['prefixes']['times'] = vec['prefixes']['times'].reshape(
+    #             (vec['prefixes']['times'].shape[0],
+    #              vec['prefixes']['times'].shape[1], 1))
+    #     # one-hot encode target values
+    #     vec['next_evt']['activities'] = ku.to_categorical(
+    #         vec['next_evt']['activities'], num_classes=len(self.ac_index))
+    #     vec['next_evt']['roles'] = ku.to_categorical(
+    #         vec['next_evt']['roles'], num_classes=len(self.rl_index))
+    #     return vec
+
     def _vectorize_seq(self, parms):
         """
         Example function with types documented in the docstring.
@@ -70,12 +119,20 @@ class SequencesCreator():
         Returns:
             dict: Dictionary that contains all the LSTM inputs.
         """
-        equi = {'ac_index': 'activities',
-                'rl_index': 'roles',
-                'dur_norm': 'times'}
+        # TODO: reorganizar este metoo para poder vectorizar los tiempos
+        # con uno o dos features de tiempo, posiblemente la idea es 
+        # hacer equi como si fueran intercases.
+        equi = {'ac_index': 'activities', 'rl_index': 'roles'}
+        if self.one_timestamp:
+            times = ['dur_norm']
+        else: 
+            times = ['dur_norm', 'wait_norm']
         columns = list(equi.keys())
+        columns = columns + times
         vec = {'prefixes': dict(),
                'next_evt': dict()}
+        x_times_dict = dict()
+        y_times_dict = dict()
         self.log = self.reformat_events(columns, parms['one_timestamp'])
         # n-gram definition
         for i, _ in enumerate(self.log):
@@ -85,25 +142,37 @@ class SequencesCreator():
                 y_serie = [x[-1] for x in serie]
                 serie = serie[:-1]
                 y_serie = y_serie[1:]
-                vec['prefixes'][equi[x]] = (vec['prefixes'][equi[x]] + serie
-                                            if i > 0 else serie)
-                vec['next_evt'][equi[x]] = (vec['next_evt'][equi[x]] + y_serie
-                                            if i > 0 else y_serie)
+                if x in list(equi.keys()):
+                    vec['prefixes'][equi[x]] = (vec['prefixes'][equi[x]] + serie
+                                                if i > 0 else serie)
+                    vec['next_evt'][equi[x]] = (vec['next_evt'][equi[x]] + y_serie
+                                                if i > 0 else y_serie)
+                elif x in times:
+                    x_times_dict[x] = (
+                        x_times_dict[x] + serie if i > 0 else serie)
+                    y_times_dict[x] = (
+                        y_times_dict[x] + y_serie if i > 0 else y_serie)
 
         # Transform task, dur and role prefixes in vectors
         for value in equi.values():
             vec['prefixes'][value] = np.array(vec['prefixes'][value])
             vec['next_evt'][value] = np.array(vec['next_evt'][value])
-        # Reshape dur (prefixes, n-gram size, 1) i.e. time distribute
-        vec['prefixes']['times'] = vec['prefixes']['times'].reshape(
-                (vec['prefixes']['times'].shape[0],
-                 vec['prefixes']['times'].shape[1], 1))
         # one-hot encode target values
         vec['next_evt']['activities'] = ku.to_categorical(
             vec['next_evt']['activities'], num_classes=len(self.ac_index))
         vec['next_evt']['roles'] = ku.to_categorical(
             vec['next_evt']['roles'], num_classes=len(self.rl_index))
+        # reshape times
+        for key, value in x_times_dict.items():
+            x_times_dict[key] = np.array(value)
+            x_times_dict[key] = x_times_dict[key].reshape(
+                (x_times_dict[key].shape[0], x_times_dict[key].shape[1], 1))
+        vec['prefixes']['times'] = np.dstack(list(x_times_dict.values()))
+        # Reshape y intercase attributes (suffixes, number of attributes)
+        vec['next_evt']['times'] = np.dstack(list(y_times_dict.values()))[0]
+
         return vec
+
 
     def _vectorize_seq_inter(self, parms):
         # columns to keep

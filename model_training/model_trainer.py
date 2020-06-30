@@ -5,6 +5,8 @@ Created on Thu Mar 12 15:07:19 2020
 @author: Manuel Camargo
 """
 import os
+import glob
+
 import csv
 import itertools
 
@@ -31,7 +33,8 @@ class ModelTrainer():
     def __init__(self, params):
         """constructor"""
         self.log = self.load_log(params)
-        self.output_folder = os.path.join('output_files', sup.folder_id())
+        self.output = sup.folder_id()
+        self.output_folder = os.path.join('output_files', self.output)
         # Split validation partitions
         self.log_train = pd.DataFrame()
         self.log_test = pd.DataFrame()
@@ -51,15 +54,20 @@ class ModelTrainer():
         # Train model
         m_loader = mload.ModelLoader(params)
         m_loader.train(params['model_type'],
-                        self.examples,
-                        self.ac_weights,
-                        self.rl_weights,
-                        self.output_folder)
+                       self.examples,
+                       self.ac_weights,
+                       self.rl_weights,
+                       self.output_folder)
+        list_of_files = glob.glob(os.path.join(self.output_folder, '*.h5'))
+        latest_file = max(list_of_files, key=os.path.getctime)
+        self.model = os.path.basename(latest_file)
+
 
     def preprocess(self, params):
         # Features treatement
         inp = feat.FeaturesMannager(params)
         self.log, params['scale_args'] = inp.calculate(self.log)
+
         # indexes creation
         self.indexing()
         # split validation
@@ -67,6 +75,7 @@ class ModelTrainer():
         self.split_timeline(0.3, params['one_timestamp'])
         # create examples
         seq_creator = exc.SequencesCreator(self.log_train,
+                                           params['one_timestamp'],
                                             self.ac_index,
                                             self.rl_index)
         self.examples = seq_creator.vectorize(params['model_type'], params)
@@ -94,7 +103,8 @@ class ModelTrainer():
         log = lr.LogReader(os.path.join('input_files', params['file_name']),
                            params['read_options'])
         log_df = pd.DataFrame(log.data)
-        log_df.drop(columns=['Unnamed: 0', 'role'], inplace=True)
+        if set(['Unnamed: 0', 'role']).issubset(set(log_df.columns)):        
+            log_df.drop(columns=['Unnamed: 0', 'role'], inplace=True)
         log_df = log_df[~log_df.task.isin(['Start', 'End'])]
         return log_df
 

@@ -36,20 +36,20 @@ def main(argv):
     parameters['rp_sim'] = 0.85
     # Parameters setting manual fixed or catched by console
     if not argv:
-        # Event-log reading parameters
-        parameters['one_timestamp'] = True  # Only one timestamp in the log
-        parameters['read_options'] = {
-            'timeformat': '%Y-%m-%dT%H:%M:%S.%f',
-            'column_names': column_names,
-            'one_timestamp': parameters['one_timestamp'],
-            'ns_include': True}
         # Type of LSTM task -> training, pred_log
         # pred_sfx, predict_next, inter_case
-        parameters['activity'] = 'inter_case'
+        parameters['activity'] = 'pred_log'
         # General training parameters
-        if parameters['activity'] in ['emb_training', 'training']:
+        if parameters['activity'] in ['training']:
+            # Event-log reading parameters
+            parameters['one_timestamp'] = False  # Only one timestamp in the log
+            parameters['read_options'] = {
+                'timeformat': '%Y-%m-%dT%H:%M:%S.%f',
+                'column_names': column_names,
+                'one_timestamp': parameters['one_timestamp'],
+                'ns_include': True}
             # Event-log parameters
-            parameters['file_name'] = 'inter_Helpdesk.csv'
+            parameters['file_name'] = 'Production.xes'
             # Specific model training parameters
             if parameters['activity'] == 'training':
                 parameters['imp'] = 1  # keras lstm implementation 1 cpu,2 gpu
@@ -59,24 +59,24 @@ def main(argv):
                 parameters['norm_method'] = 'max'  # max, lognorm
                 # Model types --> shared_cat, shared_cat_inter, shared_cat_rd
                 # seq2seq, seq2seq_inter, cnn_lstm_inter
-                parameters['model_type'] = 'cnn_lstm_inter_full'
+                parameters['model_type'] = 'shared_cat'
                 parameters['n_size'] = 10  # n-gram size
                 parameters['l_size'] = 100  # LSTM layer sizes
                 # Generation parameters
         elif parameters['activity'] in ['pred_log', 'pred_sfx', 'predict_next']:
-            parameters['folder'] = '20200505_181929922800'
-            parameters['model_file'] = 'model_shared_cat_inter_72-0.64.h5'
+            parameters['folder'] = '20200625_102258106393'
+            parameters['model_file'] = 'model_shared_cat_28-2.96.h5'
             parameters['is_single_exec'] = False  # single or batch execution
             parameters['max_trace_size'] = 100
             # variants and repetitions to be tested
-            parameters['variants'] = [{'imp': 'Random Choice', 'rep': 0},
-                                      {'imp': 'Arg Max', 'rep': 1}]
+            parameters['variants'] = [{'imp': 'Random Choice', 'rep': 5},
+                                      {'imp': 'Arg Max', 'rep': 0}]
         elif parameters['activity'] == 'inter_case':
             parameters['file_name'] = 'Helpdesk.xes'
             parameters['splits'] = 10
-            parameters['sub_group'] = 'inter' # pd, rw, inter
+            parameters['sub_group'] = 'inter'  # pd, rw, inter
         else:
-            raise ValueError(parameters['activity']) 
+            raise ValueError(parameters['activity'])
     else:
         # Catch parameters by console
         try:
@@ -115,11 +115,13 @@ def main(argv):
 #   Execution
     if parameters['activity'] == 'training':
         print(parameters)
-        tr.ModelTrainer(parameters)
+        trainer = tr.ModelTrainer(parameters)
+        print(trainer.output, trainer.model, sep=' ')
     elif parameters['activity'] in ['predict_next', 'pred_sfx', 'pred_log']:
         print(parameters['folder'])
         print(parameters['model_file'])
-        pr.ModelPredictor(parameters)
+        predictor = pr.ModelPredictor(parameters)
+        print(predictor.acc)
     elif parameters['activity'] == 'inter_case':
         print(parameters)
         itf.extract_features(parameters)

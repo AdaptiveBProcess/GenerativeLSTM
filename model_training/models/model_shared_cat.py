@@ -34,7 +34,9 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
 # =============================================================================
     ac_input = Input(shape=(vec['prefixes']['activities'].shape[1], ), name='ac_input')
     rl_input = Input(shape=(vec['prefixes']['roles'].shape[1], ), name='rl_input')
-    t_input = Input(shape=(vec['prefixes']['times'].shape[1], 1), name='t_input')
+    # t_input = Input(shape=(vec['prefixes']['times'].shape[1], 1), name='t_input')
+    t_input = Input(shape=(vec['prefixes']['times'].shape[1],
+                           vec['prefixes']['times'].shape[2]), name='t_input')
 
 # =============================================================================
 #    Embedding layer for categorical attributes
@@ -113,12 +115,22 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
                         kernel_initializer='glorot_uniform',
                         name='role_output')(l2_c2)
 
+    # if ('dense_act' in args) and (args['dense_act'] is not None):
+    #     time_output = Dense(1, activation=args['dense_act'],
+    #                         kernel_initializer='glorot_uniform',
+    #                         name='time_output')(l2_3)
+    # else:
+    #     time_output = Dense(1,
+    #                         kernel_initializer='glorot_uniform',
+    #                         name='time_output')(l2_3)
+
     if ('dense_act' in args) and (args['dense_act'] is not None):
-        time_output = Dense(1, activation=args['dense_act'],
+        time_output = Dense(vec['next_evt']['times'].shape[1],
+                            activation=args['dense_act'],
                             kernel_initializer='glorot_uniform',
                             name='time_output')(l2_3)
     else:
-        time_output = Dense(1,
+        time_output = Dense(vec['next_evt']['times'].shape[1],
                             kernel_initializer='glorot_uniform',
                             name='time_output')(l2_3)
 

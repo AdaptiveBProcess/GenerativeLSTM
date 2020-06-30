@@ -157,7 +157,7 @@ def sbatch_creator(configs):
                        ]
         else:
             default = ['#!/bin/bash',
-                       '#SBATCH --partition=amd',
+                       '#SBATCH --partition=main',
                        '#SBATCH -J ' + exp_name,
                        '#SBATCH -N 1',
                        '#SBATCH --mem=14000',
@@ -172,15 +172,17 @@ def sbatch_creator(configs):
                     if configs[i][parm] in [None, 'nan', '', np.nan]
                     else ' -'+short+' '+str(configs[i][parm]))
 
-        options = 'python lstm.py -f ' + log + ' -i ' + str(imp)
-        options += ' -a training'
-        options += ' -o True'
+        options = 'python lstm_pipeline.py -f ' + log + ' -i ' + str(imp)
+        # options += ' -a training'
+        options += ' -o False'
         options += format_option('l', 'lstm_act')
         options += format_option('y', 'l_sizes')
         options += format_option('d', 'dense_act')
         options += format_option('n', 'norm_method')
         options += format_option('m', 'model_type')
         options += format_option('p', 'optimizers')
+        options += ' -t 100'
+        options += ' -x False'
         if arch == 'sh':
             options += format_option('z', 'n_sizes')
 
@@ -224,17 +226,17 @@ for _, _, files in os.walk(output_folder):
 
 # s2, sh
 arch = 'sh'
-log = 'BPI_Challenge_2013_closed_problems.xes'
+log = 'Production.csv'
 imp = 1  # keras lstm implementation 1 cpu, 2 gpu
 
 # Same experiment for both models
 if arch == 'sh':
-    model_type = ['shared_cat_city', 'shared_cat_snap']
+    model_type = ['shared_cat']
 else:
     model_type = ['seq2seq_inter', 'seq2seq']
 
 # configs definition
-configs = configs_creation({'config_type': 'load', 'num_choice': 30})
+configs = configs_creation({'config_type': 'random', 'num_choice': 30})
 # sbatch creation
 sbatch_creator(configs)
 # submission

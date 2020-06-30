@@ -22,7 +22,6 @@ class LogReader(object):
         """constructor"""
         self.input = input
         self.file_name, self.file_extension = self.define_ftype()
-
         self.timeformat = settings['timeformat']
         self.column_names = settings['column_names']
         self.one_timestamp = settings['one_timestamp']

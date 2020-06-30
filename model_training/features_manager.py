@@ -48,6 +48,8 @@ class FeaturesMannager():
     def filter_intercases(self, log):
         # Add intercase features
         columns = ['caseid', 'task', 'user', 'end_timestamp', 'role']
+        if not self.one_timestamp:
+            columns.extend(['start_timestamp'])
         if self.model_type in ['seq2seq', 'shared_cat',
                                'cnn_lstm', 'shared_cat_cx']:
             log = log[columns]
@@ -69,7 +71,7 @@ class FeaturesMannager():
             columns.extend(['snap1','snap2','snap3'])
             log = log[columns]
         else:
-            raise ValueError(model_type)
+            raise ValueError(self.model_type)
         return log
 
     def add_calculated_times(self, log):
@@ -106,6 +108,12 @@ class FeaturesMannager():
                            events[i]['start_timestamp']).total_seconds()
                     acc = (events[i]['end_timestamp'] -
                            events[0]['start_timestamp']).total_seconds()
+                    if i == 0:
+                        wit = 0
+                    else:
+                        wit = (events[i]['start_timestamp'] -
+                               events[i-1]['end_timestamp']).total_seconds()
+                    events[i]['wait'] = wit
                 events[i]['dur'] = dur
                 events[i]['acc_cycle'] = acc
                 time = events[i][ordk].time()
@@ -146,7 +154,12 @@ class FeaturesMannager():
             raise ValueError(model_type)
 
     def _scale_base(self, log):
-        log, scale_args = self.scale_feature(log, 'dur', self.norm_method)
+        if self.one_timestamp:
+            log, scale_args = self.scale_feature(log, 'dur', self.norm_method)
+        else:
+            log, dur_scale = self.scale_feature(log, 'dur', self.norm_method)
+            log, wait_scale = self.scale_feature(log, 'wait', self.norm_method)
+            scale_args = {'dur': dur_scale, 'wait': wait_scale}
         return log, scale_args
 
     def _scale_inter(self, log):

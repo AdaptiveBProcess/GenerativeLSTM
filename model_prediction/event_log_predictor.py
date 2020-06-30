@@ -23,7 +23,6 @@ class EventLogPredictor():
     def predict(self, params, model, examples, imp):
         self.model = model
         self.max_trace_size = params['max_trace_size']
-        print(params)
         self.imp = imp
         predictor = self._get_predictor(params['model_type'])
         return predictor(params)
@@ -50,10 +49,16 @@ class EventLogPredictor():
                 (1, parms['dim']['time_dim']), dtype=np.float32)
             x_rl_ngram = np.zeros(
                 (1, parms['dim']['time_dim']), dtype=np.float32)
-            x_t_ngram = np.zeros(
-                (1, parms['dim']['time_dim'], 1), dtype=np.float32)
+            if parms['one_timestamp']:
+                x_t_ngram = np.zeros(
+                    (1, parms['dim']['time_dim'], 1), dtype=np.float32)
+            else:
+                x_t_ngram = np.zeros(
+                    (1, parms['dim']['time_dim'], 2), dtype=np.float32)
             # TODO: add intercase support
-            for _ in range(1, self.max_trace_size):
+            i = 1
+            # for _ in range(1, self.max_trace_size):
+            while i < self.max_trace_size:
                 predictions = self.model.predict([x_ac_ngram, x_rl_ngram, x_t_ngram])
                 if self.imp == 'Random Choice':
                     # Use this to get a random choice following as PDF
@@ -67,19 +72,29 @@ class EventLogPredictor():
                     # Use this to get the max prediction
                     pos = np.argmax(predictions[0][0])
                     pos1 = np.argmax(predictions[1][0])
-                x_trace.append([pos, pos1, predictions[2][0][0]])
-    #            # Add prediction to n_gram
-                x_ac_ngram = np.append(x_ac_ngram, [[pos]], axis=1)
-                x_ac_ngram = np.delete(x_ac_ngram, 0, 1)
-                x_rl_ngram = np.append(x_rl_ngram, [[pos1]], axis=1)
-                x_rl_ngram = np.delete(x_rl_ngram, 0, 1)
-                x_t_ngram = np.append(x_t_ngram, [predictions[2]], axis=1)
-                x_t_ngram = np.delete(x_t_ngram, 0, 1)
-
-    #            # Stop if the next prediction is the end of the trace
-    #            # otherwise until the defined max_size
-                if parms['index_ac'][pos] == 'end':
-                    break
+                # Check that the first prediction wont be the end of the trace
+                if (not x_trace) and (parms['index_ac'][pos] == 'end'):
+                    continue
+                else:
+                    if parms['one_timestamp']:
+                        x_trace.append([pos, pos1, predictions[2][0][0]])
+                    else:
+                        x_trace.append([pos, pos1,
+                                        predictions[2][0][0],
+                                        predictions[2][0][1]])
+        #            # Add prediction to n_gram
+                    x_ac_ngram = np.append(x_ac_ngram, [[pos]], axis=1)
+                    x_ac_ngram = np.delete(x_ac_ngram, 0, 1)
+                    x_rl_ngram = np.append(x_rl_ngram, [[pos1]], axis=1)
+                    x_rl_ngram = np.delete(x_rl_ngram, 0, 1)
+                    x_t_ngram = np.append(x_t_ngram, [predictions[2]], axis=1)
+                    x_t_ngram = np.delete(x_t_ngram, 0, 1)
+    
+        #            # Stop if the next prediction is the end of the trace
+        #            # otherwise until the defined max_size
+                    if parms['index_ac'][pos] == 'end':
+                        break
+                    i += 1
             generated_event_log.extend(self.decode_trace(parms, x_trace, case))
         sup.print_done_task()
         return generated_event_log
@@ -97,42 +112,70 @@ class EventLogPredictor():
         for i, _ in enumerate(trace):
             event = trace[i]
             if parms['index_ac'][event[0]] != 'end':
-                tbtw = EventLogPredictor.rescale(event[2], parms)
-                if i == 0:
-                    now = datetime.datetime.now()
-                    now.strftime(parms['read_options']['timeformat'])
-                    time = now
+                if parms['one_timestamp']:
+                    tbtw = EventLogPredictor.rescale(event[2],
+                                                     parms['scale_args'],
+                                                     parms['norm_method'])
+                    if i == 0:
+                        now = datetime.datetime.now()
+                        now.strftime(parms['read_options']['timeformat'])
+                        time = now
+                    else:
+                        time = (log_trace[i-1]['end_timestamp'] +
+                                timedelta(seconds=tbtw))
+                    log_trace.append(dict(caseid=case,
+                                          task=parms['index_ac'][event[0]],
+                                          role=parms['index_rl'][event[1]],
+                                          end_timestamp=time,
+                                          tbtw_raw=event[2],
+                                          tbtw=tbtw))
                 else:
-                    time = (log_trace[i-1]['end_timestamp'] +
-                            timedelta(seconds=tbtw))
-                log_trace.append(dict(caseid=case,
-                                      task=parms['index_ac'][event[0]],
-                                      role=parms['index_rl'][event[1]],
-                                      end_timestamp=time,
-                                      tbtw_raw=event[2],
-                                      tbtw=tbtw))
+                    dur = EventLogPredictor.rescale(event[2],
+                                                    parms['scale_args']['dur'],
+                                                    parms['norm_method'])
+                    wait = EventLogPredictor.rescale(event[3],
+                                                     parms['scale_args']['wait'],
+                                                     parms['norm_method'])
+                    if i == 0:
+                        now = datetime.datetime.now()
+                        now.strftime(parms['read_options']['timeformat'])
+                        start_time = (now + timedelta(seconds=wait))
+                    else:
+                        start_time = (log_trace[i-1]['end_timestamp'] +
+                                      timedelta(seconds=wait))
+                    end_time = (start_time + timedelta(seconds=dur))
+                    log_trace.append(dict(caseid=case,
+                                          task=parms['index_ac'][event[0]],
+                                          role=parms['index_rl'][event[1]],
+                                          start_timestamp=start_time,
+                                          end_timestamp=end_time,
+                                          dur_raw=event[2],
+                                          dur=dur,
+                                          wait_raw=event[3],
+                                          wait=wait))
+              
         return log_trace
 
     @staticmethod
-    def rescale(value, parms):
-        if parms['norm_method'] == 'lognorm':
-            max_value = parms['scale_args']['max_value']
-            min_value = parms['scale_args']['min_value']
+    def rescale(value, scale_args, norm_method):
+        if norm_method == 'lognorm':
+            max_value = scale_args['max_value']
+            min_value = scale_args['min_value']
             value = (value * (max_value - min_value)) + min_value
             value = np.expm1(value)
-        elif parms['norm_method'] == 'normal':
-            max_value = parms['scale_args']['max_value']
-            min_value = parms['scale_args']['min_value']
+        elif norm_method == 'normal':
+            max_value = scale_args['max_value']
+            min_value = scale_args['min_value']
             value = (value * (max_value - min_value)) + min_value
-        elif parms['norm_method'] == 'standard':
-            mean = parms['scale_args']['mean']
-            std = parms['scale_args']['std']
+        elif norm_method == 'standard':
+            mean = scale_args['mean']
+            std = scale_args['std']
             value = (value * std) + mean
-        elif parms['norm_method'] == 'max':
-            max_value = parms['scale_args']['max_value']
+        elif norm_method == 'max':
+            max_value = scale_args['max_value']
             value = np.rint(value * max_value)
-        elif parms['norm_method'] is None:
+        elif norm_method is None:
             value = value
         else:
-            raise ValueError(parms['norm_method'])
+            raise ValueError(norm_method)
         return value

@@ -25,13 +25,15 @@ class ModelPredictor():
     """
 
     def __init__(self, parms):
-        self.parms = parms
         self.output_route = os.path.join('output_files', parms['folder'])
+        self.parms = parms
+        # load parameters
+        self.load_parameters()
         self.model_name, _ = os.path.splitext(parms['model_file'])
         self.model = load_model(os.path.join(self.output_route,
                                              parms['model_file']))
 
-        self.log = self.load_log_test(self.output_route, parms)
+        self.log = self.load_log_test(self.output_route, self.parms)
         self.ac_index = dict()  # TODO Evaluar si se dejan aca o en parms
         self.rl_index = dict()  # TODO Evaluar si se dejan aca o en parms
 
@@ -39,14 +41,9 @@ class ModelPredictor():
         self.predictions = None
         self.run_num = 0
 
-        self.execute_predictive_task()
+        self.acc = self.execute_predictive_task()
 
     def execute_predictive_task(self):
-        # load parameters
-        self.load_parameters()
-        # scale features
-        self.log = self.scale_feature(self.log, 'dur',
-                                      self.parms)
         # create examples for next event and suffix
         if self.parms['activity'] == 'pred_log':
             self.parms['num_cases'] = len(self.log.caseid.unique())
@@ -65,11 +62,12 @@ class ModelPredictor():
         # assesment
         evaluator = EvaluateTask()
         if self.parms['activity'] == 'pred_log':
-            data = self.append_sources(self.log, self.predictions)
+            data = self.append_sources(self.log, self.predictions,
+                                        self.parms['one_timestamp'])
             data['caseid'] = data['caseid'].astype(str)
-            evaluator.evaluate(self.parms, data)
+            return evaluator.evaluate(self.parms, data)
         else:
-            evaluator.evaluate(self.parms, self.predictions)
+            evaluator.evaluate(self.parms, self.predictions) 
 
     def predict_values(self):
         # Predict values
@@ -78,7 +76,6 @@ class ModelPredictor():
 
     @staticmethod
     def load_log_test(output_route, parms):
-        parms['read_options']['filter_d_attrib'] = False
         df_test = lr.LogReader(
             os.path.join(output_route, 'parameters', 'test_log.csv'),
             parms['read_options'])
@@ -97,8 +94,13 @@ class ModelPredictor():
                 del data['activity']
             self.parms = {**self.parms, **{k: v for k, v in data.items()}}
             self.parms['dim'] = {k: int(v) for k, v in data['dim'].items()}
-            self.parms['scale_args'] = {k: float(v)
-                                        for k, v in data['scale_args'].items()}
+            if self.parms['one_timestamp']:
+                self.parms['scale_args'] = {
+                    k: float(v) for k, v in data['scale_args'].items()}
+            else:
+                for key in data['scale_args'].keys():
+                    self.parms['scale_args'][key] = {
+                        k: float(v) for k, v in data['scale_args'][key].items()}
             self.parms['index_ac'] = {int(k): v
                                       for k, v in data['index_ac'].items()}
             self.parms['index_rl'] = {int(k): v
@@ -136,13 +138,17 @@ class ModelPredictor():
                                 index=False)
 
     @staticmethod
-    def append_sources(source_log, source_predictions):
+    def append_sources(source_log, source_predictions, one_timestamp):
         log = source_log.copy()
-        log = log[['caseid', 'task', 'end_timestamp', 'role']]
+        columns = ['caseid', 'task', 'end_timestamp', 'role']
+        if not one_timestamp:
+            columns += ['start_timestamp']
+        log = log[columns]
         log['run_num'] = 0
         log['implementation'] = 'log'
         predictions = source_predictions.copy()
-        predictions = predictions.drop(columns=['tbtw_raw', 'tbtw'])
+        columns = log.columns
+        predictions = predictions[columns]
         return log.append(predictions, ignore_index=True)
 
     @staticmethod
@@ -206,7 +212,7 @@ class EvaluateTask():
 
     def _evaluate_predict_next(self, data, parms):
         exp_desc = self.clean_parameters(parms.copy())
-        evaluator = ev.Evaluator()
+        evaluator = ev.Evaluator(parms['one_timestamp'])
         ac_sim = evaluator.measure('accuracy', data, 'ac')
         rl_sim = evaluator.measure('accuracy', data, 'rl')
         tm_mae = evaluator.measure('mae_next', data, 'tm')
@@ -221,7 +227,7 @@ class EvaluateTask():
 
     def _evaluate_pred_sfx(self, data, parms):
         exp_desc = self.clean_parameters(parms.copy())
-        evaluator = ev.Evaluator()
+        evaluator = ev.Evaluator(parms['one_timestamp'])
         ac_sim = evaluator.measure('similarity', data, 'ac')
         rl_sim = evaluator.measure('similarity', data, 'rl')
         tm_mae = evaluator.measure('mae_suffix', data, 'tm')
@@ -236,18 +242,21 @@ class EvaluateTask():
 
     def _evaluate_predict_log(self, data, parms):
         exp_desc = self.clean_parameters(parms.copy())
-        evaluator = ev.Evaluator()
+        evaluator = ev.Evaluator(parms['one_timestamp'])
         dl = evaluator.measure('dl', data)
         els = evaluator.measure('els', data)
+        mean_els = els.els.mean()
         mae = evaluator.measure('mae_log', data)
         exp_desc = pd.DataFrame([exp_desc])
         exp_desc = pd.concat([exp_desc]*len(dl), ignore_index=True)
+        # exp_desc = pd.concat([exp_desc]*len(els), ignore_index=True)
         dl = pd.concat([dl, exp_desc], axis=1).to_dict('records')
         els = pd.concat([els, exp_desc], axis=1).to_dict('records')
         mae = pd.concat([mae, exp_desc], axis=1).to_dict('records')
-        self.save_results(dl, 'ac', parms)
-        self.save_results(els, 'rl', parms)
-        self.save_results(mae, 'tm', parms)
+        self.save_results(dl, 'dl', parms)
+        self.save_results(els, 'els', parms)
+        self.save_results(mae, 'mae', parms)
+        return mean_els
 
     @staticmethod
     def clean_parameters(parms):
