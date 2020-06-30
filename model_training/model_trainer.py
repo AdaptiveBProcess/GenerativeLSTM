@@ -94,7 +94,8 @@ class ModelTrainer():
         log = lr.LogReader(os.path.join('input_files', params['file_name']),
                            params['read_options'])
         log_df = pd.DataFrame(log.data)
-        log_df.drop(columns=['Unnamed: 0', 'role'], inplace=True)
+        if set(['Unnamed: 0', 'role']).issubset(set(log_df.columns)):        
+            log_df.drop(columns=['Unnamed: 0', 'role'], inplace=True)
         log_df = log_df[~log_df.task.isin(['Start', 'End'])]
         return log_df
 
