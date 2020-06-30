@@ -45,11 +45,11 @@ def main(argv):
             'ns_include': True}
         # Type of LSTM task -> training, pred_log
         # pred_sfx, predict_next, inter_case
-        parameters['activity'] = 'inter_case'
+        parameters['activity'] = 'training'
         # General training parameters
         if parameters['activity'] in ['emb_training', 'training']:
             # Event-log parameters
-            parameters['file_name'] = 'inter_Helpdesk.csv'
+            parameters['file_name'] = 'Helpdesk.xes'
             # Specific model training parameters
             if parameters['activity'] == 'training':
                 parameters['imp'] = 1  # keras lstm implementation 1 cpu,2 gpu
@@ -57,9 +57,8 @@ def main(argv):
                 parameters['dense_act'] = None  # optimization function Keras
                 parameters['optim'] = 'Adam'  # optimization function Keras
                 parameters['norm_method'] = 'max'  # max, lognorm
-                # Model types --> shared_cat, shared_cat_inter, shared_cat_rd
-                # seq2seq, seq2seq_inter, cnn_lstm_inter
-                parameters['model_type'] = 'cnn_lstm_inter_full'
+                # Model types --> shared_cat
+                parameters['model_type'] = 'shared_cat'
                 parameters['n_size'] = 10  # n-gram size
                 parameters['l_size'] = 100  # LSTM layer sizes
                 # Generation parameters
