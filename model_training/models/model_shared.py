@@ -15,7 +15,7 @@ from keras.optimizers import Nadam, Adam, SGD, Adagrad
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from keras.layers.normalization import BatchNormalization
 
-def training_model(vec, ac_weights, rl_weights, output_folder, args):
+def _training_model(vec, ac_weights, rl_weights, output_folder, args):
     """Example function with types documented in the docstring.
     Args:
         param1 (int): The first parameter.

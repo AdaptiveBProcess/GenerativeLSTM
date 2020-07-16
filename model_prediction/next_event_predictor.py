@@ -17,26 +17,20 @@ class NextEventPredictor():
         self.spl = dict()
         self.imp = 'Arg Max'
 
-    def predict(self, params, model, spl, imp):
+    def predict(self, params, model, spl, imp, vectorizer):
         self.model = model
         self.spl = spl
         self.imp = imp
         predictor = self._get_predictor(params['model_type'])
         sup.print_performed_task('Predicting next events')
-        return predictor(params)
+        return predictor(params, vectorizer)
 
     def _get_predictor(self, model_type):
-        if model_type in ['shared_cat', 'shared_cat_rd',
-                          'shared_cat_wl', 'shared_cat_inter',
-                          'shared_cat_inter_full',
-                          'cnn_lstm_inter', 'cnn_lstm_inter_full',
-                          'cnn_lstm', 'shared_cat_cx',
-                          'shared_cat_city', 'shared_cat_snap']:
-            return self._predict_next_event_shared_cat
-        else:
-            raise ValueError(model_type)
+        # OJO: This is an extension point just incase 
+        # a different predictor being neccesary
+        return self._predict_next_event_shared_cat
 
-    def _predict_next_event_shared_cat(self, parameters):
+    def _predict_next_event_shared_cat(self, parameters, vectorizer):
         """Generate business process suffixes using a keras trained model.
         Args:
             model (keras model): keras trained model.
@@ -68,17 +62,9 @@ class NextEventPredictor():
                     axis=0)[-parameters['dim']['time_dim']:]
                 .reshape((parameters['dim']['time_dim'], 1))]))
             # add intercase features if necessary
-            if parameters['model_type'] in ['shared_cat', 'cnn_lstm']:
+            if vectorizer in ['basic']:
                 inputs = [x_ac_ngram, x_rl_ngram, x_t_ngram]
-            elif parameters['model_type'] in ['shared_cat_inter',
-                                              'shared_cat_inter_full',
-                                              'shared_cat_rd',
-                                              'shared_cat_wl',
-                                              'shared_cat_cx',
-                                              'cnn_lstm_inter',
-                                              'cnn_lstm_inter_full',
-                                              'shared_cat_city',
-                                              'shared_cat_snap']:
+            elif vectorizer in ['inter']:
                 # times input shape(1,5,1)
                 inter_attr_num = (self.spl['prefixes']['inter_attr'][i]
                                   .shape[1])

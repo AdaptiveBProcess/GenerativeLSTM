@@ -18,6 +18,7 @@ from model_training.intercase_features import resource_dedication as rd
 
 class FeaturesMannager():
 
+
     def __init__(self, params):
         """constructor"""
         self.rp_sim = params['rp_sim']
@@ -25,12 +26,15 @@ class FeaturesMannager():
         self.one_timestamp = params['one_timestamp']
         self.resources = pd.DataFrame
         self.norm_method = params['norm_method']
+        self._scalers = dict()
+        self.scale_dispatcher = {'basic': self._scale_base,
+                                 'inter': self._scale_inter}
 
-    def calculate(self, log):
+    def calculate(self, log, add_cols):
         log = self.add_resources(log)
-        log = self.filter_intercases(log)
         log = self.add_calculated_times(log)
-        return self.scale_features(log)
+        log = self.filter_features(log, add_cols)
+        return self.scale_features(log, add_cols)
 
     def add_resources(self, log):
         # Resource pool discovery
@@ -45,33 +49,13 @@ class FeaturesMannager():
         log = log.reset_index(drop=True)
         return log
 
-    def filter_intercases(self, log):
+    def filter_features(self, log, add_cols):
         # Add intercase features
-        columns = ['caseid', 'task', 'user', 'end_timestamp', 'role']
+        columns = ['caseid', 'task', 'user', 'end_timestamp', 'role', 'dur']
         if not self.one_timestamp:
-            columns.extend(['start_timestamp'])
-        if self.model_type in ['seq2seq', 'shared_cat',
-                               'cnn_lstm', 'shared_cat_cx']:
-            log = log[columns]
-        elif self.model_type in ['seq2seq_inter', 'shared_cat_inter',
-                               'cnn_lstm_inter', 'shared_cat_inter_full',
-                               'cnn_lstm_inter_full']:
-            columns.extend(['ev_et', 'ev_et_t', 'ev_rd', 'ev_rp_occ'])
-            log = log[columns]
-        elif self.model_type in ['shared_cat_rd']:
-            columns.extend(['ev_rd', 'ev_rp_occ'])
-            log = log[columns]
-        elif self.model_type in ['shared_cat_wl']:
-            columns.extend(['ev_et', 'ev_et_t'])
-            log = log[columns]
-        elif self.model_type in ['shared_cat_city']:
-            columns.extend(['city1','city2','city3'])
-            log = log[columns]
-        elif self.model_type in ['shared_cat_snap']:
-            columns.extend(['snap1','snap2','snap3'])
-            log = log[columns]
-        else:
-            raise ValueError(self.model_type)
+            columns.extend(['start_timestamp', 'wait'])
+        columns.extend(add_cols)
+        log = log[columns]
         return log
 
     def add_calculated_times(self, log):
@@ -121,39 +105,23 @@ class FeaturesMannager():
                 events[i]['daytime'] = time
         return pd.DataFrame.from_dict(log)
 
-    def scale_features(self, log):
+    def scale_features(self, log, add_cols):
         scaler = self._get_scaler(self.model_type)
-        return scaler(log)
+        return scaler(log, add_cols)
+
+    def register_scaler(self, model_type, scaler):
+        try:
+            self._scalers[model_type] = self.scale_dispatcher[scaler]
+        except KeyError:
+            raise ValueError(scaler)
 
     def _get_scaler(self, model_type):
-        if model_type == 'shared_cat':
-            return self._scale_base
-        elif model_type == 'cnn_lstm':
-            return self._scale_base
-        elif model_type == 'seq2seq':
-            return self._scale_base
-        elif model_type == 'shared_cat_inter':
-            return self._scale_inter
-        elif model_type == 'shared_cat_inter_full':
-            return self._scale_inter
-        elif model_type == 'cnn_lstm_inter_full':
-            return self._scale_inter
-        elif model_type == 'cnn_lstm_inter':
-            return self._scale_inter
-        elif model_type == 'shared_cat_rd':
-            return self._scale_rd
-        elif model_type == 'shared_cat_wl':
-            return self._scale_wl
-        elif model_type == 'shared_cat_cx':
-            return self._scale_cx
-        elif model_type == 'shared_cat_city':
-            return self._scale_city
-        elif model_type == 'shared_cat_snap':
-            return self._scale_snap
-        else:
+        scaler = self._scalers.get(model_type)
+        if not scaler:
             raise ValueError(model_type)
+        return scaler
 
-    def _scale_base(self, log):
+    def _scale_base(self, log, add_cols):
         if self.one_timestamp:
             log, scale_args = self.scale_feature(log, 'dur', self.norm_method)
         else:
@@ -162,46 +130,13 @@ class FeaturesMannager():
             scale_args = {'dur': dur_scale, 'wait': wait_scale}
         return log, scale_args
 
-    def _scale_inter(self, log):
+    def _scale_inter(self, log, add_cols):
         log, scale_args = self.scale_feature(log, 'dur', self.norm_method)
-        log, _ = self.scale_feature(log, 'daytime', 'day_secs', True)
-        for col in ['ev_et', 'ev_et_t', 'ev_rd', 'ev_rp_occ', 'acc_cycle']:
-            log, _ = self.scale_feature(log, col, self.norm_method, True)
-        return log, scale_args
-
-    def _scale_inter_full(self, log):
-        log, scale_args = self.scale_feature(log, 'dur', self.norm_method)
-        for col in ['ev_et', 'ev_et_t', 'ev_rd', 'ev_rp_occ']:
-            log, _ = self.scale_feature(log, col, self.norm_method, True)
-
-    def _scale_rd(self, log):
-        log, scale_args = self.scale_feature(log, 'dur', self.norm_method)
-        for col in ['ev_rd', 'ev_rp_occ']:
-            log, _ = self.scale_feature(log, col, self.norm_method, True)
-        return log, scale_args
-
-    def _scale_wl(self, log):
-        log, scale_args = self.scale_feature(log, 'dur', self.norm_method)
-        for col in ['ev_et', 'ev_et_t']:
-            log, _ = self.scale_feature(log, col, self.norm_method, True)
-        return log, scale_args
-
-    def _scale_cx(self, log):
-        log, scale_args = self.scale_feature(log, 'dur', self.norm_method)
-        log, _ = self.scale_feature(log, 'acc_cycle', self.norm_method, True)
-        log, _ = self.scale_feature(log, 'daytime', 'day_secs', True)
-        return log, scale_args
-
-    def _scale_city(self, log):
-        log, scale_args = self.scale_feature(log, 'dur', self.norm_method)
-        for col in ['city1','city2','city3']:
-            log, _ = self.scale_feature(log, col, self.norm_method, True)
-        return log, scale_args
-
-    def _scale_snap(self, log):
-        log, scale_args = self.scale_feature(log, 'dur', self.norm_method)
-        for col in ['snap1','snap2','snap3']:
-            log, _ = self.scale_feature(log, col, self.norm_method, True)
+        for col in add_cols:
+            if col == 'daytime':
+                log, _ = self.scale_feature(log, 'daytime', 'day_secs', True)
+            else:
+                log, _ = self.scale_feature(log, col, self.norm_method, True)
         return log, scale_args
 
     # =========================================================================

@@ -10,7 +10,6 @@ import getopt
 
 from model_prediction import model_predictor as pr
 from model_training import model_trainer as tr
-from intercase_feat import intercase_feat_extraction as itf
 
 
 def catch_parameter(opt):
@@ -20,7 +19,8 @@ def catch_parameter(opt):
               '-d': 'dense_act', '-p': 'optim', '-n': 'norm_method',
               '-m': 'model_type', '-z': 'n_size', '-y': 'l_size',
               '-c': 'folder', '-b': 'model_file', '-x': 'is_single_exec',
-              '-t': 'max_trace_size', '-e': 'splits', '-g': 'sub_group'}
+              '-t': 'max_trace_size', '-e': 'splits', '-g': 'sub_group',
+              '-v': 'variant', '-r': 'rep'}
     try:
         return switch[opt]
     except:
@@ -40,9 +40,9 @@ def main(argv):
     # Parameters setting manual fixed or catched by console
     if not argv:
         # Event-log parameters
-        parameters['file_name'] = 'Production.csv'
+        parameters['file_name'] = 'Production_training.csv'
         # Event-log reading parameters
-        parameters['one_timestamp'] = False  # Only one timestamp in the log
+        parameters['one_timestamp'] = True  # Only one timestamp in the log
         parameters['read_options'] = {
             'timeformat': '%Y-%m-%dT%H:%M:%S.%f',
             'column_names': column_names,
@@ -54,34 +54,36 @@ def main(argv):
         parameters['dense_act'] = None  # optimization function Keras
         parameters['optim'] = 'Adam'  # optimization function Keras
         parameters['norm_method'] = 'max'  # max, lognorm
-        # Model types --> shared_cat, shared_cat_inter
+        # Model types --> shared_cat, shared_cat_inter, specialized, concatenated
         parameters['model_type'] = 'shared_cat'
         parameters['n_size'] = 10  # n-gram size
         parameters['l_size'] = 100  # LSTM layer sizes
         parameters['is_single_exec'] = False  # single or batch execution
         parameters['max_trace_size'] = 100
-        # variants and repetitions to be tested
-        parameters['variants'] = [{'imp': 'Random Choice', 'rep': 2},
-                                  {'imp': 'Arg Max', 'rep': 1}]
+        # variants and repetitions to be tested Random Choice, Arg Max
+        parameters['variant'] = 'Random Choice'
+        parameters['rep'] = 2
     else:
         # Catch parameters by console
         try:
             opts, _ = getopt.getopt(
                 argv,
-                "ho:a:f:i:l:d:p:n:m:z:y:c:b:x:t:e:",
+                "ho:a:f:i:l:d:p:n:m:z:y:c:b:x:t:e:v:r:",
                 ['one_timestamp=', 'activity=',
                  'file_name=', 'imp=', 'lstm_act=',
                  'dense_act=', 'optim=', 'norm_method=',
                  'model_type=', 'n_size=', 'l_size=',
                  'folder=', 'model_file=', 'is_single_exec=',
-                 'max_trace_size=', 'splits=', 'sub_group='])
+                 'max_trace_size=', 'splits=', 'sub_group=',
+                 'variant=', 'rep='])
             for opt, arg in opts:
                 key = catch_parameter(opt)
                 if arg in ['None', 'none']:
                     parameters[key] = None
                 elif key in ['is_single_exec', 'one_timestamp']:
                     parameters[key] = arg in ['True', 'true', 1]
-                elif key in ['imp', 'n_size', 'l_size', 'max_trace_size', 'splits']:
+                elif key in ['imp', 'n_size', 'l_size',
+                             'max_trace_size','splits', 'rep']:
                     parameters[key] = int(arg)
                 else:
                     parameters[key] = arg
@@ -90,9 +92,6 @@ def main(argv):
                                           'one_timestamp':
                                               parameters['one_timestamp'],
                                               'ns_include': True}
-            # variants and repetitions to be tested
-            parameters['variants'] = [{'imp': 'Random Choice', 'rep': 10},
-                                      {'imp': 'Arg Max', 'rep': 0}]
         except getopt.GetoptError:
             print('Invalid option')
             sys.exit(2)
@@ -108,6 +107,6 @@ def main(argv):
     print(parameters['model_file'])
     predictor = pr.ModelPredictor(parameters)
     print(predictor.acc)
-    
+
 if __name__ == "__main__":
     main(sys.argv[1:])

@@ -20,20 +20,17 @@ class EventLogPredictor():
         self.imp = 'Arg Max'
         self.max_trace_size = 0
 
-    def predict(self, params, model, examples, imp):
+    def predict(self, params, model, examples, imp, vectorizer):
         self.model = model
         self.max_trace_size = params['max_trace_size']
         self.imp = imp
         predictor = self._get_predictor(params['model_type'])
-        return predictor(params)
+        return predictor(params, vectorizer)
 
     def _get_predictor(self, model_type):
-        if model_type in ['shared_cat', 'shared_cat_rd', 'shared_cat_inter']:
-            return self._predict_event_log_shared_cat
-        else:
-            raise ValueError(model_type)
+        return self._predict_event_log_shared_cat
 
-    def _predict_event_log_shared_cat(self, parms):
+    def _predict_event_log_shared_cat(self, parms, vectorizer):
         """Generate business process traces using a keras trained model.
         Args:
             model (keras model): keras trained model.

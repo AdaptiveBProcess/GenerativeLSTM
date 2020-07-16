@@ -9,6 +9,7 @@ import json
 
 import pandas as pd
 import numpy as np
+import configparser as cp
 
 from keras.models import load_model
 
@@ -34,12 +35,14 @@ class ModelPredictor():
                                              parms['model_file']))
 
         self.log = self.load_log_test(self.output_route, self.parms)
-        self.ac_index = dict()  # TODO Evaluar si se dejan aca o en parms
-        self.rl_index = dict()  # TODO Evaluar si se dejan aca o en parms
 
         self.samples = dict()
         self.predictions = None
         self.run_num = 0
+
+        self.model_def = dict()
+        self.read_model_definition(self.parms['model_type'])
+        print(self.model_def)
 
         self.acc = self.execute_predictive_task()
 
@@ -51,23 +54,22 @@ class ModelPredictor():
             sampler = it.SamplesCreator()
             sampler.create(self, self.parms['activity'])
         # predict
-        for variant in self.parms['variants']:
-            self.imp = variant['imp']
-            self.run_num = 0
-            for i in range(0, variant['rep']):
-                self.predict_values()
-                self.run_num += 1
+        self.imp = self.parms ['variant']
+        self.run_num = 0
+        for i in range(0, self.parms['rep']):
+            self.predict_values()
+            self.run_num += 1
         # export predictions
         self.export_predictions()
         # assesment
         evaluator = EvaluateTask()
         if self.parms['activity'] == 'pred_log':
             data = self.append_sources(self.log, self.predictions,
-                                        self.parms['one_timestamp'])
+                                       self.parms['one_timestamp'])
             data['caseid'] = data['caseid'].astype(str)
             return evaluator.evaluate(self.parms, data)
         else:
-            evaluator.evaluate(self.parms, self.predictions) 
+            return evaluator.evaluate(self.parms, self.predictions) 
 
     def predict_values(self):
         # Predict values
@@ -110,16 +112,18 @@ class ModelPredictor():
             self.rl_index = {v: k for k, v in self.parms['index_rl'].items()}
 
     def sampling(self, sampler):
-        self.samples = sampler.create_samples(self.parms,
-                                              self.log,
-                                              self.ac_index,
-                                              self.rl_index)
+        sampler.register_sampler(self.parms['model_type'],
+                                 self.model_def['vectorizer'])
+        self.samples = sampler.create_samples(
+            self.parms, self.log, self.ac_index,
+            self.rl_index, self.model_def['additional_columns'])
 
     def predict(self, executioner):
         results = executioner.predict(self.parms,
                                       self.model,
                                       self.samples,
-                                      self.imp)
+                                      self.imp,
+                                      self.model_def['vectorizer'])
         results = pd.DataFrame(results)
         results['run_num'] = self.run_num
         results['implementation'] = self.imp
@@ -193,7 +197,14 @@ class ModelPredictor():
             log = log.drop(feature, axis=1)
         return log
 
-
+    def read_model_definition(self, model_type):
+        Config = cp.ConfigParser(interpolation=None)
+        Config.read('models_spec.ini')
+        #File name with extension
+        self.model_def['additional_columns'] = sup.reduce_list(
+            Config.get(model_type,'additional_columns'), dtype='str')
+        self.model_def['vectorizer'] = Config.get(model_type, 'vectorizer')
+        
 class EvaluateTask():
 
     def evaluate(self, parms, data):
@@ -216,6 +227,7 @@ class EvaluateTask():
         ac_sim = evaluator.measure('accuracy', data, 'ac')
         rl_sim = evaluator.measure('accuracy', data, 'rl')
         tm_mae = evaluator.measure('mae_next', data, 'tm')
+        mean_ac = ac_sim.accuracy.mean()
         exp_desc = pd.DataFrame([exp_desc])
         exp_desc = pd.concat([exp_desc]*len(ac_sim), ignore_index=True)
         ac_sim = pd.concat([ac_sim, exp_desc], axis=1).to_dict('records')
@@ -224,6 +236,7 @@ class EvaluateTask():
         self.save_results(ac_sim, 'ac', parms)
         self.save_results(rl_sim, 'rl', parms)
         self.save_results(tm_mae, 'tm', parms)
+        return mean_ac
 
     def _evaluate_pred_sfx(self, data, parms):
         exp_desc = self.clean_parameters(parms.copy())
@@ -231,6 +244,7 @@ class EvaluateTask():
         ac_sim = evaluator.measure('similarity', data, 'ac')
         rl_sim = evaluator.measure('similarity', data, 'rl')
         tm_mae = evaluator.measure('mae_suffix', data, 'tm')
+        mean_sim = ac_sim['mean'].mean()
         exp_desc = pd.DataFrame([exp_desc])
         exp_desc = pd.concat([exp_desc]*len(ac_sim), ignore_index=True)
         ac_sim = pd.concat([ac_sim, exp_desc], axis=1).to_dict('records')
@@ -239,6 +253,7 @@ class EvaluateTask():
         self.save_results(ac_sim, 'ac', parms)
         self.save_results(rl_sim, 'rl', parms)
         self.save_results(tm_mae, 'tm', parms)
+        return mean_sim
 
     def _evaluate_predict_log(self, data, parms):
         exp_desc = self.clean_parameters(parms.copy())
@@ -300,4 +315,3 @@ class EvaluateTask():
                         measurements,
                         os.path.join('output_files',
                                      feature+'_'+parms['activity']+'.csv'))
-

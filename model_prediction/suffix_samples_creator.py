@@ -4,7 +4,6 @@ Created on Wed Mar 18 10:03:26 2020
 
 @author: Manuel Camargo
 """
-
 import itertools
 
 import pandas as pd
@@ -20,49 +19,40 @@ class SuffixSamplesCreator():
         self.log = pd.DataFrame
         self.ac_index = dict()
         self.rl_index = dict()
+        self._samplers = dict()
+        self._samp_dispatcher = {'basic': self._sample_suffix,
+                                 'inter': self._sample_suffix_inter}
 
-    def create_samples(self, params, log, ac_index, rl_index):
+    def create_samples(self, params, log, ac_index, rl_index, add_cols):
         self.log = log
         self.ac_index = ac_index
         self.rl_index = rl_index
+        columns = self.define_columns(add_cols)
         sampler = self._get_model_specific_sampler(params['model_type'])
-        return sampler(params)
+        return sampler(columns, params)
+
+    @staticmethod
+    def define_columns(add_cols):
+        columns = ['ac_index', 'rl_index', 'dur_norm']
+        add_cols = [x+'_norm' for x in add_cols]
+        columns.extend(add_cols)
+        return columns
+
+    def register_sampler(self, model_type, sampler):
+        try:
+            self._samplers[model_type] = self._samp_dispatcher[sampler]
+        except KeyError:
+            raise ValueError(sampler)
 
     def _get_model_specific_sampler(self, model_type):
-        if model_type == 'shared_cat':
-            return self._suffix_shared_cat
-        elif model_type == 'shared_cat_inter':
-            return self._suffix_shared_cat_inter
-        elif model_type == 'shared_cat_inter_full':
-            return self._suffix_shared_cat_inter_full
-        elif model_type == 'shared_cat_rd':
-            return self._suffix_shared_cat_rd
-        elif model_type == 'shared_cat_wl':
-            return self._suffix_shared_cat_wl
-        elif model_type == 'shared_cat_cx':
-            return self._suffix_shared_cat_cx
-        elif model_type == 'seq2seq':
-            return self._suffix_seq2seq
-        elif model_type == 'seq2seq_inter':
-            return self._suffix_seq2seq_inter
-        elif model_type == 'cnn_lstm':
-            return self._suffix_shared_cat
-        elif model_type == 'cnn_lstm_inter':
-            return self._suffix_shared_cat_inter
-        elif model_type == 'cnn_lstm_inter_full':
-            return self._suffix_shared_cat_inter_full
-        elif model_type == 'shared_cat_city':
-            return self._suffix_shared_cat_city
-        elif model_type == 'shared_cat_snap':
-            return self._suffix_shared_cat_snap
-        else:
+        sampler = self._samplers.get(model_type)
+        if not sampler:
             raise ValueError(model_type)
+        return sampler
 
-# =============================================================================
-# Reformat
-# =============================================================================
-    def _suffix_shared_cat(self, parms):
-        """Extraction of prefixes and expected suffixes from event log.
+    def _sample_suffix(self, columns, parms):
+        """
+        Extraction of prefixes and expected suffixes from event log.
         Args:
             self.log (dataframe): testing dataframe in pandas format.
             ac_index (dict): index of activities.
@@ -71,7 +61,7 @@ class SuffixSamplesCreator():
         Returns:
             list: list of prefixes and expected sufixes.
         """
-        columns = ['ac_index', 'rl_index', 'dur_norm']
+        # columns = ['ac_index', 'rl_index', 'dur_norm']
         self.log = self.reformat_events(columns, parms['one_timestamp'])
         spl = {'prefixes': dict(), 'suffixes': dict()}
         # n-gram definition
@@ -90,84 +80,7 @@ class SuffixSamplesCreator():
                     spl['suffixes'][equi[x]] + y_serie if i > 0 else y_serie)
         return spl
 
-    def _suffix_shared_cat_inter(self, parms):
-        """Extraction of prefixes and expected suffixes from event log.
-        Args:
-            parameters: dict of parametsrs settings
-        Returns:
-            list: list of prefixes and expected sufixes.
-        """
-        columns = ['ev_rd_norm', 'ev_rp_occ_norm','ev_et_norm', 'ev_et_t_norm',
-                   'ac_index', 'rl_index', 'dur_norm']
-        return self.process_samples_creation(columns, parms)
-
-    def _suffix_shared_cat_inter_full(self, parms):
-        """Example function with types documented in the docstring.
-        Returns:
-            dict: Dictionary that contains all the LSTM inputs.
-        """
-        # columns to keep
-        columns = ['acc_cycle_norm', 'daytime_norm', 'ev_rd_norm',
-                   'ev_rp_occ_norm', 'ev_et_norm', 'ev_et_t_norm',
-                   'ac_index', 'rl_index', 'dur_norm']
-        return self.process_samples_creation(columns, parms)
-
-    def _suffix_shared_cat_rd(self, parms):
-        """Extraction of prefixes and expected suffixes from event log.
-        Args:
-            parameters: dict of parametsrs settings
-        Returns:
-            list: list of prefixes and expected sufixes.
-        """
-        columns = ['ev_rd_norm', 'ev_rp_occ_norm',
-                   'ac_index', 'rl_index', 'dur_norm']
-        return self.process_samples_creation(columns, parms)
-
-    def _suffix_shared_cat_wl(self, parms):
-        """Extraction of prefixes and expected suffixes from event log.
-        Args:
-            parameters: dict of parametsrs settings
-        Returns:
-            list: list of prefixes and expected sufixes.
-        """
-        columns = ['ev_et_norm', 'ev_et_t_norm',
-                   'ac_index', 'rl_index', 'dur_norm']
-        return self.process_samples_creation(columns, parms)
-
-    def _suffix_shared_cat_cx(self, parms):
-        """Extraction of prefixes and expected suffixes from event log.
-        Args:
-            parameters: dict of parametsrs settings
-        Returns:
-            list: list of prefixes and expected sufixes.
-        """
-        columns = ['acc_cycle_norm', 'daytime_norm',
-                   'ac_index', 'rl_index', 'dur_norm']
-        return self.process_samples_creation(columns, parms)
-
-    def _suffix_shared_cat_city(self, parms):
-        """Extraction of prefixes and expected suffixes from event log.
-        Args:
-            parameters: dict of parametsrs settings
-        Returns:
-            list: list of prefixes and expected sufixes.
-        """
-        columns = ['city1_norm','city2_norm','city3_norm',
-                   'ac_index', 'rl_index', 'dur_norm']
-        return self.process_samples_creation(columns, parms)
-
-    def _suffix_shared_cat_snap(self, parms):
-        """Extraction of prefixes and expected suffixes from event log.
-        Args:
-            parameters: dict of parametsrs settings
-        Returns:
-            list: list of prefixes and expected sufixes.
-        """
-        columns = ['snap1_norm','snap2_norm','snap3_norm',
-                   'ac_index', 'rl_index', 'dur_norm']
-        return self.process_samples_creation(columns, parms)
-
-    def process_samples_creation(self, columns, parms):
+    def _sample_suffix_inter(self, columns, parms):
         self.log = self.reformat_events(columns, parms['one_timestamp'])
         spl = {'prefixes': dict(), 'suffixes': dict()}
         # n-gram definition
@@ -207,42 +120,6 @@ class SuffixSamplesCreator():
             new_row = np.dstack(new_row)
             new_row = new_row.reshape((new_row.shape[1], new_row.shape[2]))
             spl['suffixes']['inter_attr'].append(new_row)
-        return spl
-
-    def _suffix_seq2seq(self, parms):
-        """Extraction of prefixes and expected suffixes from event log.
-        Args:
-            self.log (dataframe): testing dataframe in pandas format.
-            ac_index (dict): index of activities.
-            rl_index (dict): index of roles.
-            pref_size (int): size of the prefixes to extract.
-        Returns:
-            list: list of prefixes and expected sufixes.
-        """
-        columns = ['ac_index', 'rl_index', 'dur_norm']
-        self.log = self.reformat_events(columns, parms['one_timestamp'])
-        max_length = parms['dim']['time_dim']
-        spl = {'prefixes': dict(), 'suffixes': dict()}
-        # n-gram definition
-        equi = {'ac_index': 'activities',
-                'rl_index': 'roles',
-                'dur_norm': 'times'}
-        for i, _ in enumerate(self.log):
-            for x in columns:
-                serie, y_serie = list(), list()
-                for idx in range(1, len(self.log[i][x])):
-                    serie.append([0]*(max_length - idx) + self.log[i][x][:idx])
-                    y_serie.append(self.log[i][x][idx:])
-                spl['prefixes'][equi[x]] = (
-                    spl['prefixes'][equi[x]] + serie if i > 0 else serie)
-                spl['suffixes'][equi[x]] = (
-                    spl['suffixes'][equi[x]] + y_serie if i > 0 else y_serie)
-        for value in equi.values():
-            spl['prefixes'][value] = np.array(spl['prefixes'][value])
-        # Reshape times
-        spl['prefixes']['times'] = spl['prefixes']['times'].reshape(
-                (spl['prefixes']['times'].shape[0],
-                 spl['prefixes']['times'].shape[1], 1))
         return spl
 
     def _suffix_seq2seq_inter(self, parms):
@@ -296,6 +173,9 @@ class SuffixSamplesCreator():
         spl['prefixes']['inter_attr'] = np.dstack(list(x_inter_dict.values()))
         return spl
 
+# =============================================================================
+# Reformat
+# =============================================================================
     def reformat_events(self, columns, one_timestamp):
         """Creates series of activities, roles and relative times per trace.
         Args:

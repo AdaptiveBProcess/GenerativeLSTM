@@ -31,6 +31,9 @@ def training_model(parameters, log, ac_index, index_ac, rl_index, index_rl):
     ac_weights, rl_weights = train_embedded(log,
                                             ac_index, rl_index, dim_number)
 
+    if not os.path.exists(os.path.join('input_files', 'embedded_matix')):
+        os.makedirs(os.path.join('input_files', 'embedded_matix'))
+
     sup.create_file_from_list(
         reformat_matrix(index_ac, ac_weights),
         os.path.join(os.path.join('input_files', 'embedded_matix'),

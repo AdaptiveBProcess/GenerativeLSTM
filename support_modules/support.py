@@ -7,6 +7,7 @@ import csv
 import uuid
 import json
 import platform as pl
+import time
 
 
 def folder_id():
@@ -45,12 +46,20 @@ def get_time_obj(date, timeformat):
     return date_modified
 
 #reduce list of lists with no repetitions
-def reduce_list(input):
+def reduce_list(input, dtype='int'):
     text = str(input).replace('[', '').replace(']', '')
-    temp_list = list()
-    for number in text.split(','):
-        temp_list.append(int(number))
-    return list(set(temp_list))
+    text = [x for x in text.split(',') if x != ' ']
+    if text and not text == ['']: 
+        if dtype=='int':
+            return list(set([int(x) for x in text]))
+        elif dtype=='float':
+            return list(set([float(x) for x in text]))
+        elif dtype=='str':
+            return list(set([x.strip() for x in text]))
+        else:
+            raise ValueError(dtype)
+    else:
+        return list()
 
 #print a csv file from list of lists
 def create_file_from_list(index, output_file):
@@ -116,6 +125,33 @@ def copy(source, destiny):
         os.system('copy "' + source + '" "' + destiny + '"')
     else:
         os.system('cp "' + source + '" "' + destiny + '"')
+
+
+def timeit(method) -> dict:
+    """
+    Decorator to measure execution times of methods
+
+    Parameters
+    ----------
+    method : Any method.
+
+    Returns
+    -------
+    dict : execution time record
+
+    """
+    def timed(*args, **kw):
+        ts = time.time()
+        result = method(*args, **kw)
+        te = time.time()
+        if 'log_time' in kw:
+            name = kw.get('log_name', method.__name__.upper())
+            kw['log_time'][name] = int((te - ts) * 1000)
+        else:
+            print('%r  %2.2f ms' % \
+                  (method.__name__, (te - ts) * 1000))
+        return result
+    return timed
 
 # #%%
 # import re

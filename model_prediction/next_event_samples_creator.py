@@ -19,41 +19,38 @@ class NextEventSamplesCreator():
         self.log = pd.DataFrame
         self.ac_index = dict()
         self.rl_index = dict()
+        self._samplers = dict()
+        self._samp_dispatcher = {'basic': self._sample_next_event,
+                                 'inter': self._sample_next_event_inter}
 
-    def create_samples(self, params, log, ac_index, rl_index):
+    def create_samples(self, params, log, ac_index, rl_index, add_cols):
         self.log = log
         self.ac_index = ac_index
         self.rl_index = rl_index
+        columns = self.define_columns(add_cols)
         sampler = self._get_model_specific_sampler(params['model_type'])
-        return sampler(params)
+        return sampler(columns, params)
+
+    @staticmethod
+    def define_columns(add_cols):
+        columns = ['ac_index', 'rl_index', 'dur_norm']
+        add_cols = [x+'_norm' for x in add_cols]
+        columns.extend(add_cols)
+        return columns
+        
+    def register_sampler(self, model_type, sampler):
+        try:
+            self._samplers[model_type] = self._samp_dispatcher[sampler]
+        except KeyError:
+            raise ValueError(sampler)
 
     def _get_model_specific_sampler(self, model_type):
-        if model_type == 'shared_cat':
-            return self._sample_next_event_shared_cat
-        elif model_type == 'shared_cat_inter':
-            return self._sample_next_event_shared_cat_inter
-        elif model_type == 'shared_cat_inter_full':
-            return self._sample_next_event_shared_cat_inter_full
-        elif model_type == 'shared_cat_rd':
-            return self._sample_next_event_shared_cat_rd
-        elif model_type == 'shared_cat_wl':
-            return self._sample_next_event_shared_cat_wl
-        elif model_type == 'shared_cat_cx':
-            return self._sample_next_event_shared_cat_cx
-        elif model_type == 'cnn_lstm':
-            return self._sample_next_event_shared_cat
-        elif model_type == 'cnn_lstm_inter':
-            return self._sample_next_event_shared_cat_inter
-        elif model_type == 'cnn_lstm_inter_full':
-            return self._sample_next_event_shared_cat_inter_full
-        elif model_type == 'shared_cat_city':
-            return self._sample_next_event_shared_cat_city
-        elif model_type == 'shared_cat_snap':
-            return self._sample_next_event_shared_cat_snap
-        else:
+        sampler = self._samplers.get(model_type)
+        if not sampler:
             raise ValueError(model_type)
-
-    def _sample_next_event_shared_cat(self, parms):
+        return sampler
+    
+    def _sample_next_event(self, columns, parms):
         """
         Extraction of prefixes and expected suffixes from event log.
         Args:
@@ -64,7 +61,8 @@ class NextEventSamplesCreator():
         Returns:
             list: list of prefixes and expected sufixes.
         """
-        columns = ['ac_index', 'rl_index', 'dur_norm']
+        # columns = ['ac_index', 'rl_index', 'dur_norm']
+        print(columns)
         self.log = self.reformat_events(columns, parms['one_timestamp'])
         examples = {'prefixes': dict(), 'next_evt': dict()}
         # n-gram definition
@@ -74,7 +72,7 @@ class NextEventSamplesCreator():
         for i, _ in enumerate(self.log):
             for x in columns:
                 serie = [self.log[i][x][:idx]
-                         for idx in range(1, len(self.log[i][x]))]
+                          for idx in range(1, len(self.log[i][x]))]
                 y_serie = [x[-1] for x in serie]
                 serie = serie[:-1]
                 y_serie = y_serie[1:]
@@ -86,80 +84,8 @@ class NextEventSamplesCreator():
                     if i > 0 else y_serie)
         return examples
 
-    def _sample_next_event_shared_cat_inter(self, parms):
-        """Example function with types documented in the docstring.
-        Returns:
-            dict: Dictionary that contains all the LSTM inputs.
-        """
-        # columns to keep
-        columns = ['ev_rd_norm', 'ev_rp_occ_norm','ev_et_norm', 'ev_et_t_norm',
-                   'ac_index', 'rl_index', 'dur_norm']
-        return self.process_samples_creation(columns, parms)
-
-    def _sample_next_event_shared_cat_inter_full(self, parms):
-        """Example function with types documented in the docstring.
-        Returns:
-            dict: Dictionary that contains all the LSTM inputs.
-        """
-        # columns to keep
-        columns = ['acc_cycle_norm', 'daytime_norm', 'ev_rd_norm',
-                   'ev_rp_occ_norm', 'ev_et_norm', 'ev_et_t_norm',
-                   'ac_index', 'rl_index', 'dur_norm']
-        return self.process_samples_creation(columns, parms)
-
-    def _sample_next_event_shared_cat_rd(self, parms):
-        """Example function with types documented in the docstring.
-        Returns:
-            dict: Dictionary that contains all the LSTM inputs.
-        """
-        # columns to keep
-        columns = ['ev_rd_norm', 'ev_rp_occ_norm',
-                   'ac_index', 'rl_index', 'dur_norm']
-        return self.process_samples_creation(columns, parms)
-
-    def _sample_next_event_shared_cat_wl(self, parms):
-        """Example function with types documented in the docstring.
-        Returns:
-            dict: Dictionary that contains all the LSTM inputs.
-        """
-        # columns to keep
-        columns = ['ev_et_norm', 'ev_et_t_norm',
-                   'ac_index', 'rl_index', 'dur_norm']
-        return self.process_samples_creation(columns, parms)
-    
-    def _sample_next_event_shared_cat_cx(self, parms):
-        """Extraction of prefixes and expected suffixes from event log.
-        Args:
-            parameters: dict of parametsrs settings
-        Returns:
-            list: list of prefixes and expected sufixes.
-        """
-        columns = ['acc_cycle_norm', 'daytime_norm',
-                   'ac_index', 'rl_index', 'dur_norm']
-        return self.process_samples_creation(columns, parms)
-
-    def _sample_next_event_shared_cat_city(self, parms):
-        """Example function with types documented in the docstring.
-        Returns:
-            dict: Dictionary that contains all the LSTM inputs.
-        """
-        # columns to keep
-        columns = ['city1_norm','city2_norm','city3_norm',
-                   'ac_index', 'rl_index', 'dur_norm']
-        return self.process_samples_creation(columns, parms)
-    
-    def _sample_next_event_shared_cat_snap(self, parms):
-        """Extraction of prefixes and expected suffixes from event log.
-        Args:
-            parameters: dict of parametsrs settings
-        Returns:
-            list: list of prefixes and expected sufixes.
-        """
-        columns = ['snap1_norm','snap2_norm','snap3_norm',
-                   'ac_index', 'rl_index', 'dur_norm']
-        return self.process_samples_creation(columns, parms)
-
-    def process_samples_creation(self, columns, parms):
+    def _sample_next_event_inter(self, columns, parms):
+        print(columns)
         self.log = self.reformat_events(columns, parms['one_timestamp'])
         examples = {'prefixes': dict(), 'next_evt': dict()}
         # n-gram definition

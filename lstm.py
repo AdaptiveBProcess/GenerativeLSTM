@@ -17,7 +17,8 @@ def catch_parameter(opt):
               '-d': 'dense_act', '-p': 'optim', '-n': 'norm_method',
               '-m': 'model_type', '-z': 'n_size', '-y': 'l_size',
               '-c': 'folder', '-b': 'model_file', '-x': 'is_single_exec',
-              '-t': 'max_trace_size', '-e': 'splits', '-g': 'sub_group'}
+              '-t': 'max_trace_size', '-e': 'splits', '-g': 'sub_group',
+              '-v': 'variant', '-r': 'rep'}
     try:
         return switch[opt]
     except:
@@ -38,11 +39,11 @@ def main(argv):
     if not argv:
         # Type of LSTM task -> training, pred_log
         # pred_sfx, predict_next, inter_case
-        parameters['activity'] = 'pred_log'
+        parameters['activity'] = 'pred_sfx'
         # General training parameters
         if parameters['activity'] in ['training']:
             # Event-log reading parameters
-            parameters['one_timestamp'] = False  # Only one timestamp in the log
+            parameters['one_timestamp'] = True  # Only one timestamp in the log
             parameters['read_options'] = {
                 'timeformat': '%Y-%m-%dT%H:%M:%S.%f',
                 'column_names': column_names,
@@ -64,13 +65,13 @@ def main(argv):
                 parameters['l_size'] = 100  # LSTM layer sizes
                 # Generation parameters
         elif parameters['activity'] in ['pred_log', 'pred_sfx', 'predict_next']:
-            parameters['folder'] = '20200625_102258106393'
-            parameters['model_file'] = 'model_shared_cat_28-2.96.h5'
+            parameters['folder'] = '20200716_100244105184'
+            parameters['model_file'] = 'model_shared_cat_05-4.16.h5'
             parameters['is_single_exec'] = False  # single or batch execution
             parameters['max_trace_size'] = 100
-            # variants and repetitions to be tested
-            parameters['variants'] = [{'imp': 'Random Choice', 'rep': 5},
-                                      {'imp': 'Arg Max', 'rep': 0}]
+            # variants and repetitions to be tested Random Choice, Arg Max
+            parameters['variant'] = 'Random Choice'
+            parameters['rep'] = 2
         elif parameters['activity'] == 'inter_case':
             parameters['file_name'] = 'Helpdesk.xes'
             parameters['splits'] = 10
@@ -82,20 +83,22 @@ def main(argv):
         try:
             opts, _ = getopt.getopt(
                 argv,
-                "ho:a:f:i:l:d:p:n:m:z:y:c:b:x:t:e:",
+                "ho:a:f:i:l:d:p:n:m:z:y:c:b:x:t:e:v:r:",
                 ['one_timestamp=', 'activity=',
                  'file_name=', 'imp=', 'lstm_act=',
                  'dense_act=', 'optim=', 'norm_method=',
                  'model_type=', 'n_size=', 'l_size=',
                  'folder=', 'model_file=', 'is_single_exec=',
-                 'max_trace_size=', 'splits=', 'sub_group='])
+                 'max_trace_size=', 'splits=', 'sub_group=',
+                 'variant=', 'rep='])
             for opt, arg in opts:
                 key = catch_parameter(opt)
                 if arg in ['None', 'none']:
                     parameters[key] = None
                 elif key in ['is_single_exec', 'one_timestamp']:
                     parameters[key] = arg in ['True', 'true', 1]
-                elif key in ['imp', 'n_size', 'l_size', 'max_trace_size', 'splits']:
+                elif key in ['imp', 'n_size', 'l_size',
+                             'max_trace_size','splits', 'rep']:
                     parameters[key] = int(arg)
                 else:
                     parameters[key] = arg
@@ -104,11 +107,6 @@ def main(argv):
                                           'one_timestamp':
                                               parameters['one_timestamp'],
                                               'ns_include': True}
-            if parameters['activity'] in ['pred_log', 'pred_sfx',
-                                          'predict_next']:
-                # variants and repetitions to be tested
-                parameters['variants'] = [{'imp': 'Random Choice', 'rep': 10},
-                                          {'imp': 'Arg Max', 'rep': 0}]
         except getopt.GetoptError:
             print('Invalid option')
             sys.exit(2)
