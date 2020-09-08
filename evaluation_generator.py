@@ -58,27 +58,27 @@ def sbatch_creator(file_list, activity):
                        '#SBATCH -t 24:00:00',
                        'module load cuda/10.0',
                        'module load python/3.6.3/virtenv',
-                       'source activate lstm_pip'
+                       'source activate lstm_exp_v3'
                        ]
         else:
             default = ['#!/bin/bash',
-                       '#SBATCH --partition=main',
+                       '#SBATCH --partition=amd',
                        '#SBATCH -J ' + exp_name,
                        '#SBATCH -N 1',
                        '#SBATCH --mem=7000',
                        '#SBATCH -t 24:00:00',
                        'module load cuda/10.0',
                        'module load python/3.6.3/virtenv',
-                       'source activate lstm_pip'
+                       'source activate lstm_exp_v3'
                        ]
     
         default.append('python lstm.py' +
+                       ' -o False' +
                        ' -a ' + activity +
                        ' -c ' + file['folder'] +
                        ' -b "' + file['file'] + '"' +
-                       ' -o True' +
-                       ' -x False' +
-                       ' -t 100')
+                       ' -v "Random Choice"' +
+                       ' -r 5')
         file_name = sup.folder_id()
         sup.create_text_file(default, os.path.join(output_folder, file_name))
     
@@ -106,11 +106,11 @@ def sbatch_submit(in_batch, bsize=10):
 
 imp = 1
 models_folder = 'output_files'
-file_list = create_folder_list(models_folder, 2)
+file_list = create_folder_list(models_folder, 1)
 
 output_folder = 'jobs_files'
 
-activities = ['predict_next', 'pred_sfx']
+activities = ['pred_log']
 
 for _, _, files in os.walk(output_folder):
     for file in files:

@@ -19,7 +19,7 @@ from operator import itemgetter
 from support_modules.readers import log_reader as lr
 from support_modules import support as sup
 
-from model_training import examples_creator as exc
+from model_training import samples_creator as exc
 from model_training import features_manager as feat
 from model_training import model_loader as mload
 from model_training import embedding_training as em
@@ -60,10 +60,10 @@ class ModelTrainer():
         m_loader.register_model(params['model_type'],
                                 self.model_def['trainer'])
         m_loader.train(params['model_type'],
-                       self.examples,
-                       self.ac_weights,
-                       self.rl_weights,
-                       self.output_folder)
+                        self.examples,
+                        self.ac_weights,
+                        self.rl_weights,
+                        self.output_folder)
         list_of_files = glob.glob(os.path.join(self.output_folder, '*.h5'))
         latest_file = max(list_of_files, key=os.path.getctime)
         self.model = os.path.basename(latest_file)
@@ -198,6 +198,7 @@ class ModelTrainer():
         log = pd.DataFrame.from_dict(log)
         log.sort_values(by='end_timestamp', ascending=False, inplace=True)
 
+        
         num_events = int(np.round(len(log)*percentage))
 
         df_test = log.iloc[:num_events]
@@ -252,13 +253,17 @@ class ModelTrainer():
             os.makedirs(self.output_folder)
             os.makedirs(os.path.join(self.output_folder, 'parameters'))
 
+        parms['max_trace_size'] = self.get_max_trace_size(self.log)
+        
         parms['index_ac'] = self.index_ac
         parms['index_rl'] = self.index_rl
-        shape = self.examples['prefixes']['activities'].shape
-        parms['dim'] = dict(
-            samples=str(shape[0]),
-            time_dim=str(shape[1]),
-            features=str(len(self.ac_index)))
+        
+        if not parms['model_type'] == 'simple_gan':
+            shape = self.examples['prefixes']['activities'].shape
+            parms['dim'] = dict(
+                samples=str(shape[0]),
+                time_dim=str(shape[1]),
+                features=str(len(self.ac_index)))
 
         sup.create_json(parms, os.path.join(self.output_folder,
                                             'parameters',
@@ -268,6 +273,9 @@ class ModelTrainer():
                                           'test_log.csv'),
                              index=False,
                              encoding='utf-8')
+    @staticmethod
+    def get_max_trace_size(log):
+        return int(log.groupby('caseid')['task'].count().max())        
 
     def read_model_definition(self, model_type):
         Config = cp.ConfigParser(interpolation=None)

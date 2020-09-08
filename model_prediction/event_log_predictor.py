@@ -7,10 +7,10 @@ Created on Wed Mar 18 17:11:17 2020
 import numpy as np
 import math
 import datetime
+
 from datetime import timedelta
 
 from support_modules import support as sup
-
 
 class EventLogPredictor():
 
@@ -24,6 +24,8 @@ class EventLogPredictor():
         self.model = model
         self.max_trace_size = params['max_trace_size']
         self.imp = imp
+        self.params = params
+        self.vectorizer = vectorizer
         predictor = self._get_predictor(params['model_type'])
         return predictor(params, vectorizer)
 
@@ -53,10 +55,17 @@ class EventLogPredictor():
                 x_t_ngram = np.zeros(
                     (1, parms['dim']['time_dim'], 2), dtype=np.float32)
             # TODO: add intercase support
+            if vectorizer in ['basic']:
+                inputs = [x_ac_ngram, x_rl_ngram, x_t_ngram]
+            elif vectorizer in ['inter']:
+                x_inter_ngram = np.zeros(
+                    (1, parms['dim']['time_dim'], len(parms['additional_columns'])), dtype=np.float32)
+                inputs = [x_ac_ngram, x_rl_ngram, x_t_ngram, x_inter_ngram]
             i = 1
             # for _ in range(1, self.max_trace_size):
             while i < self.max_trace_size:
-                predictions = self.model.predict([x_ac_ngram, x_rl_ngram, x_t_ngram])
+                # predictions = self.model.predict([x_ac_ngram, x_rl_ngram, x_t_ngram])
+                predictions = self.model.predict(inputs)
                 if self.imp == 'Random Choice':
                     # Use this to get a random choice following as PDF
                     pos = np.random.choice(
@@ -86,7 +95,12 @@ class EventLogPredictor():
                     x_rl_ngram = np.delete(x_rl_ngram, 0, 1)
                     x_t_ngram = np.append(x_t_ngram, [predictions[2]], axis=1)
                     x_t_ngram = np.delete(x_t_ngram, 0, 1)
-    
+                    if vectorizer in ['basic']:
+                        inputs = [x_ac_ngram, x_rl_ngram, x_t_ngram]
+                    elif vectorizer in ['inter']:
+                        x_inter_ngram = np.append(x_inter_ngram, [predictions[3]], axis=1)
+                        x_inter_ngram = np.delete(x_inter_ngram, 0, 1)
+                        inputs = [x_ac_ngram, x_rl_ngram, x_t_ngram, x_inter_ngram]
         #            # Stop if the next prediction is the end of the trace
         #            # otherwise until the defined max_size
                     if parms['index_ac'][pos] == 'end':

@@ -44,15 +44,23 @@ class IntercasFeatureExtractor():
 
     def data_source_preparation(self):
         self.log['event_id'] = self.log.index
-        self.log = self.calculate_event_duration(self.log)
+        self.log = self.calculate_event_duration(
+            self.log, self.settings['one_timestamp'])
         # Split event log
-        self.folding_creation(self.log,
-                              self.settings['splits'],
-                              self.settings['temp_input'])
+        # calculate the number of bytes a row occupies
+        row_bytes = self.log.dtypes.apply(lambda x: x.itemsize).sum()
+        # get the maximum number of rows in a segment
+        max_rows = self.settings['mem_limit'] / row_bytes
+        # get the number of dataframes after splitting
+        n_splits = int(np.ceil(self.log.shape[0] / max_rows))
+        self.folding_creation(self.log, n_splits,
+                              self.settings['temp_input'],
+                              self.settings['one_timestamp'])
 
     @staticmethod
-    def folding_creation(log, splits, output):
-        log = log.sort_values(by='end_timestamp')
+    def folding_creation(log, splits, output, one_ts):
+        order_key = 'end_timestamp' if one_ts else 'start_timestamp'
+        log = log.sort_values(by=order_key)
         idxs = [x for x in range(0, len(log),
                                  round(len(log)/splits))]
         idxs.append(len(log))
@@ -119,8 +127,11 @@ class IntercasFeatureExtractor():
             print('processing split', fold, sep=':')
             log_path = os.path.join(self.settings['temp_input'], fold)
             self.log = pd.read_csv(log_path, index_col='Unnamed: 0')
-            self.log['end_timestamp'] = pd.to_datetime(self.log['end_timestamp'],
-                                                        format='%Y-%m-%d %H:%M:%S')
+            self.log['end_timestamp'] = pd.to_datetime(
+                self.log['end_timestamp'], format='%Y-%m-%d %H:%M:%S')
+            if not self.settings['one_timestamp']:
+                self.log['start_timestamp'] = pd.to_datetime(
+                    self.log['start_timestamp'], format='%Y-%m-%d %H:%M:%S')
             self.log = self.log.sort_values(by='event_id')
             print('Expanding event-log')
             self.expanded_log_creation()
@@ -139,7 +150,7 @@ class IntercasFeatureExtractor():
         folds = list()
         for filename in self.create_file_list(self.settings['temp_output']):
             df = pd.read_csv(os.path.join(self.settings['temp_output'], filename),
-                             index_col='Unnamed: 0')
+                              index_col='Unnamed: 0')
             folds.append(df)
 
         processed_log = pd.concat(folds, axis=0, ignore_index=True)
@@ -150,7 +161,7 @@ class IntercasFeatureExtractor():
         self.process_temp_folder(self.settings['temp_output'])
         os.rmdir(self.settings['temp_output'])
         processed_log.to_csv(os.path.join(
-            'outputs', 'inter_'+self.settings['file_name'].split('.')[0]+'.csv'))
+            'output_files', 'inter_'+self.settings['file_name'].split('.')[0]+'.csv'))
 
 # =============================================================================
 # Expanded log management
@@ -158,7 +169,7 @@ class IntercasFeatureExtractor():
 
     def expanded_log_creation(self):
         # Matching events with slices
-        ranges = self.split_events(self.log)
+        ranges = self.split_events(self.log, self.settings['one_timestamp'])
         ranges = self.match_slices(ranges)
         ranges_slides = {k: r['events'] for k, r in ranges.items()}
         ranges = pd.DataFrame.from_dict(ranges, orient='index')
@@ -179,34 +190,42 @@ class IntercasFeatureExtractor():
                 columns={'userroleid': 'role'})
         wi_cols = ['event_id', 'ev_duration', 'slide', 'end_timestamp',
                    'duration', 'user', 'role', 'task']
+        if not self.settings['one_timestamp']:
+            wi_cols.append('start_timestamp')
         self.expanded_log = self.expanded_log[wi_cols]
 
     @staticmethod
-    def split_events(log):
+    def split_events(log, one_ts):
         log = log.to_dict('records')
         splitted_events = list()
         # Define date-time ranges in event log
         log = sorted(log, key=lambda x: x['caseid'])
         for key, group in itertools.groupby(log, key=lambda x: x['caseid']):
             events = list(group)
-            events = sorted(events, key=itemgetter('end_timestamp'))
+            order_key = 'end_timestamp' if one_ts else 'start_timestamp'
+            events = sorted(events, key=itemgetter(order_key))
             for i in range(0, len(events)):
                 # In one-timestamp approach the first activity of the trace
                 # is taken as instant since there is no previous
                 # timestamp to find a range
-                if i == 0:
-                    splitted_events.append((events[i]['end_timestamp'], True,
-                                            events[i]['event_id']))
-                    splitted_events.append((events[i]['end_timestamp'], False,
-                                            events[i]['event_id']))
+                if one_ts:
+                    if i == 0:
+                        splitted_events.append((events[i]['end_timestamp'], True,
+                                                events[i]['event_id']))
+                        splitted_events.append((events[i]['end_timestamp'], False,
+                                                events[i]['event_id']))
+                    else:
+                        splitted_events.append((events[i-1]['end_timestamp'], True,
+                                                events[i]['event_id']))
+                        splitted_events.append((events[i]['end_timestamp'], False,
+                                                events[i]['event_id']))
                 else:
-                    splitted_events.append((events[i-1]['end_timestamp'], True,
+                    splitted_events.append((events[i]['start_timestamp'], True,
                                             events[i]['event_id']))
                     splitted_events.append((events[i]['end_timestamp'], False,
                                             events[i]['event_id']))
         splitted_events.sort(key=lambda tup: tup[0])
         return splitted_events
-
 
     @staticmethod
     def match_slices(splitted_events):
@@ -265,11 +284,12 @@ class IntercasFeatureExtractor():
     def filter_calculate(self, event_slides, event_id, end_timestamp):
         work_items = self.expanded_log[self.expanded_log.slide.isin(
             event_slides[event_id])]
-        work_items = work_items[
-            (work_items.end_timestamp <= end_timestamp) &
-            (work_items.duration > 0)]
-        # if event_id==114:
-        #     print(work_items)
+        # Not count future events in the case of one-timestamp
+        if self.settings['one_timestamp']:
+            work_items = work_items[(work_items.end_timestamp <= end_timestamp)
+                                    &(work_items.duration > 0)]
+        else:
+            work_items = work_items[work_items.duration > 0]
         if self.sub_group == 'pd':
             if work_items.empty:
                 return {'event_id': event_id, 'ev_et': 0, 'ev_et_t': 0}
@@ -287,6 +307,7 @@ class IntercasFeatureExtractor():
                         'ev_rd': 0, 'ev_rp_occ': 0}
             work_items = self.calculate_work_item_pd(work_items)
             work_items = self.calculate_work_item_rw(work_items, self.user_role)
+            work_items = work_items[work_items.event_id==event_id]
             rw = self.calculate_event_features_rw(work_items, event_id)
             pd = self.calculate_event_features_pd(work_items, event_id)
             return {**rw, **pd}
@@ -374,12 +395,13 @@ class IntercasFeatureExtractor():
 # =============================================================================
 
     @staticmethod
-    def calculate_event_duration(log):
+    def calculate_event_duration(log, one_ts):
         log = log.to_dict('records')
         log = sorted(log, key=lambda x: x['caseid'])
         for key, group in itertools.groupby(log, key=lambda x: x['caseid']):
             events = list(group)
-            events = sorted(events, key=itemgetter('end_timestamp'))
+            order_key = 'end_timestamp' if one_ts else 'start_timestamp'
+            events = sorted(events, key=itemgetter(order_key))
             length = len(events)
             for i in range(0, len(events)):
                 # In one-timestamp approach the first activity of the trace
@@ -387,16 +409,25 @@ class IntercasFeatureExtractor():
                 # timestamp to find a range
                 events[i]['pos_trace'] = i
                 events[i]['trace_len'] = length
-                if i == 0:
-                    events[i]['ev_duration'] = 0
-                    events[i]['ev_acc_duration'] = 0
+                if one_ts:
+                    if i == 0:
+                        events[i]['ev_duration'] = 0
+                        events[i]['ev_acc_duration'] = 0
+                    else:
+                        dur = (
+                            events[i]['end_timestamp'] - events[i-1]['end_timestamp']
+                            ).total_seconds()
+                        events[i]['ev_duration'] = dur
+                        events[i]['ev_acc_duration'] = (events[i-1]['ev_acc_duration']
+                                                        + dur)
                 else:
                     dur = (
-                        events[i]['end_timestamp'] - events[i-1]['end_timestamp']
+                        events[i]['end_timestamp'] - events[i]['start_timestamp']
                         ).total_seconds()
                     events[i]['ev_duration'] = dur
-                    events[i]['ev_acc_duration'] = (events[i-1]['ev_acc_duration']
-                                                    + dur)
+                    events[i]['ev_acc_duration'] = (
+                        events[i]['end_timestamp'] - events[0]['start_timestamp']
+                        ).total_seconds()
         return pd.DataFrame.from_dict(sorted(log, key=lambda x: x['event_id']))
 
     @staticmethod

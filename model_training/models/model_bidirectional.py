@@ -172,4 +172,4 @@ def training_model(vec, ac_weights, rl_weights, output_folder, args):
               verbose=2,
               callbacks=[early_stopping, model_checkpoint, lr_reducer],
               batch_size=vec['prefixes']['x_ac_inp'].shape[1],
-              epochs=200)
+              epochs=args['epochs'])

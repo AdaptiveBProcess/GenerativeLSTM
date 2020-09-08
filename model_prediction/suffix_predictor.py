@@ -45,21 +45,26 @@ class SuffixPredictor():
         results = list()
         for i, _ in enumerate(self.spl['prefixes']['activities']):
             # Activities and roles input shape(1,5)
-            x_ac_ngram = np.append(
+            x_ac_ngram = (np.append(
                     np.zeros(parms['dim']['time_dim']),
                     np.array(self.spl['prefixes']['activities'][i]),
-                    axis=0)[-parms['dim']['time_dim']:].reshape((1, parms['dim']['time_dim']))
+                    axis=0)[-parms['dim']['time_dim']:]
+                .reshape((1, parms['dim']['time_dim'])))
 
-            x_rl_ngram = np.append(
+            x_rl_ngram = (np.append(
                     np.zeros(parms['dim']['time_dim']),
                     np.array(self.spl['prefixes']['roles'][i]),
-                    axis=0)[-parms['dim']['time_dim']:].reshape((1, parms['dim']['time_dim']))
-
-            # Times input shape(1,5,1)
-            x_t_ngram = np.array([np.append(
-                    np.zeros(parms['dim']['time_dim']),
-                    np.array(self.spl['prefixes']['times'][i]),
-                    axis=0)[-parms['dim']['time_dim']:].reshape((parms['dim']['time_dim'], 1))])
+                    axis=0)[-parms['dim']['time_dim']:]
+                .reshape((1, parms['dim']['time_dim'])))
+           
+            times_attr_num = (self.spl['prefixes']['times'][i].shape[1])
+            x_t_ngram = np.array(
+                [np.append(np.zeros(
+                    (parms['dim']['time_dim'], times_attr_num)),
+                    self.spl['prefixes']['times'][i], axis=0)
+                    [-parms['dim']['time_dim']:]
+                    .reshape((parms['dim']['time_dim'], times_attr_num))]
+                )
             if vectorizer in ['basic']:
                 inputs = [x_ac_ngram, x_rl_ngram, x_t_ngram]
             elif vectorizer in ['inter']:
@@ -71,71 +76,110 @@ class SuffixPredictor():
                 inputs = [x_ac_ngram, x_rl_ngram, x_t_ngram, x_inter_ngram]
 
             pref_size = len(self.spl['prefixes']['activities'][i])
-            acum_dur = list()
+            acum_dur, acum_wait = list(), list()
             ac_suf, rl_suf = list(), list()
             for _  in range(1, self.max_trace_size):
-                predictions = self.model.predict(inputs)
+                preds = self.model.predict(inputs)
                 if self.imp == 'Random Choice':
                     # Use this to get a random choice following as PDF the predictions
                     pos = np.random.choice(
-                        np.arange(0,len(predictions[0][0])), p=predictions[0][0])
+                        np.arange(0,len(preds[0][0])), p=preds[0][0])
                     pos1 = np.random.choice(
-                        np.arange(0, len(predictions[1][0])), p=predictions[1][0])
+                        np.arange(0, len(preds[1][0])), p=preds[1][0])
                 elif self.imp == 'Arg Max':
                     # Use this to get the max prediction
-                    pos = np.argmax(predictions[0][0])
-                    pos1 = np.argmax(predictions[1][0])
+                    pos = np.argmax(preds[0][0])
+                    pos1 = np.argmax(preds[1][0])
                 # Activities accuracy evaluation
                 x_ac_ngram = np.append(x_ac_ngram, [[pos]], axis=1)
                 x_ac_ngram = np.delete(x_ac_ngram, 0, 1)
                 x_rl_ngram = np.append(x_rl_ngram, [[pos1]], axis=1)
                 x_rl_ngram = np.delete(x_rl_ngram, 0, 1)
-                x_t_ngram = np.append(x_t_ngram, [predictions[2]], axis=1)
+                x_t_ngram = np.append(x_t_ngram, [preds[2]], axis=1)
                 x_t_ngram = np.delete(x_t_ngram, 0, 1)
                 if vectorizer in ['basic']:
                     inputs = [x_ac_ngram, x_rl_ngram, x_t_ngram]
                 elif vectorizer in ['inter']:
-                    x_inter_ngram = np.append(x_inter_ngram, [predictions[3]], axis=1)
+                    x_inter_ngram = np.append(x_inter_ngram, [preds[3]], axis=1)
                     x_inter_ngram = np.delete(x_inter_ngram, 0, 1)
                     inputs = [x_ac_ngram, x_rl_ngram, x_t_ngram, x_inter_ngram]
                 # Stop if the next prediction is the end of the trace
                 # otherwise until the defined max_size
                 ac_suf.append(pos)
                 rl_suf.append(pos1)
-                acum_dur.append(self.rescale(predictions[2][0][0], parms))
+                acum_dur.append(preds[2][0][0])
+                if not parms['one_timestamp']:
+                    acum_wait.append(preds[2][0][1])
                 if parms['index_ac'][pos] == 'end':
                     break
-            results.append({
-                'ac_pref': self.spl['prefixes']['activities'][i],
-                'ac_pred': ac_suf,
-                'ac_expect': self.spl['suffixes']['activities'][i],
-                'rl_pref': self.spl['prefixes']['roles'][i],
-                'rl_pred': rl_suf,
-                'rl_expect': self.spl['suffixes']['roles'][i],
-                'tm_pref': [self.rescale(x, parms) for x in self.spl['prefixes']['times'][i]],
-                'tm_pred': acum_dur,
-                'tm_expect': [self.rescale(x, parms) for x in self.spl['suffixes']['times'][i]],
-                'pref_size': pref_size})
+            # save results
+            predictions = [ac_suf, rl_suf, acum_dur]
+            if not parms['one_timestamp']:
+                predictions.extend([acum_wait])
+            results.append(
+                self.create_result_record(i, self.spl, predictions, parms, pref_size))
         sup.print_done_task()
         return results
 
+    def create_result_record(self, index, spl, preds, parms, pref_size):
+        record = dict()
+        record['pref_size'] = pref_size
+        record['ac_prefix'] = spl['prefixes']['activities'][index]
+        record['ac_expect'] = spl['next_evt']['activities'][index]
+        record['ac_pred'] = preds[0]
+        record['rl_prefix'] = spl['prefixes']['roles'][index]
+        record['rl_expect'] = spl['next_evt']['roles'][index]
+        record['rl_pred'] = preds[1]
+        if parms['one_timestamp']:
+            record['tm_prefix'] = [self.rescale(
+                x[0], parms, parms['scale_args']) 
+                for x in spl['prefixes']['times'][index]]
+            record['tm_expect'] = [self.rescale(
+                x[0], parms, parms['scale_args']) 
+                for x in spl['next_evt']['times'][index]]
+            record['tm_pred'] = [self.rescale(
+                x, parms, parms['scale_args']) 
+                for x in preds[2]]
+        else:
+            # Duration
+            record['dur_prefix'] = [self.rescale(
+                x[0], parms, parms['scale_args']['dur']) 
+                for x in spl['prefixes']['times'][index]]
+            record['dur_expect'] = [self.rescale(
+                x[0], parms, parms['scale_args']['dur']) 
+                for x in spl['next_evt']['times'][index]]
+            record['dur_pred'] = [self.rescale(
+                x, parms, parms['scale_args']['dur']) 
+                for x in preds[2]]
+            # Waiting
+            record['wait_prefix'] = [self.rescale(
+                x[1], parms, parms['scale_args']['wait']) 
+                for x in spl['prefixes']['times'][index]]
+            record['wait_expect'] = [self.rescale(
+                x[1], parms, parms['scale_args']['wait']) 
+                for x in spl['next_evt']['times'][index]]
+            record['wait_pred'] = [self.rescale(
+                x, parms, parms['scale_args']['wait']) 
+                for x in preds[3]]
+        return record
+
     @staticmethod
-    def rescale(value, parms):
+    def rescale(value, parms, scale_args):
         if parms['norm_method'] == 'lognorm':
-            max_value = parms['scale_args']['max_value']
-            min_value = parms['scale_args']['min_value']
+            max_value = scale_args['max_value']
+            min_value = scale_args['min_value']
             value = (value * (max_value - min_value)) + min_value
             value = np.expm1(value)
         elif parms['norm_method'] == 'normal':
-            max_value = parms['scale_args']['max_value']
-            min_value = parms['scale_args']['min_value']
+            max_value = scale_args['max_value']
+            min_value = scale_args['min_value']
             value = (value * (max_value - min_value)) + min_value
         elif parms['norm_method'] == 'standard':
-            mean = parms['scale_args']['mean']
-            std = parms['scale_args']['std']
+            mean = scale_args['mean']
+            std = scale_args['std']
             value = (value * std) + mean
         elif parms['norm_method'] == 'max':
-            max_value = parms['scale_args']['max_value']
+            max_value = scale_args['max_value']
             value = np.rint(value * max_value)
         elif parms['norm_method'] is None:
             value = value

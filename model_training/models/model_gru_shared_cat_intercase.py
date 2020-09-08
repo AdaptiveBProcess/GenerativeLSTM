@@ -9,7 +9,7 @@ import os
 
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Embedding, Concatenate
-from tensorflow.keras.layers import Dense, LSTM, BatchNormalization
+from tensorflow.keras.layers import Dense, GRU, BatchNormalization
 from tensorflow.keras.optimizers import Nadam, Adam, SGD, Adagrad
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
@@ -67,20 +67,20 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
 #    Layer 1
 # =============================================================================
 
-    l1_c1 = LSTM(args['l_size'],
+    l1_c1 = GRU(args['l_size'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=True,
                  dropout=0.2,
                  implementation=args['imp'])(merged1)
 
-    l1_c2 = LSTM(args['l_size'],
+    l1_c2 = GRU(args['l_size'],
                  activation=args['lstm_act'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=True,
                  dropout=0.2,
                  implementation=args['imp'])(inter_input)
 
-    l1_c3 = LSTM(args['l_size'],
+    l1_c3 = GRU(args['l_size'],
                  activation=args['lstm_act'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=True,
@@ -97,21 +97,21 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
 # =============================================================================
 # The layer specialized in prediction
 # =============================================================================
-    l2_c1 = LSTM(args['l_size'],
+    l2_c1 = GRU(args['l_size'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=False,
                  dropout=0.2,
                  implementation=args['imp'])(batch1)
 
 #   The layer specialized in role prediction
-    l2_c2 = LSTM(args['l_size'],
+    l2_c2 = GRU(args['l_size'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=False,
                  dropout=0.2,
                  implementation=args['imp'])(batch1)
 
 #   The layer specialized in role prediction
-    l2_c3 = LSTM(args['l_size'],
+    l2_c3 = GRU(args['l_size'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=False,
                  dropout=0.2,
@@ -119,7 +119,7 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
 
 
 #   The layer specialized in time prediction
-    l2_c4 = LSTM(args['l_size'],
+    l2_c4 = GRU(args['l_size'],
                  activation=args['lstm_act'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=False,

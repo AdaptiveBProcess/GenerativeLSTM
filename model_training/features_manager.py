@@ -6,14 +6,11 @@ Created on Sat Mar 14 19:18:18 2020
 """
 import pandas as pd
 import numpy as np
-from datetime import datetime
 
 import itertools
 from operator import itemgetter
 
 from support_modules import role_discovery as rl
-from model_training.intercase_features import intercase_features as inf
-from model_training.intercase_features import resource_dedication as rd
 
 
 class FeaturesMannager():
@@ -50,6 +47,7 @@ class FeaturesMannager():
         return log
 
     def filter_features(self, log, add_cols):
+        print(log.dtypes)
         # Add intercase features
         columns = ['caseid', 'task', 'user', 'end_timestamp', 'role', 'dur']
         if not self.one_timestamp:
@@ -97,7 +95,7 @@ class FeaturesMannager():
                     else:
                         wit = (events[i]['start_timestamp'] -
                                events[i-1]['end_timestamp']).total_seconds()
-                    events[i]['wait'] = wit
+                    events[i]['wait'] = wit if wit >= 0 else 0
                 events[i]['dur'] = dur
                 events[i]['acc_cycle'] = acc
                 time = events[i][ordk].time()
@@ -131,7 +129,13 @@ class FeaturesMannager():
         return log, scale_args
 
     def _scale_inter(self, log, add_cols):
-        log, scale_args = self.scale_feature(log, 'dur', self.norm_method)
+        # log, scale_args = self.scale_feature(log, 'dur', self.norm_method)
+        if self.one_timestamp:
+            log, scale_args = self.scale_feature(log, 'dur', self.norm_method)
+        else:
+            log, dur_scale = self.scale_feature(log, 'dur', self.norm_method)
+            log, wait_scale = self.scale_feature(log, 'wait', self.norm_method)
+            scale_args = {'dur': dur_scale, 'wait': wait_scale}
         for col in add_cols:
             if col == 'daytime':
                 log, _ = self.scale_feature(log, 'daytime', 'day_secs', True)

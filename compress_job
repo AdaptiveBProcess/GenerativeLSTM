@@ -5,4 +5,4 @@
 #SBATCH -t 010:00:00
 #SBATCH --mem=10000
 #
-tar -zcvf bpi2015_4.tar.gz output_files/
+tar -zcvf inter_log.tar.gz output_files/

@@ -27,17 +27,19 @@ class NextEventSamplesCreator():
         self.log = log
         self.ac_index = ac_index
         self.rl_index = rl_index
-        columns = self.define_columns(add_cols)
+        columns = self.define_columns(add_cols, params['one_timestamp'])
         sampler = self._get_model_specific_sampler(params['model_type'])
         return sampler(columns, params)
 
     @staticmethod
-    def define_columns(add_cols):
+    def define_columns(add_cols, one_timestamp):
         columns = ['ac_index', 'rl_index', 'dur_norm']
         add_cols = [x+'_norm' for x in add_cols]
         columns.extend(add_cols)
+        if not one_timestamp:
+            columns.extend(['wait_norm'])
         return columns
-        
+
     def register_sampler(self, model_type, sampler):
         try:
             self._samplers[model_type] = self._samp_dispatcher[sampler]
@@ -49,7 +51,7 @@ class NextEventSamplesCreator():
         if not sampler:
             raise ValueError(model_type)
         return sampler
-    
+
     def _sample_next_event(self, columns, parms):
         """
         Extraction of prefixes and expected suffixes from event log.
@@ -61,31 +63,51 @@ class NextEventSamplesCreator():
         Returns:
             list: list of prefixes and expected sufixes.
         """
-        # columns = ['ac_index', 'rl_index', 'dur_norm']
-        print(columns)
+        times = ['dur_norm'] if parms['one_timestamp'] else ['dur_norm', 'wait_norm']
+        equi = {'ac_index': 'activities', 'rl_index': 'roles'}
+        vec = {'prefixes': dict(),
+               'next_evt': dict()}
+        x_times_dict = dict()
+        y_times_dict = dict()
         self.log = self.reformat_events(columns, parms['one_timestamp'])
-        examples = {'prefixes': dict(), 'next_evt': dict()}
         # n-gram definition
-        equi = {'ac_index': 'activities',
-                'rl_index': 'roles',
-                'dur_norm': 'times'}
         for i, _ in enumerate(self.log):
             for x in columns:
                 serie = [self.log[i][x][:idx]
-                          for idx in range(1, len(self.log[i][x]))]
+                         for idx in range(1, len(self.log[i][x]))]
                 y_serie = [x[-1] for x in serie]
                 serie = serie[:-1]
                 y_serie = y_serie[1:]
-                examples['prefixes'][equi[x]] = (
-                    examples['prefixes'][equi[x]] + serie
-                    if i > 0 else serie)
-                examples['next_evt'][equi[x]] = (
-                    examples['next_evt'][equi[x]] + y_serie
-                    if i > 0 else y_serie)
-        return examples
+                if x in list(equi.keys()):
+                    vec['prefixes'][equi[x]] = (
+                        vec['prefixes'][equi[x]] + serie
+                        if i > 0 else serie)
+                    vec['next_evt'][equi[x]] = (
+                        vec['next_evt'][equi[x]] + y_serie
+                        if i > 0 else y_serie)
+                elif x in times:
+                    x_times_dict[x] = (
+                        x_times_dict[x] + serie if i > 0 else serie)
+                    y_times_dict[x] = (
+                        y_times_dict[x] + y_serie if i > 0 else y_serie)
+        vec['prefixes']['times'] = list()
+        x_times_dict = pd.DataFrame(x_times_dict)
+        for row in x_times_dict.values:
+            new_row = [np.array(x) for x in row]
+            new_row = np.dstack(new_row)
+            new_row = new_row.reshape((new_row.shape[1], new_row.shape[2]))
+            vec['prefixes']['times'].append(new_row)
+        # Reshape intercase expected attributes (prefixes, # attributes)
+        vec['next_evt']['times'] = list()
+        y_times_dict = pd.DataFrame(y_times_dict)
+        for row in y_times_dict.values:
+            new_row = [np.array(x) for x in row]
+            new_row = np.dstack(new_row)
+            new_row = new_row.reshape((new_row.shape[2]))
+            vec['next_evt']['times'].append(new_row)
+        return vec
 
     def _sample_next_event_inter(self, columns, parms):
-        print(columns)
         self.log = self.reformat_events(columns, parms['one_timestamp'])
         examples = {'prefixes': dict(), 'next_evt': dict()}
         # n-gram definition

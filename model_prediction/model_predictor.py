@@ -11,7 +11,7 @@ import pandas as pd
 import numpy as np
 import configparser as cp
 
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 
 from support_modules.readers import log_reader as lr
 from support_modules import support as sup
@@ -43,7 +43,7 @@ class ModelPredictor():
         self.model_def = dict()
         self.read_model_definition(self.parms['model_type'])
         print(self.model_def)
-
+        self.parms['additional_columns'] = self.model_def['additional_columns']
         self.acc = self.execute_predictive_task()
 
     def execute_predictive_task(self):
@@ -65,7 +65,7 @@ class ModelPredictor():
         evaluator = EvaluateTask()
         if self.parms['activity'] == 'pred_log':
             data = self.append_sources(self.log, self.predictions,
-                                       self.parms['one_timestamp'])
+                                        self.parms['one_timestamp'])
             data['caseid'] = data['caseid'].astype(str)
             return evaluator.evaluate(self.parms, data)
         else:
@@ -226,16 +226,24 @@ class EvaluateTask():
         evaluator = ev.Evaluator(parms['one_timestamp'])
         ac_sim = evaluator.measure('accuracy', data, 'ac')
         rl_sim = evaluator.measure('accuracy', data, 'rl')
-        tm_mae = evaluator.measure('mae_next', data, 'tm')
         mean_ac = ac_sim.accuracy.mean()
         exp_desc = pd.DataFrame([exp_desc])
         exp_desc = pd.concat([exp_desc]*len(ac_sim), ignore_index=True)
         ac_sim = pd.concat([ac_sim, exp_desc], axis=1).to_dict('records')
         rl_sim = pd.concat([rl_sim, exp_desc], axis=1).to_dict('records')
-        tm_mae = pd.concat([tm_mae, exp_desc], axis=1).to_dict('records')
         self.save_results(ac_sim, 'ac', parms)
         self.save_results(rl_sim, 'rl', parms)
-        self.save_results(tm_mae, 'tm', parms)
+        if parms['one_timestamp']:
+            tm_mae = evaluator.measure('mae_next', data, 'tm')
+            tm_mae = pd.concat([tm_mae, exp_desc], axis=1).to_dict('records')
+            self.save_results(tm_mae, 'tm', parms)
+        else:
+            dur_mae = evaluator.measure('mae_next', data, 'dur')
+            wait_mae = evaluator.measure('mae_next', data, 'wait')
+            dur_mae = pd.concat([dur_mae, exp_desc], axis=1).to_dict('records')
+            wait_mae = pd.concat([wait_mae, exp_desc], axis=1).to_dict('records')
+            self.save_results(dur_mae, 'dur', parms)
+            self.save_results(wait_mae, 'wait', parms)
         return mean_ac
 
     def _evaluate_pred_sfx(self, data, parms):
@@ -243,16 +251,24 @@ class EvaluateTask():
         evaluator = ev.Evaluator(parms['one_timestamp'])
         ac_sim = evaluator.measure('similarity', data, 'ac')
         rl_sim = evaluator.measure('similarity', data, 'rl')
-        tm_mae = evaluator.measure('mae_suffix', data, 'tm')
         mean_sim = ac_sim['mean'].mean()
         exp_desc = pd.DataFrame([exp_desc])
         exp_desc = pd.concat([exp_desc]*len(ac_sim), ignore_index=True)
         ac_sim = pd.concat([ac_sim, exp_desc], axis=1).to_dict('records')
         rl_sim = pd.concat([rl_sim, exp_desc], axis=1).to_dict('records')
-        tm_mae = pd.concat([tm_mae, exp_desc], axis=1).to_dict('records')
         self.save_results(ac_sim, 'ac', parms)
         self.save_results(rl_sim, 'rl', parms)
-        self.save_results(tm_mae, 'tm', parms)
+        if parms['one_timestamp']:
+            tm_mae = evaluator.measure('mae_suffix', data, 'tm')
+            tm_mae = pd.concat([tm_mae, exp_desc], axis=1).to_dict('records')
+            self.save_results(tm_mae, 'tm', parms)
+        else:
+            dur_mae = evaluator.measure('mae_suffix', data, 'dur')
+            wait_mae = evaluator.measure('mae_suffix', data, 'wait')
+            dur_mae = pd.concat([dur_mae, exp_desc], axis=1).to_dict('records')
+            wait_mae = pd.concat([wait_mae, exp_desc], axis=1).to_dict('records')
+            self.save_results(dur_mae, 'dur', parms)
+            self.save_results(wait_mae, 'wait', parms)
         return mean_sim
 
     def _evaluate_predict_log(self, data, parms):

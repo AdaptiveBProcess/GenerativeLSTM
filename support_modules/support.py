@@ -11,7 +11,7 @@ import time
 
 
 def folder_id():
-    return datetime.datetime.today().strftime('%Y%m%d_%H%M%S%f')
+    return datetime.datetime.today().strftime('%Y%m%d_') + str(uuid.uuid4()).upper().replace('-', '_')
 #generate unique bimp element ids
 def gen_id():
     return "qbp_" + str(uuid.uuid4())

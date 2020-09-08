@@ -37,12 +37,14 @@ def main(argv):
                     'Resource': 'user'}
     # Similarity btw the resources profile execution (Song e.t. all)
     parameters['rp_sim'] = 0.85
+    parameters['batch_size'] = 32 # Usually 32/64/128/256
+    parameters['epochs'] = 200
     # Parameters setting manual fixed or catched by console
     if not argv:
         # Event-log parameters
-        parameters['file_name'] = 'Production_training.csv'
+        parameters['file_name'] = 'inter_Production_training.csv'
         # Event-log reading parameters
-        parameters['one_timestamp'] = True  # Only one timestamp in the log
+        parameters['one_timestamp'] = False  # Only one timestamp in the log
         parameters['read_options'] = {
             'timeformat': '%Y-%m-%dT%H:%M:%S.%f',
             'column_names': column_names,
@@ -55,14 +57,15 @@ def main(argv):
         parameters['optim'] = 'Adam'  # optimization function Keras
         parameters['norm_method'] = 'max'  # max, lognorm
         # Model types --> shared_cat, shared_cat_inter, specialized, concatenated
-        parameters['model_type'] = 'shared_cat'
+        parameters['model_type'] = 'concatenated_inter'
         parameters['n_size'] = 10  # n-gram size
-        parameters['l_size'] = 100  # LSTM layer sizes
+        parameters['l_size'] = 50  # LSTM layer sizes
         parameters['is_single_exec'] = False  # single or batch execution
-        parameters['max_trace_size'] = 100
         # variants and repetitions to be tested Random Choice, Arg Max
         parameters['variant'] = 'Random Choice'
         parameters['rep'] = 2
+        if parameters['model_type'] == 'simple_gan':
+            parameters['gan_pretrain'] = False
     else:
         # Catch parameters by console
         try:
