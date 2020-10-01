@@ -17,7 +17,7 @@ class EventLogPredictor():
     def __init__(self):
         """constructor"""
         self.model = None
-        self.imp = 'Arg Max'
+        self.imp = 'arg_max'
         self.max_trace_size = 0
 
     def predict(self, params, model, examples, imp, vectorizer):
@@ -66,7 +66,7 @@ class EventLogPredictor():
             while i < self.max_trace_size:
                 # predictions = self.model.predict([x_ac_ngram, x_rl_ngram, x_t_ngram])
                 predictions = self.model.predict(inputs)
-                if self.imp == 'Random Choice':
+                if self.imp == 'random_choice':
                     # Use this to get a random choice following as PDF
                     pos = np.random.choice(
                         np.arange(0, len(predictions[0][0])),
@@ -74,7 +74,7 @@ class EventLogPredictor():
                     pos1 = np.random.choice(
                         np.arange(0, len(predictions[1][0])),
                         p=predictions[1][0])
-                elif self.imp == 'Arg Max':
+                elif self.imp == 'arg_max':
                     # Use this to get the max prediction
                     pos = np.argmax(predictions[0][0])
                     pos1 = np.argmax(predictions[1][0])

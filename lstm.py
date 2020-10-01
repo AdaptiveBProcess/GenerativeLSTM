@@ -31,6 +31,7 @@ def main(argv):
                     'Activity': 'task',
                     'lifecycle:transition': 'event_type',
                     'Resource': 'user'}
+    parameters['one_timestamp'] = True  # Only one timestamp in the log
     # Similarity btw the resources profile execution (Song e.t. all)
     parameters['rp_sim'] = 0.85
     parameters['batch_size'] = 32 # Usually 32/64/128/256
@@ -41,7 +42,6 @@ def main(argv):
         # pred_sfx, predict_next
         parameters['activity'] = 'predict_next'
         # Event-log reading parameters
-        parameters['one_timestamp'] = True  # Only one timestamp in the log
         parameters['read_options'] = {
             'timeformat': '%Y-%m-%dT%H:%M:%S.%f',
             'column_names': column_names,
@@ -68,8 +68,8 @@ def main(argv):
             parameters['folder'] = '20201001_603DA376_B011_4050_9656_CA2BB903AC8B'
             parameters['model_file'] = 'model_shared_cat_61-2.90.h5'
             parameters['is_single_exec'] = False  # single or batch execution
-            # variants and repetitions to be tested Random Choice, Arg Max
-            parameters['variant'] = 'Random Choice'
+            # variants and repetitions to be tested random_choice, arg_max
+            parameters['variant'] = 'random_choice'
             parameters['rep'] = 1
         else:
             raise ValueError(parameters['activity'])
@@ -109,8 +109,9 @@ def main(argv):
     if parameters['activity'] == 'training':
         print(parameters)
         trainer = tr.ModelTrainer(parameters)
-        # print(trainer.output, trainer.model, sep=' ')
+        print(trainer.output, trainer.model, sep=' ')
     elif parameters['activity'] in ['predict_next', 'pred_sfx', 'pred_log']:
+        print(parameters)
         print(parameters['folder'])
         print(parameters['model_file'])
         predictor = pr.ModelPredictor(parameters)
