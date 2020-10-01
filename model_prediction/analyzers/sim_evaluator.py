@@ -13,8 +13,6 @@ from scipy.optimize import linear_sum_assignment
 
 from model_prediction.analyzers import alpha_oracle as ao
 from model_prediction.analyzers.alpha_oracle import Rel
-# import alpha_oracle as ao
-# from alpha_oracle import Rel
 
 
 import pandas as pd
@@ -22,6 +20,10 @@ import numpy as np
 
 
 class Evaluator():
+
+    def __init__(self, one_timestamp):
+        """constructor"""
+        self.one_timestamp = one_timestamp
 
     def measure(self, metric, data, feature=None):
         evaluator = self._get_metric_evaluator(metric)
@@ -167,7 +169,7 @@ class Evaluator():
             for i in range(0, mx_len):
                 for j in range(0, mx_len):
                     comp_sec = self.create_comparison_elements(pred_data,
-                                                                log_data, i, j)
+                                                               log_data, i, j)
                     length = np.max([len(comp_sec['seqs']['s_1']),
                                      len(comp_sec['seqs']['s_2'])])
                     distance = self.tsd_alpha(comp_sec,
@@ -184,12 +186,12 @@ class Evaluator():
                                        log_order=log_data[idy]['profile'],
                                        sim_score=(1-(cost_matrix[idx][idy])),
                                        implementation=var['implementation'],
-                                       run_num = var['run_num']))
+                                       run_num=var['run_num']))
         data = pd.DataFrame(similarity)
         data = (data.groupby(['implementation', 'run_num'])['sim_score']
                 .agg(['mean'])
                 .reset_index()
-                .rename(columns={'mean': 'tsd'}))
+                .rename(columns={'mean': 'els'}))
         return data
 
     def _els_min_evaluation(self, data, feature):
@@ -237,7 +239,7 @@ class Evaluator():
         data = (data.groupby(['implementation', 'run_num'])['sim_score']
                 .agg(['mean'])
                 .reset_index()
-                .rename(columns={'mean': 'tsd'}))
+                .rename(columns={'mean': 'els'}))
         return data
 
     def create_comparison_elements(self, serie1, serie2, id1, id2):
@@ -261,8 +263,14 @@ class Evaluator():
         comp_sec['seqs']['s_1'] = serie1[id1]['profile']
         comp_sec['seqs']['s_2'] = serie2[id2]['profile']
         comp_sec['times'] = dict()
-        comp_sec['times']['p_1'] = serie1[id1]['dur_act_norm']
-        comp_sec['times']['p_2'] = serie2[id2]['dur_act_norm']
+        if self.one_timestamp:
+            comp_sec['times']['p_1'] = serie1[id1]['dur_act_norm']
+            comp_sec['times']['p_2'] = serie2[id2]['dur_act_norm']
+        else:
+            comp_sec['times']['p_1'] = serie1[id1]['dur_act_norm']
+            comp_sec['times']['p_2'] = serie2[id2]['dur_act_norm']
+            comp_sec['times']['w_1'] = serie1[id1]['wait_act_norm']
+            comp_sec['times']['w_2'] = serie2[id2]['wait_act_norm']
         return comp_sec
 
     def tsd_alpha(self, comp_sec, alpha_concurrency):
@@ -317,9 +325,22 @@ class Evaluator():
         -------
         cost : float
         """
-        p_1 = times['p_1']
-        p_2 = times['p_2']
-        cost = np.abs(p_2[s2_idx]-p_1[s1_idx]) if p_1[s1_idx] > 0 else 0
+        if self.one_timestamp:
+            p_1 = times['p_1']
+            p_2 = times['p_2']
+            cost = np.abs(p_2[s2_idx]-p_1[s1_idx]) if p_1[s1_idx] > 0 else 0
+        else:
+            p_1 = times['p_1']
+            p_2 = times['p_2']
+            w_1 = times['w_1']
+            w_2 = times['w_2']
+            t_1 = p_1[s1_idx] + w_1[s1_idx]
+            if t_1 > 0:
+                b_1 = (p_1[s1_idx]/t_1)
+                cost = ((b_1*np.abs(p_2[s2_idx]-p_1[s1_idx])) +
+                        ((1 - b_1)*np.abs(w_2[s2_idx]-w_1[s1_idx])))
+            else:
+                cost = 0
         return cost
 
 # =============================================================================
@@ -343,13 +364,13 @@ class Evaluator():
         data = self.scaling_data(data)
         log_data = data[data.implementation == 'log']
         alias = self.create_task_alias(data.task.unique())
-        alpha_concurrency = ao.AlphaOracle(log_data, alias, True, True)
+        # alpha_concurrency = ao.AlphaOracle(log_data, alias, True, True)
         # log reformating
         log_data = self.reformat_events(log_data.to_dict('records'),
                                         'task',
                                         alias)
         variants = data[['run_num', 'implementation']].drop_duplicates()
-        variants = variants[variants.implementation!='log'].to_dict('records')
+        variants = variants[variants.implementation != 'log'].to_dict('records')
         similarity = list()
         for var in variants:
             pred_data = data[(data.implementation == var['implementation']) &
@@ -377,7 +398,7 @@ class Evaluator():
                                        log_order=log_data[idy]['profile'],
                                        sim_score=(1-(dl_matrix[idx][idy])),
                                        implementation=var['implementation'],
-                                       run_num = var['run_num']))
+                                       run_num=var['run_num']))
         data = pd.DataFrame(similarity)
         data = (data.groupby(['implementation', 'run_num'])['sim_score']
                 .agg(['mean'])
@@ -401,7 +422,7 @@ class Evaluator():
         ae : absolute error value
         """
         length = np.max([len(serie1[id1]['profile']),
-                          len(serie2[id2]['profile'])])
+                         len(serie2[id2]['profile'])])
         d_l = jf.damerau_levenshtein_distance(
             ''.join(serie1[id1]['profile']),
             ''.join(serie2[id2]['profile']))/length
@@ -429,13 +450,13 @@ class Evaluator():
         data = self.scaling_data(data)
         log_data = data[data.implementation == 'log']
         alias = self.create_task_alias(data.task.unique())
-        alpha_concurrency = ao.AlphaOracle(log_data, alias, True, True)
+        # alpha_concurrency = ao.AlphaOracle(log_data, alias, True, True)
         # log reformating
         log_data = self.reformat_events(log_data.to_dict('records'),
                                         'task',
                                         alias)
         variants = data[['run_num', 'implementation']].drop_duplicates()
-        variants = variants[variants.implementation!='log'].to_dict('records')
+        variants = variants[variants.implementation != 'log'].to_dict('records')
         similarity = list()
         for var in variants:
             pred_data = data[(data.implementation == var['implementation']) &
@@ -467,7 +488,7 @@ class Evaluator():
                                        log_order=log_data[idy]['profile'],
                                        sim_score=(ae_matrix[idx][idy]),
                                        implementation=var['implementation'],
-                                       run_num = var['run_num']))
+                                       run_num=var['run_num']))
         data = pd.DataFrame(similarity)
         data = (data.groupby(['implementation', 'run_num'])['sim_score']
                 .agg(['mean'])
@@ -500,8 +521,7 @@ class Evaluator():
             alias[variables[i]] = aliases[i]
         return alias
 
-    @staticmethod
-    def add_calculated_times(log):
+    def add_calculated_times(self, log):
         """Appends the indexes and relative time to the dataframe.
         parms:
             log: dataframe.
@@ -513,21 +533,30 @@ class Evaluator():
         log = sorted(log, key=lambda x: x['caseid'])
         for _, group in itertools.groupby(log, key=lambda x: x['caseid']):
             events = list(group)
-            events = sorted(events, key=itemgetter('end_timestamp'))
+            ordk = 'end_timestamp' if self.one_timestamp else 'start_timestamp'
+            events = sorted(events, key=itemgetter(ordk))
             for i in range(0, len(events)):
                 # In one-timestamp approach the first activity of the trace
-                # is taken as instantsince there is no previous timestamp
-                # to find a range
-                if i == 0:
-                    events[i]['duration'] = 0
+                # is taken as instant since there is no previous timestamp
+                if self.one_timestamp:
+                    if i == 0:
+                        dur = 0
+                    else:
+                        dur = (events[i]['end_timestamp'] -
+                               events[i-1]['end_timestamp']).total_seconds()
                 else:
                     dur = (events[i]['end_timestamp'] -
-                           events[i-1]['end_timestamp']).total_seconds()
-                    events[i]['duration'] = dur
+                           events[i]['start_timestamp']).total_seconds()
+                    if i == 0:
+                        wit = 0
+                    else:
+                        wit = (events[i]['start_timestamp'] -
+                               events[i-1]['end_timestamp']).total_seconds()
+                    events[i]['waiting'] = wit
+                events[i]['duration'] = dur
         return pd.DataFrame.from_dict(log)
 
-    @staticmethod
-    def scaling_data(data):
+    def scaling_data(self, data):
         """
         Scales times values activity based
 
@@ -546,10 +575,14 @@ class Evaluator():
         dur_act_norm = (lambda x: x['duration']/summ[x['task']]
                         if summ[x['task']] > 0 else 0)
         df_modif['dur_act_norm'] = df_modif.apply(dur_act_norm, axis=1)
+        if not self.one_timestamp:
+            summ = data.groupby(['task'])['waiting'].max().to_dict()
+            wait_act_norm = (lambda x: x['waiting']/summ[x['task']]
+                            if summ[x['task']] > 0 else 0)
+            df_modif['wait_act_norm'] = df_modif.apply(wait_act_norm, axis=1)
         return df_modif
 
-    @staticmethod
-    def reformat_events(data, features, alias):
+    def reformat_events(self, data, features, alias):
         """Creates series of activities, roles and relative times per trace.
         parms:
             log_df: dataframe.
@@ -561,13 +594,18 @@ class Evaluator():
         # Update alias
         if isinstance(features, list):
             [x.update(dict(alias=alias[(x[features[0]],
-                                        x[features[1]])])) for x in data]
+                                             x[features[1]])])) for x in data]
         else:
             [x.update(dict(alias=alias[x[features]])) for x in data]
         temp_data = list()
         # define ordering keys and columns
-        columns = ['alias', 'duration', 'dur_act_norm']
-        sort_key = 'end_timestamp'
+        if self.one_timestamp:
+            columns = ['alias', 'duration', 'dur_act_norm']
+            sort_key = 'end_timestamp'
+        else:
+            sort_key = 'start_timestamp'
+            columns = ['alias', 'duration',
+                       'dur_act_norm', 'waiting', 'wait_act_norm']
         data = sorted(data, key=lambda x: (x['caseid'], x[sort_key]))
         for key, group in itertools.groupby(data, key=lambda x: x['caseid']):
             trace = list(group)
@@ -581,6 +619,6 @@ class Evaluator():
                 temp_dict = {**{col: serie}, **temp_dict}
             temp_dict = {**{'caseid': key, 'start_time': trace[0][sort_key],
                             'end_time': trace[-1][sort_key]},
-                          **temp_dict}
+                         **temp_dict}
             temp_data.append(temp_dict)
         return sorted(temp_data, key=itemgetter('start_time'))

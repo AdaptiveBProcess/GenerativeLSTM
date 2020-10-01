@@ -4,16 +4,16 @@ Created on Thu Feb 28 10:15:12 2019
 
 @author: Manuel Camargo
 """
+# import keras.backend as K
 
 import os
+# import numpy as np
 
-from keras.models import Model
-from keras.layers import Input, Embedding, Concatenate
-from keras.layers.core import Dense
-from keras.layers.recurrent import LSTM
-from keras.optimizers import Nadam, Adam, SGD, Adagrad
-from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
-from keras.layers.normalization import BatchNormalization
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Input, Embedding, Concatenate
+from tensorflow.keras.layers import Dense, LSTM, BatchNormalization
+from tensorflow.keras.optimizers import Nadam, Adam, SGD, Adagrad
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
 from support_modules.callbacks import time_callback as tc
 from support_modules.callbacks import clean_models_callback as cm
@@ -34,34 +34,34 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
 # =============================================================================
     ac_input = Input(shape=(vec['prefixes']['activities'].shape[1], ), name='ac_input')
     rl_input = Input(shape=(vec['prefixes']['roles'].shape[1], ), name='rl_input')
-    t_input = Input(shape=(vec['prefixes']['times'].shape[1], 1), name='t_input')
+    t_input = Input(shape=(vec['prefixes']['times'].shape[1],
+                           vec['prefixes']['times'].shape[2]), name='t_input')
 
 # =============================================================================
 #    Embedding layer for categorical attributes
 # =============================================================================
     ac_embedding = Embedding(ac_weights.shape[0],
-                            ac_weights.shape[1],
-                            weights=[ac_weights],
-                            input_length=vec['prefixes']['activities'].shape[1],
-                            trainable=False, name='ac_embedding')(ac_input)
+                             ac_weights.shape[1],
+                             weights=[ac_weights],
+                             input_length=vec['prefixes']['activities'].shape[1],
+                             trainable=False, name='ac_embedding')(ac_input)
 
     rl_embedding = Embedding(rl_weights.shape[0],
-                            rl_weights.shape[1],
-                            weights=[rl_weights],
-                            input_length=vec['prefixes']['roles'].shape[1],
-                            trainable=False, name='rl_embedding')(rl_input)
+                             rl_weights.shape[1],
+                             weights=[rl_weights],
+                             input_length=vec['prefixes']['roles'].shape[1],
+                             trainable=False, name='rl_embedding')(rl_input)
 # =============================================================================
 #    Layer 1
 # =============================================================================
 
-    merged = Concatenate(name = 'concatenated', axis = 2)([ac_embedding, rl_embedding])
-
+    merged = Concatenate(name='concatenated', axis=2)([ac_embedding, rl_embedding])
 
     l1_c1 = LSTM(args['l_size'],
-                  kernel_initializer='glorot_uniform',
-                  return_sequences=True,
-                  dropout=0.2,
-                  implementation=args['imp'])(merged)
+                 kernel_initializer='glorot_uniform',
+                 return_sequences=True,
+                 dropout=0.2,
+                 implementation=args['imp'])(merged)
 
     l1_c3 = LSTM(args['l_size'],
                  activation=args['lstm_act'],
@@ -114,11 +114,12 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
                         name='role_output')(l2_c2)
 
     if ('dense_act' in args) and (args['dense_act'] is not None):
-        time_output = Dense(1, activation=args['dense_act'],
+        time_output = Dense(vec['next_evt']['times'].shape[1],
+                            activation=args['dense_act'],
                             kernel_initializer='glorot_uniform',
                             name='time_output')(l2_3)
     else:
-        time_output = Dense(1,
+        time_output = Dense(vec['next_evt']['times'].shape[1],
                             kernel_initializer='glorot_uniform',
                             name='time_output')(l2_3)
 
@@ -165,15 +166,17 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
                                    cooldown=0,
                                    min_lr=0)
 
-    batch_size = vec['prefixes']['activities'].shape[1]
-    model.fit({'ac_input':vec['prefixes']['activities'],
-               'rl_input':vec['prefixes']['roles'],
-               't_input':vec['prefixes']['times']},
-              {'act_output':vec['next_evt']['activities'],
-               'role_output':vec['next_evt']['roles'],
-               'time_output':vec['next_evt']['times']},
+    batch_size = args['batch_size']
+    model.fit({'ac_input': vec['prefixes']['activities'],
+                'rl_input': vec['prefixes']['roles'],
+                't_input': vec['prefixes']['times']},
+              {'act_output': vec['next_evt']['activities'],
+                'role_output': vec['next_evt']['roles'],
+                'time_output': vec['next_evt']['times']},
               validation_split=0.2,
               verbose=2,
-              callbacks=[early_stopping, model_checkpoint, lr_reducer, cb, clean_models],
+              callbacks=[early_stopping, model_checkpoint,
+                          lr_reducer, cb, clean_models],
               batch_size=batch_size,
-              epochs=200)
+              epochs=args['epochs'])
+
