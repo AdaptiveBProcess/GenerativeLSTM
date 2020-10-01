@@ -64,8 +64,6 @@ def main(argv):
         # variants and repetitions to be tested Random Choice, Arg Max
         parameters['variant'] = 'Random Choice'
         parameters['rep'] = 2
-        if parameters['model_type'] == 'simple_gan':
-            parameters['gan_pretrain'] = False
     else:
         # Catch parameters by console
         try:

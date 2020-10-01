@@ -7,8 +7,6 @@ import getopt
 
 from model_prediction import model_predictor as pr
 from model_training import model_trainer as tr
-from intercase_feat import intercase_feat_extraction as itf
-
 
 def catch_parameter(opt):
     """Change the captured parameters names"""
@@ -36,14 +34,14 @@ def main(argv):
     # Similarity btw the resources profile execution (Song e.t. all)
     parameters['rp_sim'] = 0.85
     parameters['batch_size'] = 32 # Usually 32/64/128/256
-    parameters['epochs'] = 1
+    parameters['epochs'] = 200
     # Parameters setting manual fixed or catched by console
     if not argv:
         # Type of LSTM task -> training, pred_log
-        # pred_sfx, predict_next, inter_case
-        parameters['activity'] = 'pred_log'
+        # pred_sfx, predict_next
+        parameters['activity'] = 'predict_next'
         # Event-log reading parameters
-        parameters['one_timestamp'] = False  # Only one timestamp in the log
+        parameters['one_timestamp'] = True  # Only one timestamp in the log
         parameters['read_options'] = {
             'timeformat': '%Y-%m-%dT%H:%M:%S.%f',
             'column_names': column_names,
@@ -52,7 +50,7 @@ def main(argv):
         # General training parameters
         if parameters['activity'] in ['training']:
             # Event-log parameters
-            parameters['file_name'] = 'inter_BPI_Challenge_2017_W_Two_TS_training.csv'
+            parameters['file_name'] = 'BPI_Challenge_2013_closed_problems.xes'
             # Specific model training parameters
             if parameters['activity'] == 'training':
                 parameters['imp'] = 1  # keras lstm implementation 1 cpu,2 gpu
@@ -60,25 +58,19 @@ def main(argv):
                 parameters['dense_act'] = None  # optimization function Keras
                 parameters['optim'] = 'Adam'  # optimization function Keras
                 parameters['norm_method'] = 'max'  # max, lognorm
-                # Model types --> shared_cat, shared_cat_inter, shared_cat_rd
-                # cnn_lstm_inter, simple_gan
-                parameters['model_type'] = 'concatenated_gru_inter'
+                # Model types --> shared_cat, specialized, concatenated, 
+                # shared_cat_gru, specialized_gru, concatenated_gru
+                parameters['model_type'] = 'concatenated_gru'
                 parameters['n_size'] = 5  # n-gram size
                 parameters['l_size'] = 50  # LSTM layer sizes
-                if parameters['model_type'] == 'simple_gan':
-                    parameters['gan_pretrain'] = False
                 # Generation parameters
         elif parameters['activity'] in ['pred_log', 'pred_sfx', 'predict_next']:
-            parameters['folder'] = '20200806_183413188831'
-            parameters['model_file'] = 'model_shared_cat_inter_full_38-2.63.h5'
+            parameters['folder'] = '20201001_603DA376_B011_4050_9656_CA2BB903AC8B'
+            parameters['model_file'] = 'model_shared_cat_61-2.90.h5'
             parameters['is_single_exec'] = False  # single or batch execution
             # variants and repetitions to be tested Random Choice, Arg Max
             parameters['variant'] = 'Random Choice'
             parameters['rep'] = 1
-        elif parameters['activity'] == 'inter_case':
-            parameters['file_name'] = 'BPI_Challenge_2017_W_Two_TS_training.csv'
-            parameters['mem_limit'] = 1000000
-            parameters['sub_group'] = 'inter'  # pd, rw, inter
         else:
             raise ValueError(parameters['activity'])
     else:
@@ -123,11 +115,5 @@ def main(argv):
         print(parameters['model_file'])
         predictor = pr.ModelPredictor(parameters)
         print(predictor.acc)
-    elif parameters['activity'] == 'inter_case':
-        parameters['mem_limit'] = 1000000
-        parameters['sub_group'] = 'inter'
-        print(parameters)
-        itf.extract_features(parameters)
-
 if __name__ == "__main__":
     main(sys.argv[1:])
