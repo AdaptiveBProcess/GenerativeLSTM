@@ -35,12 +35,12 @@ def main(argv):
     # Similarity btw the resources profile execution (Song e.t. all)
     parameters['rp_sim'] = 0.85
     parameters['batch_size'] = 32 # Usually 32/64/128/256
-    parameters['epochs'] = 200
+    parameters['epochs'] = 2
     # Parameters setting manual fixed or catched by console
     if not argv:
         # Type of LSTM task -> training, pred_log
         # pred_sfx, predict_next
-        parameters['activity'] = 'predict_next'
+        parameters['activity'] = 'pred_sfx'
         # Event-log reading parameters
         parameters['read_options'] = {
             'timeformat': '%Y-%m-%dT%H:%M:%S.%f',
@@ -65,8 +65,8 @@ def main(argv):
                 parameters['l_size'] = 50  # LSTM layer sizes
                 # Generation parameters
         elif parameters['activity'] in ['pred_log', 'pred_sfx', 'predict_next']:
-            parameters['folder'] = '20201001_603DA376_B011_4050_9656_CA2BB903AC8B'
-            parameters['model_file'] = 'model_shared_cat_61-2.90.h5'
+            parameters['folder'] = '20201001_87C9DEA1_5CB9_4B9B_AA5C_45BD014F833C'
+            parameters['model_file'] = 'model_concatenated_gru_02-2.39.h5'
             parameters['is_single_exec'] = False  # single or batch execution
             # variants and repetitions to be tested random_choice, arg_max
             parameters['variant'] = 'random_choice'
