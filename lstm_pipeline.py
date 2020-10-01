@@ -42,9 +42,9 @@ def main(argv):
     # Parameters setting manual fixed or catched by console
     if not argv:
         # Event-log parameters
-        parameters['file_name'] = 'inter_Production_training.csv'
+        parameters['file_name'] = 'Production.csv'
         # Event-log reading parameters
-        parameters['one_timestamp'] = False  # Only one timestamp in the log
+        parameters['one_timestamp'] = True  # Only one timestamp in the log
         parameters['read_options'] = {
             'timeformat': '%Y-%m-%dT%H:%M:%S.%f',
             'column_names': column_names,
@@ -56,8 +56,9 @@ def main(argv):
         parameters['dense_act'] = None  # optimization function Keras
         parameters['optim'] = 'Adam'  # optimization function Keras
         parameters['norm_method'] = 'max'  # max, lognorm
-        # Model types --> shared_cat, shared_cat_inter, specialized, concatenated
-        parameters['model_type'] = 'concatenated_inter'
+        # Model types --> shared_cat, specialized, concatenated, 
+        # shared_cat_gru, specialized_gru, concatenated_gru
+        parameters['model_type'] = 'concatenated_gru'
         parameters['n_size'] = 10  # n-gram size
         parameters['l_size'] = 50  # LSTM layer sizes
         parameters['is_single_exec'] = False  # single or batch execution
