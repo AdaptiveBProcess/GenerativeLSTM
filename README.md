@@ -18,7 +18,7 @@ To execute this code you just need to install Anaconda in your system, and creat
 
 ## Running the script
 
-Once created the environment you can perform each one of the tasks, specifying the next parameters in the lstm.py module, or by command line as is described below:
+Once created the environment, you can perform each one of the tasks, specifying the following parameters in the lstm.py module, or by command line as is described below:
 
 *Training LSTM neuronal network:* To perform this task you need to set the required activity (-a) as 'training' followed by the name of the (-f) event log, and all the following parameters:
 
@@ -40,7 +40,11 @@ Once created the environment you can perform each one of the tasks, specifying t
 ```
 (lstm_env) C:\sc_lstm>-a pred_log -c 20201001_426975C9_FAC6_453A_9F0B_4DD528CB554B -b "model_shared_cat_02-1.10.h5" -v "random_choice" -r 1"
 ```
+*Predict the next event and role:* To perform this task the only changes with respect with the previous ones are that you need to set the required activity as 'predict_next' and its not necesary to set the maximum trace length:
 
+```
+(lstm_env) C:\sc_lstm>python lstm.py -a predict_next -c 20190228_155935509575 -b "model_rd_150 Nadam_22-0.59.h5" -x False
+```
 ## Examples
 
 Models examples and experimental results can be found at <a href="http://kodu.ut.ee/~chavez85/bpm2019/" target="_blank">examples</a>
