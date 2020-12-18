@@ -7,6 +7,7 @@ import getopt
 
 from model_prediction import model_predictor as pr
 from model_training import model_trainer as tr
+from model_prediction import anomaly_detection as ad
 
 def catch_parameter(opt):
     """Change the captured parameters names"""
@@ -39,7 +40,7 @@ def main(argv):
     # Parameters setting manual fixed or catched by console
     if not argv:
         # Type of LSTM task -> training, pred_log
-        # pred_sfx, predict_next
+        # pred_sfx, predict_next, anomaly_detection
         parameters['activity'] = 'pred_sfx'
         # Event-log reading parameters
         parameters['read_options'] = {
@@ -59,18 +60,22 @@ def main(argv):
                 parameters['optim'] = 'Adam'  # optimization function Keras
                 parameters['norm_method'] = 'max'  # max, lognorm
                 # Model types --> shared_cat, specialized, concatenated, 
-                # shared_cat_gru, specialized_gru, concatenated_gru
+                # shared_cat_gru, specialized_gru, concatenated_gru,
+                # transformer, transformer_anomaly
                 parameters['model_type'] = 'concatenated_gru'
                 parameters['n_size'] = 5  # n-gram size
                 parameters['l_size'] = 50  # LSTM layer sizes
                 # Generation parameters
         elif parameters['activity'] in ['pred_log', 'pred_sfx', 'predict_next']:
             parameters['folder'] = '20201001_87C9DEA1_5CB9_4B9B_AA5C_45BD014F833C'
+            #model_file = 'transf_model' for Transformers
             parameters['model_file'] = 'model_concatenated_gru_02-2.39.h5'
             parameters['is_single_exec'] = False  # single or batch execution
             # variants and repetitions to be tested random_choice, arg_max
             parameters['variant'] = 'random_choice'
             parameters['rep'] = 1
+        elif parameters['activity'] == 'anomaly_detection':
+            parameters['folder'] = '20201218_A68A24F0_86FF_423B_B794_AF805647ADB0'
         else:
             raise ValueError(parameters['activity'])
     else:
@@ -116,5 +121,9 @@ def main(argv):
         print(parameters['model_file'])
         predictor = pr.ModelPredictor(parameters)
         print(predictor.acc)
+    elif parameters['activity'] == 'anomaly_detection':
+        print(parameters)
+        print(parameters['folder'])
+        ad._detector(parameters)
 if __name__ == "__main__":
     main(sys.argv[1:])
