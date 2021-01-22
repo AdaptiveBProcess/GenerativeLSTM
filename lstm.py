@@ -7,7 +7,7 @@ import getopt
 
 from model_prediction import model_predictor as pr
 from model_training import model_trainer as tr
-from intercase_feat import intercase_feat_extraction as itf
+# from intercase_feat import intercase_feat_extraction as itf
 
 
 def catch_parameter(opt):
@@ -69,12 +69,12 @@ def main(argv):
                     parameters['gan_pretrain'] = False
                 # Generation parameters
         elif parameters['activity'] in ['pred_log', 'pred_sfx', 'predict_next']:
-            parameters['folder'] = '20200806_183413188831'
-            parameters['model_file'] = 'model_shared_cat_inter_full_38-2.63.h5'
+            parameters['folder'] = '20210122_D1FD9952_58DE_4DA5_8356_89C3F64CD994'
+            parameters['model_file'] = 'model_shared_cat_02-3.11.h5'
             parameters['is_single_exec'] = False  # single or batch execution
             # variants and repetitions to be tested Random Choice, Arg Max
             parameters['variant'] = 'Random Choice'
-            parameters['rep'] = 1
+            parameters['rep'] = 2
         elif parameters['activity'] == 'inter_case':
             parameters['file_name'] = 'BPI_Challenge_2017_W_Two_TS_training.csv'
             parameters['mem_limit'] = 1000000
@@ -123,11 +123,11 @@ def main(argv):
         print(parameters['model_file'])
         predictor = pr.ModelPredictor(parameters)
         print(predictor.acc)
-    elif parameters['activity'] == 'inter_case':
-        parameters['mem_limit'] = 1000000
-        parameters['sub_group'] = 'inter'
-        print(parameters)
-        itf.extract_features(parameters)
+    # elif parameters['activity'] == 'inter_case':
+    #     parameters['mem_limit'] = 1000000
+    #     parameters['sub_group'] = 'inter'
+    #     print(parameters)
+    #     itf.extract_features(parameters)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

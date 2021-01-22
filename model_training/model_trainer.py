@@ -18,6 +18,7 @@ from operator import itemgetter
 
 import readers.log_reader as lr
 import utils.support as sup
+import readers.log_splitter as ls
 
 from model_training import samples_creator as exc
 from model_training import features_manager as feat
@@ -81,7 +82,7 @@ class ModelTrainer():
         # indexes creation
         self.indexing()
         # split validation
-        self.split_timeline(0.3, params['one_timestamp'])
+        self.split_timeline(0.8, params['one_timestamp'])
         # create examples
         seq_creator = exc.SequencesCreator(self.log_train,
                                            params['one_timestamp'],
@@ -154,79 +155,109 @@ class ModelTrainer():
             alias[subsec_set[i]] = i + 1
         return alias
 
-    def split_train_test(self, percentage: float, one_timestamp: bool) -> None:
-        """
-        Split an event log dataframe to peform split-validation
+    # def split_train_test(self, percentage: float, one_timestamp: bool) -> None:
+    #     """
+    #     Split an event log dataframe to peform split-validation
 
-        Parameters
-        ----------
-        percentage : float, validation percentage.
-        one_timestamp : bool, Support only one timestamp.
-        """
-        cases = self.log.caseid.unique()
-        num_test_cases = int(np.round(len(cases)*percentage))
-        test_cases = cases[:num_test_cases]
-        train_cases = cases[num_test_cases:]
-        df_test = self.log[self.log.caseid.isin(test_cases)]
-        df_train = self.log[self.log.caseid.isin(train_cases)]
-        key = 'end_timestamp' if one_timestamp else 'start_timestamp'
-        self.log_test = (df_test
-                         .sort_values(key, ascending=True)
-                         .reset_index(drop=True))
-        self.log_train = (df_train
-                          .sort_values(key, ascending=True)
-                          .reset_index(drop=True))
+    #     Parameters
+    #     ----------
+    #     percentage : float, validation percentage.
+    #     one_timestamp : bool, Support only one timestamp.
+    #     """
+    #     cases = self.log.caseid.unique()
+    #     num_test_cases = int(np.round(len(cases)*percentage))
+    #     test_cases = cases[:num_test_cases]
+    #     train_cases = cases[num_test_cases:]
+    #     df_test = self.log[self.log.caseid.isin(test_cases)]
+    #     df_train = self.log[self.log.caseid.isin(train_cases)]
+    #     key = 'end_timestamp' if one_timestamp else 'start_timestamp'
+    #     self.log_test = (df_test
+    #                      .sort_values(key, ascending=True)
+    #                      .reset_index(drop=True))
+    #     self.log_train = (df_train
+    #                       .sort_values(key, ascending=True)
+    #                       .reset_index(drop=True))
 
-    def split_timeline(self, percentage: float, one_timestamp: bool) -> None:
-        """
-        Split an event log dataframe to peform split-validation
+    # def split_timeline(self, percentage: float, one_timestamp: bool) -> None:
+    #     """
+    #     Split an event log dataframe to peform split-validation
 
-        Parameters
-        ----------
-        percentage : float, validation percentage.
-        one_timestamp : bool, Support only one timestamp.
-        """
-        log = self.log.to_dict('records')
-        log = sorted(log, key=lambda x: x['caseid'])
-        for key, group in itertools.groupby(log, key=lambda x: x['caseid']):
-            events = list(group)
-            events = sorted(events, key=itemgetter('end_timestamp'))
-            length = len(events)
-            for i in range(0, len(events)):
-                events[i]['pos_trace'] = i + 1
-                events[i]['trace_len'] = length
-        log = pd.DataFrame.from_dict(log)
-        log.sort_values(by='end_timestamp', ascending=False, inplace=True)
+    #     Parameters
+    #     ----------
+    #     percentage : float, validation percentage.
+    #     one_timestamp : bool, Support only one timestamp.
+    #     """
+    #     log = self.log.to_dict('records')
+    #     log = sorted(log, key=lambda x: x['caseid'])
+    #     for key, group in itertools.groupby(log, key=lambda x: x['caseid']):
+    #         events = list(group)
+    #         events = sorted(events, key=itemgetter('end_timestamp'))
+    #         length = len(events)
+    #         for i in range(0, len(events)):
+    #             events[i]['pos_trace'] = i + 1
+    #             events[i]['trace_len'] = length
+    #     log = pd.DataFrame.from_dict(log)
+    #     log.sort_values(by='end_timestamp', ascending=False, inplace=True)
 
         
-        num_events = int(np.round(len(log)*percentage))
+    #     num_events = int(np.round(len(log)*percentage))
 
-        df_test = log.iloc[:num_events]
-        df_train = log.iloc[num_events:]
+    #     df_test = log.iloc[:num_events]
+    #     df_train = log.iloc[num_events:]
 
-        # Incomplete final traces
-        df_train = df_train.sort_values(by=['caseid','pos_trace'],
-                                        ascending=True)
-        inc_traces = pd.DataFrame(df_train.groupby('caseid')
-                                  .last()
-                                  .reset_index())
-        inc_traces = inc_traces[inc_traces.pos_trace != inc_traces.trace_len]
-        inc_traces = inc_traces['caseid'].to_list()
+    #     # Incomplete final traces
+    #     df_train = df_train.sort_values(by=['caseid','pos_trace'],
+    #                                     ascending=True)
+    #     inc_traces = pd.DataFrame(df_train.groupby('caseid')
+    #                               .last()
+    #                               .reset_index())
+    #     inc_traces = inc_traces[inc_traces.pos_trace != inc_traces.trace_len]
+    #     inc_traces = inc_traces['caseid'].to_list()
 
-        # Drop incomplete traces
-        df_test = df_test[~df_test.caseid.isin(inc_traces)]
-        df_test = df_test.drop(columns=['trace_len','pos_trace'])
+    #     # Drop incomplete traces
+    #     df_test = df_test[~df_test.caseid.isin(inc_traces)]
+    #     df_test = df_test.drop(columns=['trace_len','pos_trace'])
 
-        df_train = df_train[~df_train.caseid.isin(inc_traces)]
-        df_train = df_train.drop(columns=['trace_len','pos_trace'])
+    #     df_train = df_train[~df_train.caseid.isin(inc_traces)]
+    #     df_train = df_train.drop(columns=['trace_len','pos_trace'])
 
-        key = 'end_timestamp' if one_timestamp else 'start_timestamp'
-        self.log_test = (df_test
-                         .sort_values(key, ascending=True)
+    #     key = 'end_timestamp' if one_timestamp else 'start_timestamp'
+    #     self.log_test = (df_test
+    #                      .sort_values(key, ascending=True)
+    #                      .reset_index(drop=True))
+    #     self.log_train = (df_train
+    #                       .sort_values(key, ascending=True)
+    #                       .reset_index(drop=True))
+    def split_timeline(self, size: float, one_ts: bool) -> None:
+        """
+        Split an event log dataframe by time to peform split-validation.
+        prefered method time splitting removing incomplete traces.
+        If the testing set is smaller than the 10% of the log size
+        the second method is sort by traces start and split taking the whole
+        traces no matter if they are contained in the timeframe or not
+
+        Parameters
+        ----------
+        size : float, validation percentage.
+        one_ts : bool, Support only one timestamp.
+        """
+        # Split log data
+        splitter = ls.LogSplitter(self.log)
+        train, test = splitter.split_log('timeline_contained', size, one_ts)
+        total_events = len(self.log)
+        # Check size and change time splitting method if necesary
+        if len(test) < int(total_events*0.1):
+            train, test = splitter.split_log('timeline_trace', size, one_ts)
+        # Set splits
+        key = 'end_timestamp' if one_ts else 'start_timestamp'
+        test = pd.DataFrame(test)
+        train = pd.DataFrame(train)
+        self.log_test = (test.sort_values(key, ascending=True)
                          .reset_index(drop=True))
-        self.log_train = (df_train
-                          .sort_values(key, ascending=True)
+        self.log_train = (train.sort_values(key, ascending=True)
                           .reset_index(drop=True))
+
+
 
     @staticmethod
     def load_embedded(index, filename):

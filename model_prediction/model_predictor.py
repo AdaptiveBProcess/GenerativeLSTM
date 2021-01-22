@@ -58,18 +58,16 @@ class ModelPredictor():
         self.run_num = 0
         for i in range(0, self.parms['rep']):
             self.predict_values()
-            self.run_num += 1
         # export predictions
         self.export_predictions()
         # assesment
         evaluator = EvaluateTask()
         if self.parms['activity'] == 'pred_log':
-            data = self.append_sources(self.log, self.predictions,
-                                        self.parms['one_timestamp'])
-            data['caseid'] = data['caseid'].astype(str)
-            return evaluator.evaluate(self.parms, data)
+            self.log['caseid'] = self.log['caseid'].astype(str)
+            self.predictions['caseid'] = self.predictions['caseid'].astype(str)
+            return evaluator.evaluate(self.log, self.predictions, self.parms)
         else:
-            return evaluator.evaluate(self.parms, self.predictions) 
+            return evaluator.evaluate(self.predictions, self.parms) 
 
     def predict_values(self):
         # Predict values
@@ -126,7 +124,7 @@ class ModelPredictor():
                                       self.model_def['vectorizer'])
         results = pd.DataFrame(results)
         results['run_num'] = self.run_num
-        results['implementation'] = self.imp
+        self.run_num += 1
         if self.predictions is None:
             self.predictions = results
         else:
@@ -141,19 +139,19 @@ class ModelPredictor():
         self.predictions.to_csv(os.path.join(output_folder, filename),
                                 index=False)
 
-    @staticmethod
-    def append_sources(source_log, source_predictions, one_timestamp):
-        log = source_log.copy()
-        columns = ['caseid', 'task', 'end_timestamp', 'role']
-        if not one_timestamp:
-            columns += ['start_timestamp']
-        log = log[columns]
-        log['run_num'] = 0
-        log['implementation'] = 'log'
-        predictions = source_predictions.copy()
-        columns = log.columns
-        predictions = predictions[columns]
-        return log.append(predictions, ignore_index=True)
+    # @staticmethod
+    # def append_sources(source_log, source_predictions, one_timestamp):
+    #     log = source_log.copy()
+    #     columns = ['caseid', 'task', 'end_timestamp', 'role']
+    #     if not one_timestamp:
+    #         columns += ['start_timestamp']
+    #     log = log[columns]
+    #     log['run_num'] = 0
+    #     log['source'] = 'log'
+    #     predictions = source_predictions.copy()
+    #     columns = log.columns
+    #     predictions = predictions[columns]
+    #     return log.append(predictions, ignore_index=True)
 
     @staticmethod
     def scale_feature(log, feature, parms, replace=False):
@@ -207,9 +205,9 @@ class ModelPredictor():
         
 class EvaluateTask():
 
-    def evaluate(self, parms, data):
+    def evaluate(self, log, predictions, parms):
         sampler = self._get_evaluator(parms['activity'])
-        return sampler(data, parms)
+        return sampler(log, predictions, parms)
 
     def _get_evaluator(self, activity):
         if activity == 'predict_next':
@@ -271,23 +269,31 @@ class EvaluateTask():
             self.save_results(wait_mae, 'wait', parms)
         return mean_sim
 
-    def _evaluate_predict_log(self, data, parms):
-        exp_desc = self.clean_parameters(parms.copy())
-        evaluator = ev.Evaluator(parms['one_timestamp'])
-        dl = evaluator.measure('dl', data)
-        els = evaluator.measure('els', data)
-        mean_els = els.els.mean()
-        mae = evaluator.measure('mae_log', data)
-        exp_desc = pd.DataFrame([exp_desc])
-        exp_desc = pd.concat([exp_desc]*len(dl), ignore_index=True)
-        # exp_desc = pd.concat([exp_desc]*len(els), ignore_index=True)
-        dl = pd.concat([dl, exp_desc], axis=1).to_dict('records')
-        els = pd.concat([els, exp_desc], axis=1).to_dict('records')
-        mae = pd.concat([mae, exp_desc], axis=1).to_dict('records')
-        self.save_results(dl, 'dl', parms)
-        self.save_results(els, 'els', parms)
-        self.save_results(mae, 'mae', parms)
-        return mean_els
+    def _evaluate_predict_log(self, log, predictions, parms):
+        # exp_desc = self.clean_parameters(parms.copy())
+        sim_values = list()
+        for i in range(0, parms['rep']):
+            evaluator = ev.SimilarityEvaluator(
+                log, predictions[predictions.run_num==i], parms)
+            for metric in ['tsd', 'day_hour_emd', 'log_mae', 'dl', 'mae']:
+                evaluator.measure_distance(metric)
+                sim_values.append({**{'run_num': i}, **evaluator.similarity})
+        print(sim_values)
+        # evaluator = ev.Evaluator(parms['one_timestamp'])
+        # dl = evaluator.measure('dl', data)
+        # els = evaluator.measure('els', data)
+        # mean_els = els.els.mean()
+        # mae = evaluator.measure('mae_log', data)
+        # exp_desc = pd.DataFrame([exp_desc])
+        # exp_desc = pd.concat([exp_desc]*len(dl), ignore_index=True)
+        # # exp_desc = pd.concat([exp_desc]*len(els), ignore_index=True)
+        # dl = pd.concat([dl, exp_desc], axis=1).to_dict('records')
+        # els = pd.concat([els, exp_desc], axis=1).to_dict('records')
+        # mae = pd.concat([mae, exp_desc], axis=1).to_dict('records')
+        # self.save_results(dl, 'dl', parms)
+        # self.save_results(els, 'els', parms)
+        # self.save_results(mae, 'mae', parms)
+        return 0.1
 
     @staticmethod
     def clean_parameters(parms):
