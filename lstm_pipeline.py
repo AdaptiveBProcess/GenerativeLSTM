@@ -38,11 +38,11 @@ def main(argv):
     # Similarity btw the resources profile execution (Song e.t. all)
     parameters['rp_sim'] = 0.85
     parameters['batch_size'] = 32 # Usually 32/64/128/256
-    parameters['epochs'] = 200
+    parameters['epochs'] = 2
     # Parameters setting manual fixed or catched by console
     if not argv:
         # Event-log parameters
-        parameters['file_name'] = 'inter_Production_training.csv'
+        parameters['file_name'] = 'PurchasingExample.xes'
         # Event-log reading parameters
         parameters['one_timestamp'] = False  # Only one timestamp in the log
         parameters['read_options'] = {
@@ -57,7 +57,7 @@ def main(argv):
         parameters['optim'] = 'Adam'  # optimization function Keras
         parameters['norm_method'] = 'max'  # max, lognorm
         # Model types --> shared_cat, shared_cat_inter, specialized, concatenated
-        parameters['model_type'] = 'concatenated_inter'
+        parameters['model_type'] = 'shared_cat'
         parameters['n_size'] = 10  # n-gram size
         parameters['l_size'] = 50  # LSTM layer sizes
         parameters['is_single_exec'] = False  # single or batch execution

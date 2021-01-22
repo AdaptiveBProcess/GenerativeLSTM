@@ -13,11 +13,11 @@ import configparser as cp
 
 from tensorflow.keras.models import load_model
 
-from support_modules.readers import log_reader as lr
-from support_modules import support as sup
+import readers.log_reader as lr
+import utils.support as sup
 
 from model_prediction import interfaces as it
-from model_prediction.analyzers import sim_evaluator as ev
+import analyzers.sim_evaluator as ev
 
 
 class ModelPredictor():

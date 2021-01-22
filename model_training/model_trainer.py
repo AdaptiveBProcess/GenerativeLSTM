@@ -16,8 +16,8 @@ import configparser as cp
 
 from operator import itemgetter
 
-from support_modules.readers import log_reader as lr
-from support_modules import support as sup
+import readers.log_reader as lr
+import utils.support as sup
 
 from model_training import samples_creator as exc
 from model_training import features_manager as feat
