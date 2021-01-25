@@ -14,9 +14,8 @@ import keras.utils as ku
 
 class SequencesCreator():
 
-    def __init__(self, log, one_timestamp, ac_index, rl_index):
+    def __init__(self, one_timestamp, ac_index, rl_index):
         """constructor"""
-        self.log = log
         self.one_timestamp = one_timestamp
         self.ac_index = ac_index
         self.rl_index = rl_index
@@ -25,7 +24,8 @@ class SequencesCreator():
                                 'inter': self._vectorize_seq_inter,
                                 'gan': self.gan_simple}
 
-    def vectorize(self, model_type, params, add_cols):
+    def vectorize(self, model_type, log, params, add_cols):
+        self.log = log
         columns = self.define_columns(add_cols, self.one_timestamp)
         loader = self._get_vectorizer(model_type)
         return loader(params, columns)

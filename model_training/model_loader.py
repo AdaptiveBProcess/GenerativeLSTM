@@ -40,10 +40,15 @@ class ModelLoader():
                                    'cnn_lstm': cnnl._training_model,
                                    'gan': mgan._training_model}
 
-    def train(self, model_type, examples, ac_weights, rl_weights, output_folder):
+    def train(self, model_type, train_vec, valdn_vec, ac_weights, rl_weights, output_folder):
         loader = self._get_trainer(model_type)
         tf.compat.v1.reset_default_graph()
-        loader(examples, ac_weights, rl_weights, output_folder, self.parms)
+        return loader(train_vec, 
+                      valdn_vec, 
+                      ac_weights, 
+                      rl_weights, 
+                      output_folder, 
+                      self.parms)
 
     def register_model(self, model_type, trainer):
         try:

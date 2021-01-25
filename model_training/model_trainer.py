@@ -20,10 +20,9 @@ import readers.log_reader as lr
 import utils.support as sup
 import readers.log_splitter as ls
 
-from model_training import samples_creator as exc
 from model_training import features_manager as feat
-from model_training import model_loader as mload
 from model_training import embedding_training as em
+from model_training import model_optimizer as op
 
 
 class ModelTrainer():
@@ -57,17 +56,19 @@ class ModelTrainer():
         # Preprocess the event-log
         self.preprocess(params)
         # Train model
-        m_loader = mload.ModelLoader(params)
-        m_loader.register_model(params['model_type'],
-                                self.model_def['trainer'])
-        m_loader.train(params['model_type'],
-                        self.examples,
-                        self.ac_weights,
-                        self.rl_weights,
-                        self.output_folder)
-        list_of_files = glob.glob(os.path.join(self.output_folder, '*.h5'))
-        latest_file = max(list_of_files, key=os.path.getctime)
-        self.model = os.path.basename(latest_file)
+        params['output'] = os.path.join('output_files', sup.folder_id())
+        optimizer = op.ModelOptimizer(params, 
+                                      self.log, 
+                                      self.ac_index, 
+                                      self.ac_weights,
+                                      self.rl_index,
+                                      self.rl_weights,
+                                      self.model_def)
+        optimizer.execute_trials()
+        #                 self.output_folder)
+        # list_of_files = glob.glob(os.path.join(self.output_folder, '*.h5'))
+        # latest_file = max(list_of_files, key=os.path.getctime)
+        # self.model = os.path.basename(latest_file)
 
 
     def preprocess(self, params):
@@ -83,15 +84,6 @@ class ModelTrainer():
         self.indexing()
         # split validation
         self.split_timeline(0.8, params['one_timestamp'])
-        # create examples
-        seq_creator = exc.SequencesCreator(self.log_train,
-                                           params['one_timestamp'],
-                                           self.ac_index,
-                                           self.rl_index)
-        seq_creator.register_vectorizer(params['model_type'],
-                                        self.model_def['vectorizer'])
-        self.examples = seq_creator.vectorize(
-            params['model_type'], params, self.model_def['additional_columns'])
         # Load embedded matrix
         ac_emb_name = 'ac_' + params['file_name'].split('.')[0]+'.emb'
         rl_emb_name = 'rl_' + params['file_name'].split('.')[0]+'.emb'
@@ -108,7 +100,7 @@ class ModelTrainer():
             self.ac_weights = self.load_embedded(self.index_ac, ac_emb_name)
             self.rl_weights = self.load_embedded(self.index_rl, rl_emb_name)
         # Export parameters
-        self.export_parms(params)
+        # self.export_parms(params)
 
     @staticmethod
     def load_log(params):
@@ -155,79 +147,7 @@ class ModelTrainer():
             alias[subsec_set[i]] = i + 1
         return alias
 
-    # def split_train_test(self, percentage: float, one_timestamp: bool) -> None:
-    #     """
-    #     Split an event log dataframe to peform split-validation
 
-    #     Parameters
-    #     ----------
-    #     percentage : float, validation percentage.
-    #     one_timestamp : bool, Support only one timestamp.
-    #     """
-    #     cases = self.log.caseid.unique()
-    #     num_test_cases = int(np.round(len(cases)*percentage))
-    #     test_cases = cases[:num_test_cases]
-    #     train_cases = cases[num_test_cases:]
-    #     df_test = self.log[self.log.caseid.isin(test_cases)]
-    #     df_train = self.log[self.log.caseid.isin(train_cases)]
-    #     key = 'end_timestamp' if one_timestamp else 'start_timestamp'
-    #     self.log_test = (df_test
-    #                      .sort_values(key, ascending=True)
-    #                      .reset_index(drop=True))
-    #     self.log_train = (df_train
-    #                       .sort_values(key, ascending=True)
-    #                       .reset_index(drop=True))
-
-    # def split_timeline(self, percentage: float, one_timestamp: bool) -> None:
-    #     """
-    #     Split an event log dataframe to peform split-validation
-
-    #     Parameters
-    #     ----------
-    #     percentage : float, validation percentage.
-    #     one_timestamp : bool, Support only one timestamp.
-    #     """
-    #     log = self.log.to_dict('records')
-    #     log = sorted(log, key=lambda x: x['caseid'])
-    #     for key, group in itertools.groupby(log, key=lambda x: x['caseid']):
-    #         events = list(group)
-    #         events = sorted(events, key=itemgetter('end_timestamp'))
-    #         length = len(events)
-    #         for i in range(0, len(events)):
-    #             events[i]['pos_trace'] = i + 1
-    #             events[i]['trace_len'] = length
-    #     log = pd.DataFrame.from_dict(log)
-    #     log.sort_values(by='end_timestamp', ascending=False, inplace=True)
-
-        
-    #     num_events = int(np.round(len(log)*percentage))
-
-    #     df_test = log.iloc[:num_events]
-    #     df_train = log.iloc[num_events:]
-
-    #     # Incomplete final traces
-    #     df_train = df_train.sort_values(by=['caseid','pos_trace'],
-    #                                     ascending=True)
-    #     inc_traces = pd.DataFrame(df_train.groupby('caseid')
-    #                               .last()
-    #                               .reset_index())
-    #     inc_traces = inc_traces[inc_traces.pos_trace != inc_traces.trace_len]
-    #     inc_traces = inc_traces['caseid'].to_list()
-
-    #     # Drop incomplete traces
-    #     df_test = df_test[~df_test.caseid.isin(inc_traces)]
-    #     df_test = df_test.drop(columns=['trace_len','pos_trace'])
-
-    #     df_train = df_train[~df_train.caseid.isin(inc_traces)]
-    #     df_train = df_train.drop(columns=['trace_len','pos_trace'])
-
-    #     key = 'end_timestamp' if one_timestamp else 'start_timestamp'
-    #     self.log_test = (df_test
-    #                      .sort_values(key, ascending=True)
-    #                      .reset_index(drop=True))
-    #     self.log_train = (df_train
-    #                       .sort_values(key, ascending=True)
-    #                       .reset_index(drop=True))
     def split_timeline(self, size: float, one_ts: bool) -> None:
         """
         Split an event log dataframe by time to peform split-validation.

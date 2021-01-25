@@ -1,0 +1,19 @@
+name: deep_generator
+channels:
+  - defaults
+dependencies:
+  - spyder==4.2.0
+  - pandas
+  - lxml
+  - matplotlib
+  - nltk
+  - scikit-learn
+  - ipywidgets
+  - pip:
+    - hyperopt
+    - jellyfish
+    - keras
+    - pm4py
+    - tensorflow
+    - opyenxes
+    - git+http://github.com/Mcamargo85/support_modules.git

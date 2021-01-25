@@ -42,7 +42,6 @@ class ModelPredictor():
 
         self.model_def = dict()
         self.read_model_definition(self.parms['model_type'])
-        print(self.model_def)
         self.parms['additional_columns'] = self.model_def['additional_columns']
         self.acc = self.execute_predictive_task()
 
@@ -92,7 +91,9 @@ class ModelPredictor():
             data = json.load(file)
             if 'activity' in data:
                 del data['activity']
-            self.parms = {**self.parms, **{k: v for k, v in data.items()}}
+            parms = {k: v for k, v in data.items()}
+            parms.pop('rep', None)
+            self.parms = {**self.parms, **parms}
             self.parms['dim'] = {k: int(v) for k, v in data['dim'].items()}
             if self.parms['one_timestamp']:
                 self.parms['scale_args'] = {
@@ -138,20 +139,6 @@ class ModelPredictor():
         filename = self.model_name + '_' + self.parms['activity'] + '.csv'
         self.predictions.to_csv(os.path.join(output_folder, filename),
                                 index=False)
-
-    # @staticmethod
-    # def append_sources(source_log, source_predictions, one_timestamp):
-    #     log = source_log.copy()
-    #     columns = ['caseid', 'task', 'end_timestamp', 'role']
-    #     if not one_timestamp:
-    #         columns += ['start_timestamp']
-    #     log = log[columns]
-    #     log['run_num'] = 0
-    #     log['source'] = 'log'
-    #     predictions = source_predictions.copy()
-    #     columns = log.columns
-    #     predictions = predictions[columns]
-    #     return log.append(predictions, ignore_index=True)
 
     @staticmethod
     def scale_feature(log, feature, parms, replace=False):
@@ -278,22 +265,15 @@ class EvaluateTask():
             for metric in ['tsd', 'day_hour_emd', 'log_mae', 'dl', 'mae']:
                 evaluator.measure_distance(metric)
                 sim_values.append({**{'run_num': i}, **evaluator.similarity})
-        print(sim_values)
-        # evaluator = ev.Evaluator(parms['one_timestamp'])
-        # dl = evaluator.measure('dl', data)
-        # els = evaluator.measure('els', data)
-        # mean_els = els.els.mean()
-        # mae = evaluator.measure('mae_log', data)
-        # exp_desc = pd.DataFrame([exp_desc])
-        # exp_desc = pd.concat([exp_desc]*len(dl), ignore_index=True)
-        # # exp_desc = pd.concat([exp_desc]*len(els), ignore_index=True)
-        # dl = pd.concat([dl, exp_desc], axis=1).to_dict('records')
-        # els = pd.concat([els, exp_desc], axis=1).to_dict('records')
-        # mae = pd.concat([mae, exp_desc], axis=1).to_dict('records')
-        # self.save_results(dl, 'dl', parms)
-        # self.save_results(els, 'els', parms)
-        # self.save_results(mae, 'mae', parms)
-        return 0.1
+        # Save results
+        output_path = os.path.join('output_files',
+                                    parms['folder'],
+                                    'results')
+        results = pd.DataFrame(sim_values)
+        results.to_csv(
+            os.path.join(output_path, sup.file_id(prefix='SE_')), 
+            index=False)
+        return results[results.metric=='tsd'].sim_val.mean()
 
     @staticmethod
     def clean_parameters(parms):

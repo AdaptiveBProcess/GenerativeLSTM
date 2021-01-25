@@ -18,7 +18,7 @@ from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLRO
 from support_modules.callbacks import time_callback as tc
 from support_modules.callbacks import clean_models_callback as cm
 
-def _training_model(vec, ac_weights, rl_weights, output_folder, args):
+def _training_model(train_vec, valdn_vec, ac_weights, rl_weights, output_folder, args):
     """Example function with types documented in the docstring.
     Args:
         param1 (int): The first parameter.
@@ -28,14 +28,19 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
     """
 
     print('Build model...')
-    print(args)
+    print(args['output'])
+    print(output_folder)
+
 # =============================================================================
 #     Input layer
 # =============================================================================
-    ac_input = Input(shape=(vec['prefixes']['activities'].shape[1], ), name='ac_input')
-    rl_input = Input(shape=(vec['prefixes']['roles'].shape[1], ), name='rl_input')
-    t_input = Input(shape=(vec['prefixes']['times'].shape[1],
-                           vec['prefixes']['times'].shape[2]), name='t_input')
+    ac_input = Input(shape=(train_vec['prefixes']['activities'].shape[1], ), 
+                     name='ac_input')
+    rl_input = Input(shape=(train_vec['prefixes']['roles'].shape[1], ), 
+                     name='rl_input')
+    t_input = Input(shape=(train_vec['prefixes']['times'].shape[1],
+                           train_vec['prefixes']['times'].shape[2]), 
+                    name='t_input')
 
 # =============================================================================
 #    Embedding layer for categorical attributes
@@ -43,13 +48,13 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
     ac_embedding = Embedding(ac_weights.shape[0],
                              ac_weights.shape[1],
                              weights=[ac_weights],
-                             input_length=vec['prefixes']['activities'].shape[1],
+                             input_length=train_vec['prefixes']['activities'].shape[1],
                              trainable=False, name='ac_embedding')(ac_input)
 
     rl_embedding = Embedding(rl_weights.shape[0],
                              rl_weights.shape[1],
                              weights=[rl_weights],
-                             input_length=vec['prefixes']['roles'].shape[1],
+                             input_length=train_vec['prefixes']['roles'].shape[1],
                              trainable=False, name='rl_embedding')(rl_input)
 # =============================================================================
 #    Layer 1
@@ -114,12 +119,12 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
                         name='role_output')(l2_c2)
 
     if ('dense_act' in args) and (args['dense_act'] is not None):
-        time_output = Dense(vec['next_evt']['times'].shape[1],
+        time_output = Dense(train_vec['next_evt']['times'].shape[1],
                             activation=args['dense_act'],
                             kernel_initializer='glorot_uniform',
                             name='time_output')(l2_3)
     else:
-        time_output = Dense(vec['next_evt']['times'].shape[1],
+        time_output = Dense(train_vec['next_evt']['times'].shape[1],
                             kernel_initializer='glorot_uniform',
                             name='time_output')(l2_3)
 
@@ -167,16 +172,22 @@ def _training_model(vec, ac_weights, rl_weights, output_folder, args):
                                    min_lr=0)
 
     batch_size = args['batch_size']
-    model.fit({'ac_input': vec['prefixes']['activities'],
-                'rl_input': vec['prefixes']['roles'],
-                't_input': vec['prefixes']['times']},
-              {'act_output': vec['next_evt']['activities'],
-                'role_output': vec['next_evt']['roles'],
-                'time_output': vec['next_evt']['times']},
-              validation_split=0.2,
+    model.fit({'ac_input': train_vec['prefixes']['activities'],
+                'rl_input': train_vec['prefixes']['roles'],
+                't_input': train_vec['prefixes']['times']},
+              {'act_output': train_vec['next_evt']['activities'],
+                'role_output': train_vec['next_evt']['roles'],
+                'time_output': train_vec['next_evt']['times']},
+              validation_data=(
+                  {'ac_input': valdn_vec['prefixes']['activities'],
+                   'rl_input': valdn_vec['prefixes']['roles'],
+                   't_input': valdn_vec['prefixes']['times']},
+                  {'act_output': valdn_vec['next_evt']['activities'],
+                   'role_output': valdn_vec['next_evt']['roles'],
+                   'time_output': valdn_vec['next_evt']['times']}),
               verbose=2,
               callbacks=[early_stopping, model_checkpoint,
                           lr_reducer, cb, clean_models],
               batch_size=batch_size,
               epochs=args['epochs'])
-
+    return model

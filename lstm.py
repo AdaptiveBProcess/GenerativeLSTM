@@ -2,6 +2,8 @@
 """
 @author: Manuel Camargo
 """
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import sys
 import getopt
 
@@ -36,12 +38,12 @@ def main(argv):
     # Similarity btw the resources profile execution (Song e.t. all)
     parameters['rp_sim'] = 0.85
     parameters['batch_size'] = 32 # Usually 32/64/128/256
-    parameters['epochs'] = 1
+    # parameters['epochs'] = 1
     # Parameters setting manual fixed or catched by console
     if not argv:
         # Type of LSTM task -> training, pred_log
         # pred_sfx, predict_next, inter_case
-        parameters['activity'] = 'pred_log'
+        parameters['activity'] = 'training'
         # Event-log reading parameters
         parameters['one_timestamp'] = False  # Only one timestamp in the log
         parameters['read_options'] = {
@@ -52,29 +54,32 @@ def main(argv):
         # General training parameters
         if parameters['activity'] in ['training']:
             # Event-log parameters
-            parameters['file_name'] = 'inter_BPI_Challenge_2017_W_Two_TS_training.csv'
+            parameters['file_name'] = 'PurchasingExample.xes'
             # Specific model training parameters
             if parameters['activity'] == 'training':
-                parameters['imp'] = 1  # keras lstm implementation 1 cpu,2 gpu
-                parameters['lstm_act'] = 'relu'  # optimization function Keras
-                parameters['dense_act'] = None  # optimization function Keras
-                parameters['optim'] = 'Adam'  # optimization function Keras
                 parameters['norm_method'] = 'max'  # max, lognorm
-                # Model types --> shared_cat, shared_cat_inter, shared_cat_rd
-                # cnn_lstm_inter, simple_gan
-                parameters['model_type'] = 'concatenated_gru_inter'
-                parameters['n_size'] = 5  # n-gram size
-                parameters['l_size'] = 50  # LSTM layer sizes
+                # # Model types --> shared_cat, shared_cat_inter, shared_cat_rd
+                # # cnn_lstm_inter, simple_gan
+                parameters['model_type'] = 'shared_cat'
+                parameters['imp'] = 1
+                parameters['max_eval'] = 2
+                parameters['batch_size'] = 32 # Usually 32/64/128/256
+                parameters['epochs'] = 2
+                parameters['n_size'] = [5, 10, 15]
+                parameters['l_size'] = [50, 100, 200] 
+                parameters['lstm_act'] = ['selu', 'relu', 'tanh']
+                parameters['dense_act'] = ['linear']
+                parameters['optim'] = ['Nadam', 'Adam']
+                
                 if parameters['model_type'] == 'simple_gan':
                     parameters['gan_pretrain'] = False
                 # Generation parameters
         elif parameters['activity'] in ['pred_log', 'pred_sfx', 'predict_next']:
-            parameters['folder'] = '20210122_D1FD9952_58DE_4DA5_8356_89C3F64CD994'
-            parameters['model_file'] = 'model_shared_cat_02-3.11.h5'
+            parameters['folder'] = '20210124_A69FA56C_260A_45B0_922B_579953A23546'
+            parameters['model_file'] = 'model_shared_cat_02-2.69.h5'
             parameters['is_single_exec'] = False  # single or batch execution
             # variants and repetitions to be tested Random Choice, Arg Max
-            parameters['variant'] = 'Random Choice'
-            parameters['rep'] = 2
+            parameters['rep'] = 1
         elif parameters['activity'] == 'inter_case':
             parameters['file_name'] = 'BPI_Challenge_2017_W_Two_TS_training.csv'
             parameters['mem_limit'] = 1000000
