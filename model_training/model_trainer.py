@@ -12,7 +12,6 @@ import itertools
 
 import pandas as pd
 import numpy as np
-import configparser as cp
 
 from operator import itemgetter
 
@@ -20,7 +19,7 @@ import readers.log_reader as lr
 import utils.support as sup
 import readers.log_splitter as ls
 
-from model_training import features_manager as feat
+from model_training.features_manager import FeaturesMannager as feat
 from model_training import embedding_training as em
 from model_training import model_optimizer as op
 
@@ -49,10 +48,6 @@ class ModelTrainer():
         # Embedded dimensions
         self.ac_weights = list()
         self.rl_weights = list()
-        # Model definition
-        self.model_def = dict()
-        self.read_model_definition(params['model_type'])
-        print(self.model_def)
         # Preprocess the event-log
         self.preprocess(params)
         # Train model
@@ -62,24 +57,15 @@ class ModelTrainer():
                                       self.ac_index, 
                                       self.ac_weights,
                                       self.rl_index,
-                                      self.rl_weights,
-                                      self.model_def)
+                                      self.rl_weights)
         optimizer.execute_trials()
-        #                 self.output_folder)
-        # list_of_files = glob.glob(os.path.join(self.output_folder, '*.h5'))
-        # latest_file = max(list_of_files, key=os.path.getctime)
-        # self.model = os.path.basename(latest_file)
+        print(optimizer.best_output)
+        print(optimizer.best_parms)
+        print(optimizer.best_loss)
 
 
     def preprocess(self, params):
-        # Features treatement
-        inp = feat.FeaturesMannager(params)
-        # Register scaler
-        inp.register_scaler(params['model_type'], self.model_def['scaler'])
-        # Scale features
-        self.log, params['scale_args'] = inp.calculate(
-            self.log, self.model_def['additional_columns'])
-
+        self.log = feat.add_resources(self.log, params['rp_sim'])
         # indexes creation
         self.indexing()
         # split validation
@@ -228,15 +214,15 @@ class ModelTrainer():
     def get_max_trace_size(log):
         return int(log.groupby('caseid')['task'].count().max())        
 
-    def read_model_definition(self, model_type):
-        Config = cp.ConfigParser(interpolation=None)
-        Config.read('models_spec.ini')
-        #File name with extension
-        self.model_def['additional_columns'] = sup.reduce_list(
-            Config.get(model_type,'additional_columns'), dtype='str')
-        self.model_def['scaler'] = Config.get(
-            model_type, 'scaler')
-        self.model_def['vectorizer'] = Config.get(
-            model_type, 'vectorizer')
-        self.model_def['trainer'] = Config.get(
-            model_type, 'trainer')
+    # def read_model_definition(self, model_type):
+    #     Config = cp.ConfigParser(interpolation=None)
+    #     Config.read('models_spec.ini')
+    #     #File name with extension
+    #     self.model_def['additional_columns'] = sup.reduce_list(
+    #         Config.get(model_type,'additional_columns'), dtype='str')
+    #     self.model_def['scaler'] = Config.get(
+    #         model_type, 'scaler')
+    #     self.model_def['vectorizer'] = Config.get(
+    #         model_type, 'vectorizer')
+    #     self.model_def['trainer'] = Config.get(
+    #         model_type, 'trainer')

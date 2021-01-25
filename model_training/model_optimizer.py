@@ -8,6 +8,7 @@ import os
 import copy
 import traceback
 import pandas as pd
+import configparser as cp
 from hyperopt import tpe
 from hyperopt import Trials, hp, fmin, STATUS_OK, STATUS_FAIL
 
@@ -17,6 +18,7 @@ import readers.log_splitter as ls
 import tensorflow as tf
 from model_training import samples_creator as sc
 from model_training import model_loader as mload
+from model_training import features_manager as feat
 
 
 class ModelOptimizer():
@@ -48,19 +50,15 @@ class ModelOptimizer():
                 return response
             return safety_check
         
-    def __init__(self, parms, log, ac_index, ac_weights, rl_index, rl_weights, model_def):
+    def __init__(self, parms, log, ac_index, ac_weights, rl_index, rl_weights):
         """constructor"""
         self.space = self.define_search_space(parms)
         self.log = copy.deepcopy(log)
-        # split validation
-        self.split_timeline(0.8, parms['one_timestamp'])
-        
         self.ac_index = ac_index
         self.ac_weights = ac_weights
         self.rl_index = rl_index
         self.rl_weights = rl_weights
         
-        self.model_def = model_def
         # Load settings
         self.parms = parms
         self.temp_output = parms['output']
@@ -79,19 +77,19 @@ class ModelOptimizer():
         
     @staticmethod
     def define_search_space(parms):
-        space = {'n_size': hp.choice('n_size', parms['n_size']),
+        space = {'model_type': hp.choice('model_type', parms['model_type']),
+                 'n_size': hp.choice('n_size', parms['n_size']),
                  'l_size': hp.choice('l_size', parms['l_size']),
                  'lstm_act': hp.choice('lstm_act', parms['lstm_act']),
                  'dense_act': hp.choice('dense_act', parms['dense_act']),
+                 'norm_method': hp.choice('norm_method', parms['norm_method']),
                  'optim': hp.choice('optim', parms['optim']),
                  'imp': parms['imp'], 'file': parms['file_name'],
                  'batch_size': parms['batch_size'], 'epochs': parms['epochs'],
-                 'one_timestamp': parms['one_timestamp'],
-                 'model_type': parms['model_type']}
+                 'one_timestamp': parms['one_timestamp']}
         return space
 
     def execute_trials(self):
-
         def exec_pipeline(trial_stg):
             print(trial_stg)
             status = STATUS_OK
@@ -99,24 +97,33 @@ class ModelOptimizer():
             rsp = self._temp_path_redef(trial_stg, status=status)
             status = rsp['status']
             trial_stg = rsp['values'] if status == STATUS_OK else trial_stg
+            # Model definition
+            model_def = self.read_model_definition(trial_stg['model_type'])
+            # Scale values
+            log, trial_stg = self._scale_values(self.log, trial_stg, model_def)
+            # split validation
+            log_valdn, log_train = self.split_timeline(
+                0.8, log, trial_stg['one_timestamp'])
+            print('train split size:', len(log_train))
+            print('valdn split size:', len(log_valdn))
             # Vectorize input
             vectorizer = sc.SequencesCreator(
                 self.parms['read_options']['one_timestamp'], 
                 self.ac_index, self.rl_index)
             vectorizer.register_vectorizer(trial_stg['model_type'],
-                                           self.model_def['vectorizer'])
+                                           model_def['vectorizer'])
             train_vec = vectorizer.vectorize(trial_stg['model_type'],
-                                             self.log_train,
+                                             log_train,
                                              trial_stg,
-                                             self.model_def['additional_columns'])
+                                             model_def['additional_columns'])
             valdn_vec = vectorizer.vectorize(trial_stg['model_type'],
-                                             self.log_valdn,
+                                             log_valdn,
                                              trial_stg,
-                                             self.model_def['additional_columns'])
+                                             model_def['additional_columns'])
             # Train
             m_loader = mload.ModelLoader(trial_stg)
             m_loader.register_model(trial_stg['model_type'],
-                                    self.model_def['trainer'])
+                                    model_def['trainer'])
             tf.compat.v1.reset_default_graph()
             model = m_loader.train(trial_stg['model_type'],
                                    train_vec, 
@@ -165,6 +172,17 @@ class ModelOptimizer():
             os.makedirs(settings['output'])
         return settings
 
+    @staticmethod
+    def _scale_values(log, params, model_def):
+        # Features treatement
+        inp = feat.FeaturesMannager(params)
+        # Register scaler
+        inp.register_scaler(params['model_type'], model_def['scaler'])
+        # Scale features
+        log, params['scale_args'] = inp.calculate(
+            log, model_def['additional_columns'])
+        return log, params
+
     def _define_response(self, parms, status, loss, **kwargs) -> None:
         print(loss)
         response = dict()
@@ -194,7 +212,8 @@ class ModelOptimizer():
             sup.create_csv_file_header(measurements, self.file_name)
         return response
 
-    def split_timeline(self, size: float, one_ts: bool) -> None:
+    @staticmethod
+    def split_timeline(size: float, log: pd.DataFrame, one_ts: bool) -> None:
         """
         Split an event log dataframe by time to peform split-validation.
         prefered method time splitting removing incomplete traces.
@@ -208,9 +227,9 @@ class ModelOptimizer():
         one_ts : bool, Support only one timestamp.
         """
         # Split log data
-        splitter = ls.LogSplitter(self.log)
+        splitter = ls.LogSplitter(log)
         train, valdn = splitter.split_log('timeline_contained', size, one_ts)
-        total_events = len(self.log)
+        total_events = len(log)
         # Check size and change time splitting method if necesary
         if len(valdn) < int(total_events*0.1):
             train, valdn = splitter.split_log('timeline_trace', size, one_ts)
@@ -218,7 +237,24 @@ class ModelOptimizer():
         key = 'end_timestamp' if one_ts else 'start_timestamp'
         valdn = pd.DataFrame(valdn)
         train = pd.DataFrame(train)
-        self.log_valdn = (valdn.sort_values(key, ascending=True)
+        log_valdn = (valdn.sort_values(key, ascending=True)
                          .reset_index(drop=True))
-        self.log_train = (train.sort_values(key, ascending=True)
+        log_train = (train.sort_values(key, ascending=True)
                           .reset_index(drop=True))
+        return log_valdn, log_train
+
+    @staticmethod
+    def read_model_definition(model_type):
+        model_def = dict()
+        Config = cp.ConfigParser(interpolation=None)
+        Config.read('models_spec.ini')
+        #File name with extension
+        model_def['additional_columns'] = sup.reduce_list(
+            Config.get(model_type,'additional_columns'), dtype='str')
+        model_def['scaler'] = Config.get(
+            model_type, 'scaler')
+        model_def['vectorizer'] = Config.get(
+            model_type, 'vectorizer')
+        model_def['trainer'] = Config.get(
+            model_type, 'trainer')
+        return model_def

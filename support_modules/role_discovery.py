@@ -2,7 +2,7 @@
 import scipy
 from scipy.stats import pearsonr
 import networkx as nx
-from support_modules import support as sup
+import utils.support as sup
 from operator import itemgetter
 import pandas as pd
 

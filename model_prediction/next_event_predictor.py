@@ -6,7 +6,7 @@ Created on Tue Mar 17 20:35:53 2020
 """
 import numpy as np
 
-from support_modules import support as sup
+import utils.support as sup
 
 
 class NextEventPredictor():

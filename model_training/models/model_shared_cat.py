@@ -4,10 +4,7 @@ Created on Thu Feb 28 10:15:12 2019
 
 @author: Manuel Camargo
 """
-# import keras.backend as K
-
 import os
-# import numpy as np
 
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Embedding, Concatenate
@@ -16,7 +13,6 @@ from tensorflow.keras.optimizers import Nadam, Adam, SGD, Adagrad
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
 from support_modules.callbacks import time_callback as tc
-from support_modules.callbacks import clean_models_callback as cm
 
 def _training_model(train_vec, valdn_vec, ac_weights, rl_weights, output_folder, args):
     """Example function with types documented in the docstring.
@@ -28,8 +24,6 @@ def _training_model(train_vec, valdn_vec, ac_weights, rl_weights, output_folder,
     """
 
     print('Build model...')
-    print(args['output'])
-    print(output_folder)
 
 # =============================================================================
 #     Input layer
@@ -146,14 +140,12 @@ def _training_model(train_vec, valdn_vec, ac_weights, rl_weights, output_folder,
 
     model.summary()
 
-    early_stopping = EarlyStopping(monitor='val_loss', patience=50)
+    early_stopping = EarlyStopping(monitor='val_loss', patience=40)
     cb = tc.TimingCallback(output_folder)
-    clean_models = cm.CleanSavedModelsCallback(output_folder, 2)
 
     # Output file
-    output_file_path = os.path.join(output_folder,
-                                    'model_' + str(args['model_type']) +
-                                    '_{epoch:02d}-{val_loss:.2f}.h5')
+    output_file_path = os.path.join(output_folder, 
+                                    os.path.splitext(args['file'])[0]+'.h5')
 
     # Saving
     model_checkpoint = ModelCheckpoint(output_file_path,
@@ -186,8 +178,7 @@ def _training_model(train_vec, valdn_vec, ac_weights, rl_weights, output_folder,
                    'role_output': valdn_vec['next_evt']['roles'],
                    'time_output': valdn_vec['next_evt']['times']}),
               verbose=2,
-              callbacks=[early_stopping, model_checkpoint,
-                          lr_reducer, cb, clean_models],
+              callbacks=[early_stopping, model_checkpoint, lr_reducer, cb],
               batch_size=batch_size,
               epochs=args['epochs'])
     return model

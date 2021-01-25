@@ -10,7 +10,7 @@ import datetime
 
 from datetime import timedelta
 
-from support_modules import support as sup
+import utils.support as sup
 
 class EventLogPredictor():
 
