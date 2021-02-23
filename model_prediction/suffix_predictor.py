@@ -15,7 +15,7 @@ class SuffixPredictor():
         """constructor"""
         self.model = None
         self.spl = dict()
-        self.imp = 'Arg Max'
+        self.imp = 'arg_max'
         self.max_trace_size = 0
 
     def predict(self, params, model, spl, imp, vectorizer):
@@ -80,13 +80,13 @@ class SuffixPredictor():
             ac_suf, rl_suf = list(), list()
             for _  in range(1, self.max_trace_size):
                 preds = self.model.predict(inputs)
-                if self.imp == 'Random Choice':
+                if self.imp == 'random_choice':
                     # Use this to get a random choice following as PDF the predictions
                     pos = np.random.choice(
                         np.arange(0,len(preds[0][0])), p=preds[0][0])
                     pos1 = np.random.choice(
                         np.arange(0, len(preds[1][0])), p=preds[1][0])
-                elif self.imp == 'Arg Max':
+                elif self.imp == 'arg_max':
                     # Use this to get the max prediction
                     pos = np.argmax(preds[0][0])
                     pos1 = np.argmax(preds[1][0])
