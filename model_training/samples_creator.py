@@ -194,58 +194,6 @@ class SequencesCreator():
                 [vec['next_evt']['inter_attr'], y_weekday], axis=1)
         return vec
 
-    # def _vectorize_seq_inter(self, parms, columns):
-    #     vec = {'prefixes': dict(),
-    #            'next_evt': dict()}
-    #     self.log = self.reformat_events(columns, parms['one_timestamp'])
-    #     # n-gram definition
-    #     equi = {'ac_index': 'activities',
-    #             'rl_index': 'roles',
-    #             'dur_norm': 'times'}
-    #     x_inter_dict = dict()
-    #     y_inter_dict = dict()
-    #     for i, _ in enumerate(self.log):
-    #         for x in columns:
-    #             serie = list(ngrams(self.log[i][x], parms['n_size'],
-    #                                 pad_left=True, left_pad_symbol=0))
-    #             y_serie = [x[-1] for x in serie]
-    #             serie = serie[:-1]
-    #             y_serie = y_serie[1:]
-    #             if x in list(equi.keys()):
-    #                 vec['prefixes'][equi[x]] = (
-    #                     vec['prefixes'][equi[x]] + serie if i > 0 else serie)
-    #                 vec['next_evt'][equi[x]] = (
-    #                     vec['next_evt'][equi[x]] + y_serie
-    #                     if i > 0 else y_serie)
-    #             else:
-    #                 x_inter_dict[x] = (
-    #                     x_inter_dict[x] + serie if i > 0 else serie)
-    #                 y_inter_dict[x] = (
-    #                     y_inter_dict[x] + y_serie if i > 0 else y_serie)
-    #     # Transform task, dur and role prefixes in vectors
-    #     for value in equi.values():
-    #         vec['prefixes'][value] = np.array(vec['prefixes'][value])
-    #         vec['next_evt'][value] = np.array(vec['next_evt'][value])
-    #     # Reshape dur (prefixes, n-gram size, 1) i.e. time distribute
-    #     vec['prefixes']['times'] = vec['prefixes']['times'].reshape(
-    #             (vec['prefixes']['times'].shape[0],
-    #               vec['prefixes']['times'].shape[1], 1))
-    #     # one-hot encode target values
-    #     vec['next_evt']['activities'] = ku.to_categorical(
-    #         vec['next_evt']['activities'], num_classes=len(self.ac_index))
-    #     vec['next_evt']['roles'] = ku.to_categorical(
-    #         vec['next_evt']['roles'], num_classes=len(self.rl_index))
-    #     # Reshape intercase attributes (prefixes, n-gram size, number of attributes)
-    #     for key, value in x_inter_dict.items():
-    #         x_inter_dict[key] = np.array(value)
-    #         x_inter_dict[key] = x_inter_dict[key].reshape(
-    #             (x_inter_dict[key].shape[0], x_inter_dict[key].shape[1], 1))
-    #     vec['prefixes']['inter_attr'] = np.dstack(list(x_inter_dict.values()))
-    #     # Reshape y intercase attributes (suffixes, number of attributes)
-    #     for key, value in y_inter_dict.items():
-    #         x_inter_dict[key] = np.array(value)
-    #     vec['next_evt']['inter_attr'] = np.dstack(list(y_inter_dict.values()))[0]
-    #     return vec
 
     def gan_simple(self, parms, columns):
         print(columns)

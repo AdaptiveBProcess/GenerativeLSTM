@@ -15,6 +15,7 @@ import configparser as cp
 import readers.log_reader as lr
 import utils.support as sup
 
+from model_training import features_manager as feat
 from model_prediction import interfaces as it
 import analyzers.sim_evaluator as ev
 
@@ -47,6 +48,11 @@ class ModelPredictor():
             self.parms['num_cases'] = len(self.log.caseid.unique())
             self.parms['start_time'] = self.log.start_timestamp.min()
         else:
+            feat_mannager = feat.FeaturesMannager(self.parms)
+            feat_mannager.register_scaler(self.parms['model_type'],
+                                          self.model_def['vectorizer'])
+            self.log, _ = feat_mannager.calculate(
+                self.log, self.parms['additional_columns'])
             sampler = it.SamplesCreator()
             sampler.create(self, self.parms['activity'])
         # predict

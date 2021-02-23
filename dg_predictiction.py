@@ -31,12 +31,14 @@ def main(argv):
     parameters['read_options'] = {
         'timeformat': '%Y-%m-%dT%H:%M:%S.%f',
         'column_names': column_names,
-        'one_timestamp': parameters['one_timestamp']}
+        'one_timestamp': parameters['one_timestamp'],
+        'filter_d_attrib': False}
     # Parameters settled manually or catched by console for batch operations
     if not argv:
+        # predict_next, pred_sfx
         parameters['activity'] = 'pred_log'
-        parameters['folder'] = '20210208_AE2236CA_E88C_4EC9_ABC1_17173FD4DCFF'
-        parameters['model_file'] = 'confidential_2000.h5'
+        parameters['folder'] = '20210208_B4CE2405_3D73_45DB_8FED_4DE075C17D51'
+        parameters['model_file'] = 'PurchasingExample.h5'
         parameters['is_single_exec'] = False  # single or batch execution
         # variants and repetitions to be tested Random Choice, Arg Max
         parameters['variant'] = 'Random Choice'
@@ -58,8 +60,7 @@ def main(argv):
             sys.exit(2)
     print(parameters['folder'])
     print(parameters['model_file'])
-    predictor = pr.ModelPredictor(parameters)
-    print(predictor.acc)
+    pr.ModelPredictor(parameters)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
