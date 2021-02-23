@@ -7,7 +7,7 @@ Created on Thu Feb 28 10:15:12 2019
 import os
 
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Input, Embedding, Concatenate
+from tensorflow.keras.layers import Input, Embedding
 from tensorflow.keras.layers import Dense, LSTM, BatchNormalization
 from tensorflow.keras.optimizers import Nadam, Adam, SGD, Adagrad
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau

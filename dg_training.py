@@ -9,7 +9,6 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import sys
 import getopt
 
-from model_prediction import model_predictor as pr
 from model_training import model_trainer as tr
 
 # =============================================================================
@@ -79,7 +78,8 @@ def main(argv):
         parameters['gan_pretrain'] = False
     parameters.pop('model_family', None)
     # Train models
-    trainer = tr.ModelTrainer(parameters)
+    tr.ModelTrainer(parameters)
+    
 
 if __name__ == "__main__":
     main(sys.argv[1:])
