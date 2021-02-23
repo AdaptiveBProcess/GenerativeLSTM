@@ -14,9 +14,8 @@ import keras.utils as ku
 
 class SequencesCreator():
 
-    def __init__(self, log, one_timestamp, ac_index, rl_index):
+    def __init__(self, one_timestamp, ac_index, rl_index):
         """constructor"""
-        self.log = log
         self.one_timestamp = one_timestamp
         self.ac_index = ac_index
         self.rl_index = rl_index
@@ -25,7 +24,8 @@ class SequencesCreator():
                                 'inter': self._vectorize_seq_inter,
                                 'gan': self.gan_simple}
 
-    def vectorize(self, model_type, params, add_cols):
+    def vectorize(self, model_type, log, params, add_cols):
+        self.log = log
         columns = self.define_columns(add_cols, self.one_timestamp)
         loader = self._get_vectorizer(model_type)
         return loader(params, columns)
@@ -45,7 +45,7 @@ class SequencesCreator():
     @staticmethod
     def define_columns(add_cols, one_timestamp):
         columns = ['ac_index', 'rl_index', 'dur_norm']
-        add_cols = [x+'_norm' for x in add_cols]
+        add_cols = [x+'_norm' if x != 'weekday' else x for x in add_cols ]
         columns.extend(add_cols)
         if not one_timestamp:
             columns.extend(['wait_norm'])
@@ -121,11 +121,15 @@ class SequencesCreator():
         equi = {'ac_index': 'activities', 'rl_index': 'roles'}
         vec = {'prefixes': dict(),
                'next_evt': dict()}
+        x_weekday = list()
+        y_weekday = list()
+        # times
         x_times_dict = dict()
         y_times_dict = dict()
         # intercases
         x_inter_dict = dict()
         y_inter_dict = dict()
+        # self.log = self.log[self.log.caseid.isin(['1', '1770'])].head(3)
         self.log = self.reformat_events(columns, parms['one_timestamp'])
         for i, _ in enumerate(self.log):
             for x in columns:
@@ -145,6 +149,11 @@ class SequencesCreator():
                         x_times_dict[x] + serie if i > 0 else serie)
                     y_times_dict[x] = (
                         y_times_dict[x] + y_serie if i > 0 else y_serie)
+                elif x == 'weekday':
+                    x_weekday = (
+                        x_weekday + serie if i > 0 else serie)
+                    y_weekday = (
+                        y_weekday + y_serie if i > 0 else y_serie)
                 else:
                     x_inter_dict[x] = (
                         x_inter_dict[x] + serie if i > 0 else serie)
@@ -175,60 +184,16 @@ class SequencesCreator():
         vec['prefixes']['inter_attr'] = np.dstack(list(x_inter_dict.values()))
         # Reshape y intercase attributes (suffixes, number of attributes)
         vec['next_evt']['inter_attr'] = np.dstack(list(y_inter_dict.values()))[0]
+        if 'weekday' in columns:
+            # Onehot encode weekday
+            x_weekday = ku.to_categorical(x_weekday, num_classes=7)
+            y_weekday = ku.to_categorical(y_weekday, num_classes=7)
+            vec['prefixes']['inter_attr'] = np.concatenate(
+                [vec['prefixes']['inter_attr'], x_weekday], axis=2)
+            vec['next_evt']['inter_attr'] = np.concatenate(
+                [vec['next_evt']['inter_attr'], y_weekday], axis=1)
         return vec
 
-    # def _vectorize_seq_inter(self, parms, columns):
-    #     vec = {'prefixes': dict(),
-    #            'next_evt': dict()}
-    #     self.log = self.reformat_events(columns, parms['one_timestamp'])
-    #     # n-gram definition
-    #     equi = {'ac_index': 'activities',
-    #             'rl_index': 'roles',
-    #             'dur_norm': 'times'}
-    #     x_inter_dict = dict()
-    #     y_inter_dict = dict()
-    #     for i, _ in enumerate(self.log):
-    #         for x in columns:
-    #             serie = list(ngrams(self.log[i][x], parms['n_size'],
-    #                                 pad_left=True, left_pad_symbol=0))
-    #             y_serie = [x[-1] for x in serie]
-    #             serie = serie[:-1]
-    #             y_serie = y_serie[1:]
-    #             if x in list(equi.keys()):
-    #                 vec['prefixes'][equi[x]] = (
-    #                     vec['prefixes'][equi[x]] + serie if i > 0 else serie)
-    #                 vec['next_evt'][equi[x]] = (
-    #                     vec['next_evt'][equi[x]] + y_serie
-    #                     if i > 0 else y_serie)
-    #             else:
-    #                 x_inter_dict[x] = (
-    #                     x_inter_dict[x] + serie if i > 0 else serie)
-    #                 y_inter_dict[x] = (
-    #                     y_inter_dict[x] + y_serie if i > 0 else y_serie)
-    #     # Transform task, dur and role prefixes in vectors
-    #     for value in equi.values():
-    #         vec['prefixes'][value] = np.array(vec['prefixes'][value])
-    #         vec['next_evt'][value] = np.array(vec['next_evt'][value])
-    #     # Reshape dur (prefixes, n-gram size, 1) i.e. time distribute
-    #     vec['prefixes']['times'] = vec['prefixes']['times'].reshape(
-    #             (vec['prefixes']['times'].shape[0],
-    #               vec['prefixes']['times'].shape[1], 1))
-    #     # one-hot encode target values
-    #     vec['next_evt']['activities'] = ku.to_categorical(
-    #         vec['next_evt']['activities'], num_classes=len(self.ac_index))
-    #     vec['next_evt']['roles'] = ku.to_categorical(
-    #         vec['next_evt']['roles'], num_classes=len(self.rl_index))
-    #     # Reshape intercase attributes (prefixes, n-gram size, number of attributes)
-    #     for key, value in x_inter_dict.items():
-    #         x_inter_dict[key] = np.array(value)
-    #         x_inter_dict[key] = x_inter_dict[key].reshape(
-    #             (x_inter_dict[key].shape[0], x_inter_dict[key].shape[1], 1))
-    #     vec['prefixes']['inter_attr'] = np.dstack(list(x_inter_dict.values()))
-    #     # Reshape y intercase attributes (suffixes, number of attributes)
-    #     for key, value in y_inter_dict.items():
-    #         x_inter_dict[key] = np.array(value)
-    #     vec['next_evt']['inter_attr'] = np.dstack(list(y_inter_dict.values()))[0]
-    #     return vec
 
     def gan_simple(self, parms, columns):
         print(columns)

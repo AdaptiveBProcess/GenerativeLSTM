@@ -13,7 +13,7 @@ import numpy as np
 from keras.models import Model
 from keras.layers import Input, Embedding, Dot, Reshape
 
-from support_modules import support as sup
+import utils.support as sup
 
 
 def training_model(parameters, log, ac_index, index_ac, rl_index, index_rl):

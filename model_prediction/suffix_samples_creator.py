@@ -34,11 +34,18 @@ class SuffixSamplesCreator():
     @staticmethod
     def define_columns(add_cols, one_timestamp):
         columns = ['ac_index', 'rl_index', 'dur_norm']
-        add_cols = [x+'_norm' for x in add_cols]
+        add_cols = [x+'_norm' if x != 'weekday' else x for x in add_cols ]
         columns.extend(add_cols)
         if not one_timestamp:
             columns.extend(['wait_norm'])
         return columns
+    # def define_columns(add_cols, one_timestamp):
+    #     columns = ['ac_index', 'rl_index', 'dur_norm']
+    #     add_cols = [x+'_norm' for x in add_cols]
+    #     columns.extend(add_cols)
+    #     if not one_timestamp:
+    #         columns.extend(['wait_norm'])
+    #     return columns
 
     def register_sampler(self, model_type, sampler):
         try:
@@ -51,36 +58,6 @@ class SuffixSamplesCreator():
         if not sampler:
             raise ValueError(model_type)
         return sampler
-
-    # def _sample_suffix(self, columns, parms):
-    #     """
-    #     Extraction of prefixes and expected suffixes from event log.
-    #     Args:
-    #         self.log (dataframe): testing dataframe in pandas format.
-    #         ac_index (dict): index of activities.
-    #         rl_index (dict): index of roles.
-    #         pref_size (int): size of the prefixes to extract.
-    #     Returns:
-    #         list: list of prefixes and expected sufixes.
-    #     """
-    #     # columns = ['ac_index', 'rl_index', 'dur_norm']
-    #     self.log = self.reformat_events(columns, parms['one_timestamp'])
-    #     spl = {'prefixes': dict(), 'suffixes': dict()}
-    #     # n-gram definition
-    #     equi = {'ac_index': 'activities',
-    #             'rl_index': 'roles',
-    #             'dur_norm': 'times'}
-    #     for i, _ in enumerate(self.log):
-    #         for x in columns:
-    #             serie, y_serie = list(), list()
-    #             for idx in range(1, len(self.log[i][x])):
-    #                 serie.append(self.log[i][x][:idx])
-    #                 y_serie.append(self.log[i][x][idx:])
-    #             spl['prefixes'][equi[x]] = (
-    #                 spl['prefixes'][equi[x]] + serie if i > 0 else serie)
-    #             spl['suffixes'][equi[x]] = (
-    #                 spl['suffixes'][equi[x]] + y_serie if i > 0 else y_serie)
-    #     return spl
 
     def _sample_suffix(self, columns, parms):
         """

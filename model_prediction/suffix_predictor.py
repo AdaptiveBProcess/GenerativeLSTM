@@ -6,7 +6,7 @@ Created on Wed Mar 18 10:35:37 2020
 """
 import numpy as np
 
-from support_modules import support as sup
+import utils.support as sup
 
 
 class SuffixPredictor():

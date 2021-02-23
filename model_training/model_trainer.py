@@ -5,24 +5,20 @@ Created on Thu Mar 12 15:07:19 2020
 @author: Manuel Camargo
 """
 import os
-import glob
-
 import csv
-import itertools
 
 import pandas as pd
 import numpy as np
-import configparser as cp
+import shutil
 
-from operator import itemgetter
+import readers.log_reader as lr
+import utils.support as sup
+import readers.log_splitter as ls
 
-from support_modules.readers import log_reader as lr
-from support_modules import support as sup
-
-from model_training import samples_creator as exc
-from model_training import features_manager as feat
-from model_training import model_loader as mload
+from model_training.features_manager import FeaturesMannager as feat
 from model_training import embedding_training as em
+from model_training import model_optimizer as op
+from model_training import model_hpc_optimizer as hpc_op
 
 
 class ModelTrainer():
@@ -33,8 +29,6 @@ class ModelTrainer():
     def __init__(self, params):
         """constructor"""
         self.log = self.load_log(params)
-        self.output = sup.folder_id()
-        self.output_folder = os.path.join('output_files', self.output)
         # Split validation partitions
         self.log_train = pd.DataFrame()
         self.log_test = pd.DataFrame()
@@ -49,48 +43,38 @@ class ModelTrainer():
         # Embedded dimensions
         self.ac_weights = list()
         self.rl_weights = list()
-        # Model definition
-        self.model_def = dict()
-        self.read_model_definition(params['model_type'])
-        print(self.model_def)
         # Preprocess the event-log
         self.preprocess(params)
         # Train model
-        m_loader = mload.ModelLoader(params)
-        m_loader.register_model(params['model_type'],
-                                self.model_def['trainer'])
-        m_loader.train(params['model_type'],
-                        self.examples,
-                        self.ac_weights,
-                        self.rl_weights,
-                        self.output_folder)
-        list_of_files = glob.glob(os.path.join(self.output_folder, '*.h5'))
-        latest_file = max(list_of_files, key=os.path.getctime)
-        self.model = os.path.basename(latest_file)
-
+        params['output'] = os.path.join('output_files', sup.folder_id())
+        if params['opt_method'] == 'rand_hpc':
+            optimizer = hpc_op.ModelHPCOptimizer(params, 
+                                                 self.log, 
+                                                 self.ac_index, 
+                                                 self.rl_index)
+            optimizer.execute_trials()
+        elif params['opt_method'] == 'bayesian':
+            optimizer = op.ModelOptimizer(params, 
+                                          self.log, 
+                                          self.ac_index, 
+                                          self.ac_weights,
+                                          self.rl_index,
+                                          self.rl_weights)
+            optimizer.execute_trials()
+        # Export results
+        output_path = os.path.join('output_files', sup.folder_id())
+        shutil.copytree(optimizer.best_output, output_path)
+        shutil.copy(optimizer.file_name, output_path)
+        self.export_parms(output_path, optimizer.best_parms)
+        # Remove folder
+        shutil.rmtree(params['output'])
 
     def preprocess(self, params):
-        # Features treatement
-        inp = feat.FeaturesMannager(params)
-        # Register scaler
-        inp.register_scaler(params['model_type'], self.model_def['scaler'])
-        # Scale features
-        self.log, params['scale_args'] = inp.calculate(
-            self.log, self.model_def['additional_columns'])
-
+        self.log = feat.add_resources(self.log, params['rp_sim'])
         # indexes creation
         self.indexing()
         # split validation
-        self.split_timeline(0.3, params['one_timestamp'])
-        # create examples
-        seq_creator = exc.SequencesCreator(self.log_train,
-                                           params['one_timestamp'],
-                                           self.ac_index,
-                                           self.rl_index)
-        seq_creator.register_vectorizer(params['model_type'],
-                                        self.model_def['vectorizer'])
-        self.examples = seq_creator.vectorize(
-            params['model_type'], params, self.model_def['additional_columns'])
+        self.split_timeline(0.8, params['one_timestamp'])
         # Load embedded matrix
         ac_emb_name = 'ac_' + params['file_name'].split('.')[0]+'.emb'
         rl_emb_name = 'rl_' + params['file_name'].split('.')[0]+'.emb'
@@ -106,8 +90,6 @@ class ModelTrainer():
                               self.rl_index, self.index_rl)
             self.ac_weights = self.load_embedded(self.index_ac, ac_emb_name)
             self.rl_weights = self.load_embedded(self.index_rl, rl_emb_name)
-        # Export parameters
-        self.export_parms(params)
 
     @staticmethod
     def load_log(params):
@@ -154,79 +136,37 @@ class ModelTrainer():
             alias[subsec_set[i]] = i + 1
         return alias
 
-    def split_train_test(self, percentage: float, one_timestamp: bool) -> None:
+
+    def split_timeline(self, size: float, one_ts: bool) -> None:
         """
-        Split an event log dataframe to peform split-validation
+        Split an event log dataframe by time to peform split-validation.
+        prefered method time splitting removing incomplete traces.
+        If the testing set is smaller than the 10% of the log size
+        the second method is sort by traces start and split taking the whole
+        traces no matter if they are contained in the timeframe or not
 
         Parameters
         ----------
-        percentage : float, validation percentage.
-        one_timestamp : bool, Support only one timestamp.
+        size : float, validation percentage.
+        one_ts : bool, Support only one timestamp.
         """
-        cases = self.log.caseid.unique()
-        num_test_cases = int(np.round(len(cases)*percentage))
-        test_cases = cases[:num_test_cases]
-        train_cases = cases[num_test_cases:]
-        df_test = self.log[self.log.caseid.isin(test_cases)]
-        df_train = self.log[self.log.caseid.isin(train_cases)]
-        key = 'end_timestamp' if one_timestamp else 'start_timestamp'
-        self.log_test = (df_test
-                         .sort_values(key, ascending=True)
+        # Split log data
+        splitter = ls.LogSplitter(self.log)
+        train, test = splitter.split_log('timeline_contained', size, one_ts)
+        total_events = len(self.log)
+        # Check size and change time splitting method if necesary
+        if len(test) < int(total_events*0.1):
+            train, test = splitter.split_log('timeline_trace', size, one_ts)
+        # Set splits
+        key = 'end_timestamp' if one_ts else 'start_timestamp'
+        test = pd.DataFrame(test)
+        train = pd.DataFrame(train)
+        self.log_test = (test.sort_values(key, ascending=True)
                          .reset_index(drop=True))
-        self.log_train = (df_train
-                          .sort_values(key, ascending=True)
+        self.log_train = (train.sort_values(key, ascending=True)
                           .reset_index(drop=True))
 
-    def split_timeline(self, percentage: float, one_timestamp: bool) -> None:
-        """
-        Split an event log dataframe to peform split-validation
 
-        Parameters
-        ----------
-        percentage : float, validation percentage.
-        one_timestamp : bool, Support only one timestamp.
-        """
-        log = self.log.to_dict('records')
-        log = sorted(log, key=lambda x: x['caseid'])
-        for key, group in itertools.groupby(log, key=lambda x: x['caseid']):
-            events = list(group)
-            events = sorted(events, key=itemgetter('end_timestamp'))
-            length = len(events)
-            for i in range(0, len(events)):
-                events[i]['pos_trace'] = i + 1
-                events[i]['trace_len'] = length
-        log = pd.DataFrame.from_dict(log)
-        log.sort_values(by='end_timestamp', ascending=False, inplace=True)
-
-        
-        num_events = int(np.round(len(log)*percentage))
-
-        df_test = log.iloc[:num_events]
-        df_train = log.iloc[num_events:]
-
-        # Incomplete final traces
-        df_train = df_train.sort_values(by=['caseid','pos_trace'],
-                                        ascending=True)
-        inc_traces = pd.DataFrame(df_train.groupby('caseid')
-                                  .last()
-                                  .reset_index())
-        inc_traces = inc_traces[inc_traces.pos_trace != inc_traces.trace_len]
-        inc_traces = inc_traces['caseid'].to_list()
-
-        # Drop incomplete traces
-        df_test = df_test[~df_test.caseid.isin(inc_traces)]
-        df_test = df_test.drop(columns=['trace_len','pos_trace'])
-
-        df_train = df_train[~df_train.caseid.isin(inc_traces)]
-        df_train = df_train.drop(columns=['trace_len','pos_trace'])
-
-        key = 'end_timestamp' if one_timestamp else 'start_timestamp'
-        self.log_test = (df_test
-                         .sort_values(key, ascending=True)
-                         .reset_index(drop=True))
-        self.log_train = (df_train
-                          .sort_values(key, ascending=True)
-                          .reset_index(drop=True))
 
     @staticmethod
     def load_embedded(index, filename):
@@ -248,44 +188,22 @@ class ModelTrainer():
             csvfile.close()
         return np.array(weights)
 
-    def export_parms(self, parms):
-        if not os.path.exists(self.output_folder):
-            os.makedirs(self.output_folder)
-            os.makedirs(os.path.join(self.output_folder, 'parameters'))
+    def export_parms(self, output_folder, parms):
+        if not os.path.exists(os.path.join(output_folder, 'parameters')):
+            os.makedirs(os.path.join(output_folder, 'parameters'))
 
-        parms['max_trace_size'] = self.get_max_trace_size(self.log)
+        parms['max_trace_size'] = int(self.log.groupby('caseid')['task']
+                                      .count().max())
         
         parms['index_ac'] = self.index_ac
         parms['index_rl'] = self.index_rl
         
-        if not parms['model_type'] == 'simple_gan':
-            shape = self.examples['prefixes']['activities'].shape
-            parms['dim'] = dict(
-                samples=str(shape[0]),
-                time_dim=str(shape[1]),
-                features=str(len(self.ac_index)))
-
-        sup.create_json(parms, os.path.join(self.output_folder,
+        sup.create_json(parms, os.path.join(output_folder,
                                             'parameters',
                                             'model_parameters.json'))
-        self.log_test.to_csv(os.path.join(self.output_folder,
+        self.log_test.to_csv(os.path.join(output_folder,
                                           'parameters',
                                           'test_log.csv'),
                              index=False,
                              encoding='utf-8')
-    @staticmethod
-    def get_max_trace_size(log):
-        return int(log.groupby('caseid')['task'].count().max())        
-
-    def read_model_definition(self, model_type):
-        Config = cp.ConfigParser(interpolation=None)
-        Config.read('models_spec.ini')
-        #File name with extension
-        self.model_def['additional_columns'] = sup.reduce_list(
-            Config.get(model_type,'additional_columns'), dtype='str')
-        self.model_def['scaler'] = Config.get(
-            model_type, 'scaler')
-        self.model_def['vectorizer'] = Config.get(
-            model_type, 'vectorizer')
-        self.model_def['trainer'] = Config.get(
-            model_type, 'trainer')
+        

@@ -9,47 +9,53 @@ import numpy as np
 
 import itertools
 from operator import itemgetter
-
-from support_modules import role_discovery as rl
-
+try:
+    from support_modules import role_discovery as rl
+except:
+    import os
+    from importlib import util
+    spec = util.spec_from_file_location(
+        'role_discovery', 
+        os.path.join(os.getcwd(), 'support_modules', 'role_discovery.py'))
+    rl = util.module_from_spec(spec)
+    spec.loader.exec_module(rl)
 
 class FeaturesMannager():
 
 
     def __init__(self, params):
         """constructor"""
-        self.rp_sim = params['rp_sim']
         self.model_type = params['model_type']
         self.one_timestamp = params['one_timestamp']
-        self.resources = pd.DataFrame
+        # self.resources = pd.DataFrame
         self.norm_method = params['norm_method']
         self._scalers = dict()
         self.scale_dispatcher = {'basic': self._scale_base,
                                  'inter': self._scale_inter}
 
     def calculate(self, log, add_cols):
-        log = self.add_resources(log)
         log = self.add_calculated_times(log)
         log = self.filter_features(log, add_cols)
         return self.scale_features(log, add_cols)
 
-    def add_resources(self, log):
+    @staticmethod
+    def add_resources(log, rp_sim):
         # Resource pool discovery
-        res_analyzer = rl.ResourcePoolAnalyser(log, sim_threshold=self.rp_sim)
+        res_analyzer = rl.ResourcePoolAnalyser(log, sim_threshold=rp_sim)
         # Role discovery
-        self.resources = pd.DataFrame.from_records(res_analyzer.resource_table)
-        self.resources = self.resources.rename(index=str,
+        resources = pd.DataFrame.from_records(res_analyzer.resource_table)
+        resources = resources.rename(index=str,
                                                columns={"resource": "user"})
         # Add roles information
-        log = log.merge(self.resources, on='user', how='left')
+        log = log.merge(resources, on='user', how='left')
         log = log[~log.task.isin(['Start', 'End'])]
         log = log.reset_index(drop=True)
         return log
 
     def filter_features(self, log, add_cols):
-        print(log.dtypes)
         # Add intercase features
-        columns = ['caseid', 'task', 'user', 'end_timestamp', 'role', 'dur']
+        columns = ['caseid', 'task', 'user', 'end_timestamp', 
+                   'role', 'dur', 'ac_index',  'rl_index']
         if not self.one_timestamp:
             columns.extend(['start_timestamp', 'wait'])
         columns.extend(add_cols)
@@ -101,6 +107,7 @@ class FeaturesMannager():
                 time = events[i][ordk].time()
                 time = time.second + time.minute*60 + time.hour*3600
                 events[i]['daytime'] = time
+                events[i]['weekday'] = events[i]['start_timestamp'].weekday()
         return pd.DataFrame.from_dict(log)
 
     def scale_features(self, log, add_cols):
@@ -139,6 +146,8 @@ class FeaturesMannager():
         for col in add_cols:
             if col == 'daytime':
                 log, _ = self.scale_feature(log, 'daytime', 'day_secs', True)
+            elif col == 'weekday':
+                continue
             else:
                 log, _ = self.scale_feature(log, col, self.norm_method, True)
         return log, scale_args
