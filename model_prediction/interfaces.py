@@ -28,9 +28,9 @@ class SamplesCreator:
 
 
 class PredictionTasksExecutioner:
-    def predict(self, predictor, activity):
+    def predict(self, predictor, activity, run_num):
         executioner = self._get_predictor(activity)
-        predictor.predict(executioner)
+        predictor.predict(executioner, run_num)
 
     def _get_predictor(self, activity):
         if activity == 'predict_next':

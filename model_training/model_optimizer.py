@@ -6,6 +6,7 @@ Created on Tue Nov 17 10:48:57 2020
 """
 import os
 import copy
+import ast
 import traceback
 import pandas as pd
 import configparser as cp
@@ -132,10 +133,16 @@ class ModelOptimizer():
                                    self.rl_weights,
                                    trial_stg['output'])
             # evaluation
+            x_input = {'ac_input': valdn_vec['prefixes']['activities'],
+                       'rl_input': valdn_vec['prefixes']['roles'],
+                       't_input': valdn_vec['prefixes']['times']}
+            if trial_stg['model_type'] in ['shared_cat_cx', 
+                                           'concatenated_cx',
+                                           'shared_cat_gru_cx', 
+                                           'concatenated_gru_cx']:
+                x_input['inter_input']= valdn_vec['prefixes']['inter_attr']
             acc = model.evaluate(
-                x={'ac_input': valdn_vec['prefixes']['activities'],
-                   'rl_input': valdn_vec['prefixes']['roles'],
-                   't_input': valdn_vec['prefixes']['times']},
+                x=x_input,
                 y={'act_output': valdn_vec['next_evt']['activities'],
                    'role_output': valdn_vec['next_evt']['roles'],
                    'time_output': valdn_vec['next_evt']['times']},
@@ -159,6 +166,9 @@ class ModelOptimizer():
             self.best_output = result.output
             self.best_loss = result.loss
             self.best_parms = {k: self.parms[k][v] for k,v in best.items()}
+            opt_res = pd.read_csv(self.file_name)
+            opt_res = opt_res[opt_res.output==result.output].iloc[0]
+            self.best_parms['scale_args'] = ast.literal_eval(opt_res.scale_args)
         except Exception as e:
             print(e)
             pass
@@ -191,19 +201,21 @@ class ModelOptimizer():
                 'l_size': parms['l_size'],
                 'lstm_act': parms['lstm_act'],
                 'dense_act': parms['dense_act'],
-                'optim': parms['optim']}
+                'optim': parms['optim'],
+                'scale_args': parms['scale_args'],
+                'output': parms['output']}
         response['output'] = parms['output']
         if status == STATUS_OK:
             response['loss'] = loss
             response['status'] = status if loss > 0 else STATUS_FAIL
             measurements.append({**{'loss': loss,
-                                    'sim_metric': 'mae', 
+                                    'sim_metric': 'val_loss', 
                                     'status': response['status']},
                                  **data})
         else:
             response['status'] = status
             measurements.append({**{'loss': 1,
-                                    'sim_metric': 'mae',
+                                    'sim_metric': 'val_loss',
                                     'status': response['status']},
                                  **data})
         if os.path.getsize(self.file_name) > 0:

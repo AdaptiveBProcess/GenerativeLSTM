@@ -17,13 +17,9 @@ from model_training import model_trainer as tr
 # =============================================================================
 def catch_parameter(opt):
     """Change the captured parameters names"""
-    switch = {'-h': 'help', '-f': 'file_name'}
-    try:
-        return switch[opt]
-    except Exception as e:
-        print(e.message)
-        raise Exception('Invalid option ' + opt)
-
+    switch = {'-h': 'help', '-f': 'file_name', '-m': 'model_family',
+              '-e': 'max_eval', '-o': 'opt_method'}
+    return switch.get(opt)
 
 def main(argv):
     parameters = dict()
@@ -40,13 +36,21 @@ def main(argv):
     if not argv:
         # Event-log filename
         parameters['file_name'] = 'PurchasingExample.xes'
+        parameters['model_family'] = 'gru_cx'
+        parameters['opt_method'] = 'rand_hpc' # 'rand_hpc', 'bayesian'
+        parameters['max_eval'] = 1
     else:
         # Catch parms by console
         try:
-            opts, _ = getopt.getopt( argv, "h:f:", ['file_name='])
+            opts, _ = getopt.getopt(argv, "h:f:m:e:o:", 
+                                    ['file_name=', 'model_family=',
+                                     'max_eval=', 'opt_method='])
             for opt, arg in opts:
                 key = catch_parameter(opt)
-                parameters[key] = arg
+                if key in ['max_eval']:
+                    parameters[key] = int(arg)
+                else:
+                    parameters[key] = arg
         except getopt.GetoptError:
             print('Invalid option')
             sys.exit(2)
@@ -54,34 +58,28 @@ def main(argv):
     parameters['rp_sim'] = 0.85
     parameters['batch_size'] = 32 # Usually 32/64/128/256
     parameters['norm_method'] = ['max', 'lognorm']
-    # # Model types --> shared_cat, shared_cat_inter, shared_cat_rd
-    # # cnn_lstm_inter, simple_gan
-    parameters['model_type'] = ['shared_cat', 'specialized', 'concatenated']
-    # parameters['model_type'] = 'shared_cat'
     parameters['imp'] = 1
-    parameters['max_eval'] = 2
     parameters['batch_size'] = 32 # Usually 32/64/128/256
-    parameters['epochs'] = 2
-    parameters['n_size'] = [5]
-    parameters['l_size'] = [50] 
-    parameters['lstm_act'] = ['selu', 'relu', 'tanh']
+    parameters['epochs'] = 200
+    parameters['n_size'] = [5, 10, 15]
+    parameters['l_size'] = [50, 100] 
+    parameters['lstm_act'] = ['selu', 'tanh']
+    if parameters['model_family'] == 'lstm':
+        parameters['model_type'] = ['shared_cat', 'concatenated']
+    elif parameters['model_family'] == 'gru':
+        parameters['model_type'] = ['shared_cat_gru', 'concatenated_gru']
+    elif parameters['model_family'] == 'lstm_cx':
+        parameters['model_type'] = ['shared_cat_cx', 'concatenated_cx']
+    elif parameters['model_family'] == 'gru_cx':
+        parameters['model_type'] = ['shared_cat_gru_cx', 'concatenated_gru_cx']
     parameters['dense_act'] = ['linear']
-    parameters['optim'] = ['Nadam', 'Adam']
+    parameters['optim'] = ['Nadam']
     
     if parameters['model_type'] == 'simple_gan':
         parameters['gan_pretrain'] = False
+    parameters.pop('model_family', None)
     # Train models
-    print(parameters)
     trainer = tr.ModelTrainer(parameters)
-    # parameters = dict()
-    # # Clean parameters and define validation experiment
-    # parameters['folder'] = trainer.output
-    # parameters['model_file'] = trainer.model
-    # parameters['activity'] = 'pred_log'
-    # print(parameters['folder'])
-    # print(parameters['model_file'])
-    # predictor = pr.ModelPredictor(parameters)
-    # print(predictor.acc)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

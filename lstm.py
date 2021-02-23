@@ -43,14 +43,15 @@ def main(argv):
     if not argv:
         # Type of LSTM task -> training, pred_log
         # pred_sfx, predict_next, inter_case
-        parameters['activity'] = 'training'
+        parameters['activity'] = 'pred_log'
         # Event-log reading parameters
         parameters['one_timestamp'] = False  # Only one timestamp in the log
         parameters['read_options'] = {
             'timeformat': '%Y-%m-%dT%H:%M:%S.%f',
             'column_names': column_names,
             'one_timestamp': parameters['one_timestamp'],
-            'ns_include': True}
+            'ns_include': True,
+            'filter_d_attrib': False}
         # General training parameters
         if parameters['activity'] in ['training']:
             # Event-log parameters
@@ -75,11 +76,12 @@ def main(argv):
                     parameters['gan_pretrain'] = False
                 # Generation parameters
         elif parameters['activity'] in ['pred_log', 'pred_sfx', 'predict_next']:
-            parameters['folder'] = '20210124_A69FA56C_260A_45B0_922B_579953A23546'
-            parameters['model_file'] = 'model_shared_cat_02-2.69.h5'
+            parameters['folder'] = '20210208_AE2236CA_E88C_4EC9_ABC1_17173FD4DCFF'
+            parameters['model_file'] = 'confidential_2000.h5'
             parameters['is_single_exec'] = False  # single or batch execution
             # variants and repetitions to be tested Random Choice, Arg Max
-            parameters['rep'] = 1
+            parameters['variant'] = 'Random Choice'
+            parameters['rep'] = 5
         elif parameters['activity'] == 'inter_case':
             parameters['file_name'] = 'BPI_Challenge_2017_W_Two_TS_training.csv'
             parameters['mem_limit'] = 1000000
@@ -112,9 +114,8 @@ def main(argv):
                     parameters[key] = arg
             parameters['read_options'] = {'timeformat': '%Y-%m-%dT%H:%M:%S.%f',
                                           'column_names': column_names,
-                                          'one_timestamp':
-                                              parameters['one_timestamp'],
-                                              'ns_include': True}
+                                          'one_timestamp': parameters['one_timestamp'],
+                                          'filter_d_attrib': False}
         except getopt.GetoptError:
             print('Invalid option')
             sys.exit(2)

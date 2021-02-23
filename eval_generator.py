@@ -5,7 +5,7 @@ Created on Tue Feb 12 14:08:16 2019
 @author: Manuel Camargo
 """
 import datetime
-from support_modules import support as sup
+import utils.support as sup
 import os
 import time
 
@@ -58,18 +58,19 @@ def sbatch_creator(file_list, activity):
                        '#SBATCH -t 24:00:00',
                        'module load cuda/10.0',
                        'module load python/3.6.3/virtenv',
-                       'source activate lstm_exp_v3'
+                       'source activate deep_generator_pip'
                        ]
         else:
             default = ['#!/bin/bash',
-                       '#SBATCH --partition=amd',
+                       '#SBATCH --partition=main',
                        '#SBATCH -J ' + exp_name,
                        '#SBATCH -N 1',
-                       '#SBATCH --mem=7000',
-                       '#SBATCH -t 24:00:00',
+                       '#SBATCH --cpus-per-task=20',
+                       '#SBATCH --mem=32000',
+                       '#SBATCH -t 120:00:00',
                        'module load cuda/10.0',
                        'module load python/3.6.3/virtenv',
-                       'source activate lstm_exp_v3'
+                       'source activate deep_generator_pip'
                        ]
     
         default.append('python lstm.py' +
@@ -119,4 +120,4 @@ for _, _, files in os.walk(output_folder):
 for activity in activities:
     sbatch_creator(file_list, activity)
     # submission
-sbatch_submit(True)
+# sbatch_submit(True)

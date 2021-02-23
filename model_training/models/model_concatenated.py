@@ -12,9 +12,18 @@ from tensorflow.keras.layers import Dense, LSTM, BatchNormalization
 from tensorflow.keras.optimizers import Nadam, Adam, SGD, Adagrad
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
-from support_modules.callbacks import time_callback as tc
+try:
+    from support_modules.callbacks import time_callback as tc
+except:
+    from importlib import util
+    spec = util.spec_from_file_location(
+        'time_callback', 
+        os.path.join(os.getcwd(), 'support_modules', 'callbacks', 'time_callback.py'))
+    tc = util.module_from_spec(spec)
+    spec.loader.exec_module(tc)
 
-def _training_model(train_vec, valdn_vec, ac_weights, rl_weights, output_folder, args):
+
+def _training_model(train_vec, valdn_vec, ac_weights, rl_weights, output_folder, args, log_path=None):
     """Example function with types documented in the docstring.
     Args:
         param1 (int): The first parameter.
@@ -138,7 +147,10 @@ def _training_model(train_vec, valdn_vec, ac_weights, rl_weights, output_folder,
     model.summary()
 
     early_stopping = EarlyStopping(monitor='val_loss', patience=50)
-    cb = tc.TimingCallback(output_folder)
+    if log_path:
+        cb = tc.TimingCallback(output_folder, log_path=log_path)
+    else:
+        cb = tc.TimingCallback(output_folder)
 
     # Output file
     output_file_path = os.path.join(output_folder, 

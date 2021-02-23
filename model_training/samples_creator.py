@@ -45,7 +45,7 @@ class SequencesCreator():
     @staticmethod
     def define_columns(add_cols, one_timestamp):
         columns = ['ac_index', 'rl_index', 'dur_norm']
-        add_cols = [x+'_norm' for x in add_cols]
+        add_cols = [x+'_norm' if x != 'weekday' else x for x in add_cols ]
         columns.extend(add_cols)
         if not one_timestamp:
             columns.extend(['wait_norm'])
@@ -121,11 +121,15 @@ class SequencesCreator():
         equi = {'ac_index': 'activities', 'rl_index': 'roles'}
         vec = {'prefixes': dict(),
                'next_evt': dict()}
+        x_weekday = list()
+        y_weekday = list()
+        # times
         x_times_dict = dict()
         y_times_dict = dict()
         # intercases
         x_inter_dict = dict()
         y_inter_dict = dict()
+        # self.log = self.log[self.log.caseid.isin(['1', '1770'])].head(3)
         self.log = self.reformat_events(columns, parms['one_timestamp'])
         for i, _ in enumerate(self.log):
             for x in columns:
@@ -145,6 +149,11 @@ class SequencesCreator():
                         x_times_dict[x] + serie if i > 0 else serie)
                     y_times_dict[x] = (
                         y_times_dict[x] + y_serie if i > 0 else y_serie)
+                elif x == 'weekday':
+                    x_weekday = (
+                        x_weekday + serie if i > 0 else serie)
+                    y_weekday = (
+                        y_weekday + y_serie if i > 0 else y_serie)
                 else:
                     x_inter_dict[x] = (
                         x_inter_dict[x] + serie if i > 0 else serie)
@@ -175,6 +184,14 @@ class SequencesCreator():
         vec['prefixes']['inter_attr'] = np.dstack(list(x_inter_dict.values()))
         # Reshape y intercase attributes (suffixes, number of attributes)
         vec['next_evt']['inter_attr'] = np.dstack(list(y_inter_dict.values()))[0]
+        if 'weekday' in columns:
+            # Onehot encode weekday
+            x_weekday = ku.to_categorical(x_weekday, num_classes=7)
+            y_weekday = ku.to_categorical(y_weekday, num_classes=7)
+            vec['prefixes']['inter_attr'] = np.concatenate(
+                [vec['prefixes']['inter_attr'], x_weekday], axis=2)
+            vec['next_evt']['inter_attr'] = np.concatenate(
+                [vec['next_evt']['inter_attr'], y_weekday], axis=1)
         return vec
 
     # def _vectorize_seq_inter(self, parms, columns):

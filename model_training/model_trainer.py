@@ -5,15 +5,11 @@ Created on Thu Mar 12 15:07:19 2020
 @author: Manuel Camargo
 """
 import os
-import glob
-
 import csv
-import itertools
 
 import pandas as pd
 import numpy as np
-
-from operator import itemgetter
+import shutil
 
 import readers.log_reader as lr
 import utils.support as sup
@@ -22,6 +18,7 @@ import readers.log_splitter as ls
 from model_training.features_manager import FeaturesMannager as feat
 from model_training import embedding_training as em
 from model_training import model_optimizer as op
+from model_training import model_hpc_optimizer as hpc_op
 
 
 class ModelTrainer():
@@ -32,8 +29,6 @@ class ModelTrainer():
     def __init__(self, params):
         """constructor"""
         self.log = self.load_log(params)
-        self.output = sup.folder_id()
-        self.output_folder = os.path.join('output_files', self.output)
         # Split validation partitions
         self.log_train = pd.DataFrame()
         self.log_test = pd.DataFrame()
@@ -52,17 +47,27 @@ class ModelTrainer():
         self.preprocess(params)
         # Train model
         params['output'] = os.path.join('output_files', sup.folder_id())
-        optimizer = op.ModelOptimizer(params, 
-                                      self.log, 
-                                      self.ac_index, 
-                                      self.ac_weights,
-                                      self.rl_index,
-                                      self.rl_weights)
-        optimizer.execute_trials()
-        print(optimizer.best_output)
-        print(optimizer.best_parms)
-        print(optimizer.best_loss)
-
+        if params['opt_method'] == 'rand_hpc':
+            optimizer = hpc_op.ModelHPCOptimizer(params, 
+                                                 self.log, 
+                                                 self.ac_index, 
+                                                 self.rl_index)
+            optimizer.execute_trials()
+        elif params['opt_method'] == 'bayesian':
+            optimizer = op.ModelOptimizer(params, 
+                                          self.log, 
+                                          self.ac_index, 
+                                          self.ac_weights,
+                                          self.rl_index,
+                                          self.rl_weights)
+            optimizer.execute_trials()
+        # Export results
+        output_path = os.path.join('output_files', sup.folder_id())
+        shutil.copytree(optimizer.best_output, output_path)
+        shutil.copy(optimizer.file_name, output_path)
+        self.export_parms(output_path, optimizer.best_parms)
+        # Remove folder
+        shutil.rmtree(params['output'])
 
     def preprocess(self, params):
         self.log = feat.add_resources(self.log, params['rp_sim'])
@@ -85,8 +90,6 @@ class ModelTrainer():
                               self.rl_index, self.index_rl)
             self.ac_weights = self.load_embedded(self.index_ac, ac_emb_name)
             self.rl_weights = self.load_embedded(self.index_rl, rl_emb_name)
-        # Export parameters
-        # self.export_parms(params)
 
     @staticmethod
     def load_log(params):
@@ -185,44 +188,22 @@ class ModelTrainer():
             csvfile.close()
         return np.array(weights)
 
-    def export_parms(self, parms):
-        if not os.path.exists(self.output_folder):
-            os.makedirs(self.output_folder)
-            os.makedirs(os.path.join(self.output_folder, 'parameters'))
+    def export_parms(self, output_folder, parms):
+        if not os.path.exists(os.path.join(output_folder, 'parameters')):
+            os.makedirs(os.path.join(output_folder, 'parameters'))
 
-        parms['max_trace_size'] = self.get_max_trace_size(self.log)
+        parms['max_trace_size'] = int(self.log.groupby('caseid')['task']
+                                      .count().max())
         
         parms['index_ac'] = self.index_ac
         parms['index_rl'] = self.index_rl
         
-        if not parms['model_type'] == 'simple_gan':
-            shape = self.examples['prefixes']['activities'].shape
-            parms['dim'] = dict(
-                samples=str(shape[0]),
-                time_dim=str(shape[1]),
-                features=str(len(self.ac_index)))
-
-        sup.create_json(parms, os.path.join(self.output_folder,
+        sup.create_json(parms, os.path.join(output_folder,
                                             'parameters',
                                             'model_parameters.json'))
-        self.log_test.to_csv(os.path.join(self.output_folder,
+        self.log_test.to_csv(os.path.join(output_folder,
                                           'parameters',
                                           'test_log.csv'),
                              index=False,
                              encoding='utf-8')
-    @staticmethod
-    def get_max_trace_size(log):
-        return int(log.groupby('caseid')['task'].count().max())        
-
-    # def read_model_definition(self, model_type):
-    #     Config = cp.ConfigParser(interpolation=None)
-    #     Config.read('models_spec.ini')
-    #     #File name with extension
-    #     self.model_def['additional_columns'] = sup.reduce_list(
-    #         Config.get(model_type,'additional_columns'), dtype='str')
-    #     self.model_def['scaler'] = Config.get(
-    #         model_type, 'scaler')
-    #     self.model_def['vectorizer'] = Config.get(
-    #         model_type, 'vectorizer')
-    #     self.model_def['trainer'] = Config.get(
-    #         model_type, 'trainer')
+        

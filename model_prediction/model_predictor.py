@@ -6,12 +6,11 @@ Created on Tue Mar 17 10:49:28 2020
 """
 import os
 import json
+import copy
 
 import pandas as pd
 import numpy as np
 import configparser as cp
-
-from tensorflow.keras.models import load_model
 
 import readers.log_reader as lr
 import utils.support as sup
@@ -30,15 +29,12 @@ class ModelPredictor():
         self.parms = parms
         # load parameters
         self.load_parameters()
-        self.model_name, _ = os.path.splitext(parms['model_file'])
-        self.model = load_model(os.path.join(self.output_route,
-                                             parms['model_file']))
-
+        self.model_name = os.path.join(self.output_route, parms['model_file'])
         self.log = self.load_log_test(self.output_route, self.parms)
 
         self.samples = dict()
         self.predictions = None
-        self.run_num = 0
+        self.sim_values = list()
 
         self.model_def = dict()
         self.read_model_definition(self.parms['model_type'])
@@ -49,29 +45,32 @@ class ModelPredictor():
         # create examples for next event and suffix
         if self.parms['activity'] == 'pred_log':
             self.parms['num_cases'] = len(self.log.caseid.unique())
+            self.parms['start_time'] = self.log.start_timestamp.min()
         else:
             sampler = it.SamplesCreator()
             sampler.create(self, self.parms['activity'])
         # predict
-        self.imp = self.parms ['variant']
-        self.run_num = 0
-        for i in range(0, self.parms['rep']):
-            self.predict_values()
-        # export predictions
-        self.export_predictions()
-        # assesment
-        evaluator = EvaluateTask()
-        if self.parms['activity'] == 'pred_log':
-            self.log['caseid'] = self.log['caseid'].astype(str)
-            self.predictions['caseid'] = self.predictions['caseid'].astype(str)
-            return evaluator.evaluate(self.log, self.predictions, self.parms)
-        else:
-            return evaluator.evaluate(self.predictions, self.parms) 
+        self.imp = self.parms['variant']
+        for run_num in range(0, self.parms['rep']):
+            self.predict_values(run_num)
+            # export predictions
+            self.export_predictions(run_num)
+            # assesment
+            evaluator = EvaluateTask()
+            if self.parms['activity'] == 'pred_log':
+                self.sim_values.extend(
+                    evaluator.evaluate(self.parms,
+                                       self.log,
+                                    self.predictions,
+                                    run_num))
+            else:
+                evaluator.evaluate(self.predictions, self.parms)
+        self._export_results(self.output_route)
 
-    def predict_values(self):
+    def predict_values(self, run_num):
         # Predict values
         executioner = it.PredictionTasksExecutioner()
-        executioner.predict(self, self.parms['activity'])
+        executioner.predict(self, self.parms['activity'], run_num)
 
     @staticmethod
     def load_log_test(output_route, parms):
@@ -94,7 +93,8 @@ class ModelPredictor():
             parms = {k: v for k, v in data.items()}
             parms.pop('rep', None)
             self.parms = {**self.parms, **parms}
-            self.parms['dim'] = {k: int(v) for k, v in data['dim'].items()}
+            if 'dim' in data.keys():
+                self.parms['dim'] = {k: int(v) for k, v in data['dim'].items()}
             if self.parms['one_timestamp']:
                 self.parms['scale_args'] = {
                     k: float(v) for k, v in data['scale_args'].items()}
@@ -117,28 +117,26 @@ class ModelPredictor():
             self.parms, self.log, self.ac_index,
             self.rl_index, self.model_def['additional_columns'])
 
-    def predict(self, executioner):
+
+    def predict(self, executioner, run_num):
+        
         results = executioner.predict(self.parms,
-                                      self.model,
+                                      self.model_name,
                                       self.samples,
                                       self.imp,
                                       self.model_def['vectorizer'])
         results = pd.DataFrame(results)
-        results['run_num'] = self.run_num
-        self.run_num += 1
-        if self.predictions is None:
-            self.predictions = results
-        else:
-            self.predictions = self.predictions.append(results,
-                                                       ignore_index=True)
+        self.predictions = results
 
-    def export_predictions(self):
-        output_folder = os.path.join(self.output_route, 'results')
-        if not os.path.exists(output_folder):
-            os.makedirs(output_folder)
-        filename = self.model_name + '_' + self.parms['activity'] + '.csv'
-        self.predictions.to_csv(os.path.join(output_folder, filename),
-                                index=False)
+    def export_predictions(self, r_num):
+        # output_folder = os.path.join(self.output_route, 'results')
+        if not os.path.exists(self.output_route):
+            os.makedirs(self.output_route)
+        self.predictions.to_csv(
+            os.path.join(
+                self.output_route, 'gen_'+ 
+                self.parms['model_file'].split('.')[0]+'_'+str(r_num+1)+'.csv'), 
+            index=False)
 
     @staticmethod
     def scale_feature(log, feature, parms, replace=False):
@@ -189,12 +187,24 @@ class ModelPredictor():
         self.model_def['additional_columns'] = sup.reduce_list(
             Config.get(model_type,'additional_columns'), dtype='str')
         self.model_def['vectorizer'] = Config.get(model_type, 'vectorizer')
+
+    def _export_results(self, output_path) -> None:
+        # Save results
+        pd.DataFrame(self.sim_values).to_csv(
+            os.path.join(self.output_route, sup.file_id(prefix='SE_')), 
+            index=False)
+        # Save logs        
+        log_test = self.log[~self.log.task.isin(['Start', 'End'])]
+        log_test.to_csv(
+            os.path.join(self.output_route, 'tst_'+
+                         self.parms['model_file'].split('.')[0]+'.csv'), 
+            index=False)
         
 class EvaluateTask():
 
-    def evaluate(self, log, predictions, parms):
+    def evaluate(self, parms, log, predictions, rep_num):
         sampler = self._get_evaluator(parms['activity'])
-        return sampler(log, predictions, parms)
+        return sampler(parms, log, predictions, rep_num)
 
     def _get_evaluator(self, activity):
         if activity == 'predict_next':
@@ -206,7 +216,7 @@ class EvaluateTask():
         else:
             raise ValueError(activity)
 
-    def _evaluate_predict_next(self, data, parms):
+    def _evaluate_predict_next(self, data, parms, rep_num):
         exp_desc = self.clean_parameters(parms.copy())
         evaluator = ev.Evaluator(parms['one_timestamp'])
         ac_sim = evaluator.measure('accuracy', data, 'ac')
@@ -231,7 +241,7 @@ class EvaluateTask():
             self.save_results(wait_mae, 'wait', parms)
         return mean_ac
 
-    def _evaluate_pred_sfx(self, data, parms):
+    def _evaluate_pred_sfx(self, data, parms, rep_num):
         exp_desc = self.clean_parameters(parms.copy())
         evaluator = ev.Evaluator(parms['one_timestamp'])
         ac_sim = evaluator.measure('similarity', data, 'ac')
@@ -256,24 +266,25 @@ class EvaluateTask():
             self.save_results(wait_mae, 'wait', parms)
         return mean_sim
 
-    def _evaluate_predict_log(self, log, predictions, parms):
-        # exp_desc = self.clean_parameters(parms.copy())
+    @staticmethod
+    def _evaluate_predict_log(parms, log, sim_log, rep_num):
+        """Reads the simulation results stats
+        Args:
+            settings (dict): Path to jar and file names
+            rep (int): repetition number
+        """
         sim_values = list()
-        for i in range(0, parms['rep']):
-            evaluator = ev.SimilarityEvaluator(
-                log, predictions[predictions.run_num==i], parms)
-            for metric in ['tsd', 'day_hour_emd', 'log_mae', 'dl', 'mae']:
-                evaluator.measure_distance(metric)
-                sim_values.append({**{'run_num': i}, **evaluator.similarity})
-        # Save results
-        output_path = os.path.join('output_files',
-                                    parms['folder'],
-                                    'results')
-        results = pd.DataFrame(sim_values)
-        results.to_csv(
-            os.path.join(output_path, sup.file_id(prefix='SE_')), 
-            index=False)
-        return results[results.metric=='tsd'].sim_val.mean()
+        log = copy.deepcopy(log)
+        log = log[~log.task.isin(['Start', 'End', 'start', 'end'])]
+        log['caseid'] = log['caseid'].astype(str)
+        log['caseid'] = 'Case' + log['caseid']
+        sim_log = sim_log[~sim_log.task.isin(['Start', 'End', 'start', 'end'])]
+        evaluator = ev.SimilarityEvaluator(log, sim_log, parms)
+        metrics = ['tsd', 'day_hour_emd', 'log_mae', 'dl', 'mae']
+        for metric in metrics:
+            evaluator.measure_distance(metric)
+            sim_values.append({**{'run_num': rep_num}, **evaluator.similarity})
+        return sim_values
 
     @staticmethod
     def clean_parameters(parms):
@@ -290,30 +301,3 @@ class EvaluateTask():
         exp_desc.pop('variants', None)
         exp_desc.pop('is_single_exec', None)
         return exp_desc
-
-    @staticmethod
-    def save_results(measurements, feature, parms):
-        if measurements:
-            if parms['is_single_exec']:
-                output_route = os.path.join('output_files',
-                                            parms['folder'],
-                                            'results')
-                model_name, _ = os.path.splitext(parms['model_file'])
-                sup.create_csv_file_header(
-                    measurements,
-                    os.path.join(
-                        output_route,
-                        model_name+'_'+feature+'_'+parms['activity']+'.csv'))
-            else:
-                if os.path.exists(os.path.join(
-                        'output_files', feature+'_'+parms['activity']+'.csv')):
-                    sup.create_csv_file(
-                        measurements,
-                        os.path.join('output_files',
-                                     feature+'_'+parms['activity']+'.csv'),
-                        mode='a')
-                else:
-                    sup.create_csv_file_header(
-                        measurements,
-                        os.path.join('output_files',
-                                     feature+'_'+parms['activity']+'.csv'))

@@ -9,9 +9,16 @@ import numpy as np
 
 import itertools
 from operator import itemgetter
-
-from support_modules import role_discovery as rl
-
+try:
+    from support_modules import role_discovery as rl
+except:
+    import os
+    from importlib import util
+    spec = util.spec_from_file_location(
+        'role_discovery', 
+        os.path.join(os.getcwd(), 'support_modules', 'role_discovery.py'))
+    rl = util.module_from_spec(spec)
+    spec.loader.exec_module(rl)
 
 class FeaturesMannager():
 
@@ -100,6 +107,7 @@ class FeaturesMannager():
                 time = events[i][ordk].time()
                 time = time.second + time.minute*60 + time.hour*3600
                 events[i]['daytime'] = time
+                events[i]['weekday'] = events[i]['start_timestamp'].weekday()
         return pd.DataFrame.from_dict(log)
 
     def scale_features(self, log, add_cols):
@@ -138,6 +146,8 @@ class FeaturesMannager():
         for col in add_cols:
             if col == 'daytime':
                 log, _ = self.scale_feature(log, 'daytime', 'day_secs', True)
+            elif col == 'weekday':
+                continue
             else:
                 log, _ = self.scale_feature(log, col, self.norm_method, True)
         return log, scale_args
