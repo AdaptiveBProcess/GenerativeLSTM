@@ -31,17 +31,13 @@ Once created the environment, you can perform each one of the tasks, specifying 
 
 *Training LSTM neuronal network:* To perform this task you need to set the required activity (-a) as 'training' followed by the name of the (-f) event log, and all the following parameters:
 
-* Implementation (-i): type of keras lstm implementation 1 cpu, 2 gpu
-* lSTM activation function (-l): lSTM optimization function (see keras doc), None to set it up as the default value.
-* Dense activation function (-d): dense layer activation function (see keras doc), None to set it up as the default value.
-* optimization function (-p): optimization function (see keras doc).
-* Scaling method (-n) = relative time between events scaling method max or lognorm.
-* Model type (-m): type of LSTM model one of specialized, concatenated, shared_cat, shared_cat_gru, specialized_gru or concatenated_gru.
-* N-gram size (-z): Size of the n-gram (temporal dimension)
-* LSTM layer sizes (-y): Size of the LSTM layers.
+* Filename (-f): Log filename.
+* Model family (-m): The available options are lstm, gru, lstm_cx and gru_cx.
+* Max Eval (-e): Maximum number of evaluations.
+* Opt method (-o): Optimization method used. The available options are hpc and bayesian.
 
 ```
-(lstm_env) C:\sc_lstm>python lstm.py -a training -f Helpdesk.xes -i 1 -l None -d linear -p Nadam -n lognorm -m shared_cat -z 5 -y 100
+(lstm_env) C:\sc_lstm>python dg_training.py -f Helpdesk.xes -m lstm -e 1 -o bayesian
 ```
 
 *Predictive task:* It is possible to execute various predictive tasks with DeepGenerator, such as predicting the next event, the case continuation, and the remaining time of an ongoing case. Similarly, it is possible to generate complete event logs starting from a zero prefix size. To perform these tasks, you need to set the activity (-a) as ‘predict_next’ for the next event prediction, ‘pred_sfx’ for case continuation and remaining time, and ‘pred_log’ for the full event log generation. Additionally, it's required to indicate the folder where the predictive model is located (-c), and the name of the .h5 model (-b). Finally, you need to specify the method for selecting the next predicted task (-v) ‘random_choice’ or ‘arg_max’ and the number of repetitions of the experiment (-r). **NB! The folders and models were generated in the training task and can be found in the output_files folder:
