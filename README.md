@@ -10,7 +10,11 @@ The code here presented is able to execute different pre- and post-processing me
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+´´´
+https://github.com/AdaptiveBProcess/GenerativeLSTM.git
+´´´
 
 ### Prerequisites
 
