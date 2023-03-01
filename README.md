@@ -19,6 +19,11 @@ git clone https://github.com/AdaptiveBProcess/GenerativeLSTM.git
 ### Prerequisites
 
 To execute this code you just need to install Anaconda in your system, and create an environment using the *environment.yml* specification provided in the repository.
+```
+cd GenerativeLSTM
+conda env create -f environment.yml
+conda activate deep_generator
+```
 
 ## Running the script
 
