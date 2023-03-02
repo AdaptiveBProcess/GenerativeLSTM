@@ -2,7 +2,7 @@ name: deep_generator
 channels:
   - defaults
 dependencies:
-  - spyder==4.2.0
+  - spyder==5.1.5
   - pandas
   - lxml
   - matplotlib

@@ -73,7 +73,7 @@ class ModelOptimizer():
         # Trials object to track progress
         self.bayes_trials = Trials()
         self.best_output = None
-        self.best_parms = dict()
+        self.best_params = dict()
         self.best_loss = 1
         
     @staticmethod
@@ -103,8 +103,7 @@ class ModelOptimizer():
             # Scale values
             log, trial_stg = self._scale_values(self.log, trial_stg, model_def)
             # split validation
-            log_valdn, log_train = self.split_timeline(
-                0.8, log, trial_stg['one_timestamp'])
+            log_valdn, log_train = self.split_timeline(0.8, log, trial_stg['one_timestamp'])
             print('train split size:', len(log_train))
             print('valdn split size:', len(log_valdn))
             # Vectorize input
@@ -161,14 +160,14 @@ class ModelOptimizer():
         # Save results
         try:
             results = (pd.DataFrame(self.bayes_trials.results)
-                       .sort_values('loss', ascending=bool))
-            result = results[results.status=='ok'].head(1).iloc[0]
+                       .sort_values('loss', ascending=True))
+            result = results[results.status == 'ok'].head(1).iloc[0]
             self.best_output = result.output
             self.best_loss = result.loss
-            self.best_parms = {k: self.parms[k][v] for k,v in best.items()}
+            self.best_params = {k: self.parms[k][v] for k, v in best.items()}
             opt_res = pd.read_csv(self.file_name)
-            opt_res = opt_res[opt_res.output==result.output].iloc[0]
-            self.best_parms['scale_args'] = ast.literal_eval(opt_res.scale_args)
+            opt_res = opt_res[opt_res.output == result.output].iloc[0]
+            self.best_params['scale_args'] = ast.literal_eval(opt_res.scale_args)
         except Exception as e:
             print(e)
             pass
@@ -184,7 +183,7 @@ class ModelOptimizer():
 
     @staticmethod
     def _scale_values(log, params, model_def):
-        # Features treatement
+        # Features treatment
         inp = feat.FeaturesMannager(params)
         # Register scaler
         inp.register_scaler(params['model_type'], model_def['scaler'])
@@ -193,7 +192,7 @@ class ModelOptimizer():
             log, model_def['additional_columns'])
         return log, params
 
-    def _define_response(self, parms, status, loss, **kwargs) -> None:
+    def _define_response(self, parms, status, loss, **kwargs) -> dict:
         print(loss)
         response = dict()
         measurements = list()
@@ -249,24 +248,18 @@ class ModelOptimizer():
         key = 'end_timestamp' if one_ts else 'start_timestamp'
         valdn = pd.DataFrame(valdn)
         train = pd.DataFrame(train)
-        log_valdn = (valdn.sort_values(key, ascending=True)
-                         .reset_index(drop=True))
-        log_train = (train.sort_values(key, ascending=True)
-                          .reset_index(drop=True))
+        log_valdn = (valdn.sort_values(key, ascending=True).reset_index(drop=True))
+        log_train = (train.sort_values(key, ascending=True).reset_index(drop=True))
         return log_valdn, log_train
 
     @staticmethod
     def read_model_definition(model_type):
         model_def = dict()
-        Config = cp.ConfigParser(interpolation=None)
-        Config.read('models_spec.ini')
-        #File name with extension
-        model_def['additional_columns'] = sup.reduce_list(
-            Config.get(model_type,'additional_columns'), dtype='str')
-        model_def['scaler'] = Config.get(
-            model_type, 'scaler')
-        model_def['vectorizer'] = Config.get(
-            model_type, 'vectorizer')
-        model_def['trainer'] = Config.get(
-            model_type, 'trainer')
+        config = cp.ConfigParser(interpolation=None)
+        config.read('models_spec.ini')
+        #  File name with extension
+        model_def['additional_columns'] = sup.reduce_list(config.get(model_type, 'additional_columns'), dtype='str')
+        model_def['scaler'] = config.get(model_type, 'scaler')
+        model_def['vectorizer'] = config.get(model_type, 'vectorizer')
+        model_def['trainer'] = config.get(model_type, 'trainer')
         return model_def

@@ -1,3 +1,4 @@
 *.pyc
 output_files/
 jobs_files/
+.idea/*

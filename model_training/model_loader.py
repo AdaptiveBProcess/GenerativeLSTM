@@ -24,9 +24,6 @@ from model_training.models import model_gru_shared_cat_cx as mshcatgi
 # from model_training.models import model_concatenated_inter as mcati
 # from model_training.models import model_gru_concatenated_inter as mcatgi
 # from model_training.models import model_gru_shared_cat_intercase as mshcatgi
-from model_training.models import model_cnn_lstm as cnnl
-from model_training.models import model_gan as mgan
-
 
 class ModelLoader():
 
@@ -43,8 +40,9 @@ class ModelLoader():
                                    'concatenated_gru_cx': mcatgi._training_model,
                                    'shared_cat_gru': mshcatg._training_model,
                                    'shared_cat_gru_cx': mshcatgi._training_model,
-                                   'cnn_lstm': cnnl._training_model,
-                                   'gan': mgan._training_model}
+                                   # 'cnn_lstm': cnnl._training_model,
+                                   # 'gan': mgan._training_model
+                                   }
 
     def train(self, model_type, train_vec, valdn_vec, ac_weights, rl_weights, output_folder):
         loader = self._get_trainer(model_type)

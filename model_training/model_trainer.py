@@ -65,7 +65,7 @@ class ModelTrainer():
         output_path = os.path.join('output_files', sup.folder_id())
         shutil.copytree(optimizer.best_output, output_path)
         shutil.copy(optimizer.file_name, output_path)
-        self.export_parms(output_path, optimizer.best_parms)
+        self.export_parms(output_path, optimizer.best_params)
         # Remove folder
         shutil.rmtree(params['output'])
 
