@@ -204,7 +204,7 @@ class ModelTrainer():
         
         self.log.to_csv(os.path.join(output_folder,
                                           'parameters',
-                                          'log.csv'),
+                                          'original_log.csv'),
                              index=False,
                              encoding='utf-8')
         
