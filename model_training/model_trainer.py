@@ -201,6 +201,13 @@ class ModelTrainer():
         sup.create_json(parms, os.path.join(output_folder,
                                             'parameters',
                                             'model_parameters.json'))
+        
+        self.log.to_csv(os.path.join(output_folder,
+                                          'parameters',
+                                          'log.csv'),
+                             index=False,
+                             encoding='utf-8')
+        
         self.log_test.to_csv(os.path.join(output_folder,
                                           'parameters',
                                           'test_log.csv'),
