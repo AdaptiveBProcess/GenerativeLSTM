@@ -273,6 +273,7 @@ class EventLogPredictor():
                 generated_event_log = list()
                 for case in cases:
                     x_trace = list()
+                    seq_tasks = []
                     x_ac_ngram = np.zeros(
                         (1, parms['n_size']), dtype=np.float32)
                     x_rl_ngram = np.zeros(
@@ -295,6 +296,7 @@ class EventLogPredictor():
                     i = 1
                     while i < parms['max_trace_size']:
                         predictions = model.predict(inputs)
+
                         if parms['variant'] == 'Random Choice':
                             # Use this to get a random choice following as PDF
                             pos = np.random.choice(
@@ -307,6 +309,26 @@ class EventLogPredictor():
                             # Use this to get the max prediction
                             pos = np.argmax(predictions[0][0])
                             pos1 = np.argmax(predictions[1][0])
+
+                        elif parms['variant'] == 'Rules Based Random Choice':
+                            # Use this to get the max prediction
+                            possible_tasks = [x for x in parms['index_ac'].keys() if te.evaluate_condition_list(seq_tasks + x)]
+                            if len(possible_tasks)>0:
+                                pos = possible_tasks[0]
+                            else:
+                                pos = np.random.choice(np.arange(0, len(predictions[0][0])), p=predictions[0][0])
+                            pos1 = np.random.choice(np.arange(0, len(predictions[1][0])), p=predictions[1][0])
+
+                        elif parms['variant'] == 'Rules Based Arg Max':
+
+                            possible_tasks = [x for x in parms['index_ac'].keys() if te.evaluate_condition_list(seq_tasks + x)]
+                            if len(possible_tasks)>0:
+                                pos = possible_tasks[0]
+                            else:
+                                pos = np.argmax(predictions[0][0])
+                            
+                        seq_tasks.append(pos)
+
                         # Check that the first prediction wont be the end of the trace
                         if (not x_trace) and (parms['index_ac'][pos] == 'end'):
                             continue
@@ -322,6 +344,7 @@ class EventLogPredictor():
                                                 pred_dur,
                                                 pred_wait])
                                 pre_times = np.array([[pred_dur, pred_wait]])
+
                             # Add prediction to n_gram
                             x_ac_ngram = np.append(x_ac_ngram, [[pos]], axis=1)
                             x_ac_ngram = np.delete(x_ac_ngram, 0, 1)
@@ -361,6 +384,8 @@ class EventLogPredictor():
                         df_trace['caseid'] = 'gen-' + df_trace['caseid']
                         df_trace.to_csv(trace_gen_path)
                         print(current_prop)
+                    elif current_prop > parms['new_prop_cases']:
+                        break
 
                 return generated_event_log
             except Exception:

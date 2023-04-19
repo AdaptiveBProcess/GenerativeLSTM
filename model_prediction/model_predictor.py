@@ -46,7 +46,7 @@ class ModelPredictor():
         # create examples for next event and suffix
         if self.parms['activity'] == 'pred_log':
             #self.parms['num_cases'] = len(self.log.caseid.unique())
-            self.parms['num_cases'] = 250
+            self.parms['num_cases'] = 200
             self.parms['start_time'] = self.log.start_timestamp.min()
         else:
             feat_mannager = feat.FeaturesMannager(self.parms)
@@ -168,8 +168,8 @@ class ModelPredictor():
 
         df_traces_generated, files_gen = te.get_stats_log_traces(self.parms['traces_gen_path'])
         cols = ['caseid', 'task', 'role', 'start_timestamp','end_timestamp']
-        final_log = pd.concat([df_traces_generated[cols], self.log[cols]])
-        final_log.to_csv(os.path.join(self.parms['traces_gen_path'], 'log_generated.csv'))
+        final_log = pd.concat([self.log[cols], df_traces_generated[cols]])
+        final_log.to_csv(os.path.join('output_files', self.parms['folder'], 'parameters', 'log_generated.csv'))
 
         if len(files_gen)>0:
             for file_gen in files_gen:

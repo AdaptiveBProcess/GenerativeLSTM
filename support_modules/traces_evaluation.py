@@ -31,6 +31,21 @@ def extract_rules():
     settings['act_paths'] = list(itertools.product(*[x if type(x) is list else [x] for x in [json.loads(x.strip()) for x in settings['path'].split('>>')] ]))
     return settings
 
+def evaluate_condition_list(list_case, ac_index, act_paths):
+
+    act_paths_idx = [(ac_index[x[0]], ac_index[x[1]]) for x in act_paths]
+    u_tasks = [x for x in list(set(list_case))]
+    
+    G = nx.DiGraph()
+    for task in u_tasks:
+        G.add_node(task)
+
+    order = [(x[0], x[1]) for x in [(a, b) for a, b in zip(list_case[:-1], list_case[1:])]]
+    G.add_edges_from(order)
+    conds = [nx.is_simple_path(G, act_path) for act_path in act_paths_idx]
+
+    return min(conds)
+
 def evaluate_condition(df_case, ac_index, act_paths):
 
     act_paths_idx = [(ac_index[x[0]], ac_index[x[1]]) for x in act_paths]
