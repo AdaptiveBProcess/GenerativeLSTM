@@ -15,10 +15,6 @@ import multiprocessing
 from multiprocessing import Pool
 from tensorflow.keras.models import load_model
 import keras.utils as ku
-import configparser
-import os
-import pandas as pd
-from support_modules import traces_evaluation as te
 
 from datetime import timedelta
 
@@ -36,35 +32,7 @@ class EventLogPredictor():
         self.params = params
         self.vectorizer = vectorizer
         predictor = self._get_predictor(params['model_type'])
-
-        self.index_ac = {params['index_ac'][key]:key for key in params['index_ac'].keys()}
-        self.org_log_path = os.path.join('output_files', params['folder'], 'parameters', 'original_log.csv')
-        self.df_org = pd.read_csv(self.org_log_path)
-        self.df_org['start_timestamp'] = pd.to_datetime(self.df_org['start_timestamp'])
-        self.df_org['end_timestamp'] = pd.to_datetime(self.df_org['end_timestamp'])
-        self.df_org['rank'] = self.df_org.groupby('caseid')['start_timestamp'].rank().astype(int)
-
-        self.settings = self.extract_rules()
-
-        traces_gen_path = os.path.join('output_files', params['folder'], 'parameters', 'traces_generated')
-        if not os.path.exists(traces_gen_path):
-            os.mkdir(traces_gen_path)
-
         return predictor(params, vectorizer)
-    
-    def get_stats_log(self):
-        pass
-
-    def extract_rules(self):
-        config = configparser.ConfigParser()
-        config.read('rules.ini')
-
-        settings = {}
-        settings['path'] = config['RULES']['path']
-        settings['variation'] = config['RULES']['variation'][0]
-        settings['prop_variation'] = float(config['RULES']['variation'][1:])
-
-        return settings
 
     def _get_predictor(self, model_type):
         if model_type in ['shared_cat_cx', 'concatenated_cx',
@@ -369,8 +337,6 @@ class EventLogPredictor():
                             if parms['index_ac'][pos] == 'end':
                                 break
                             i += 1
-                    
-                    print(self.ac_index)
                     generated_event_log.extend(decode_trace(parms, x_trace, case))
                 return generated_event_log
             except Exception:

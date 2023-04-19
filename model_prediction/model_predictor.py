@@ -58,7 +58,12 @@ class ModelPredictor():
         # predict
         self.imp = self.parms['variant']
         for run_num in range(0, self.parms['rep']):
+
+
+            #Modificar
             self.predict_values(run_num)
+                        
+            
             # export predictions
             self.export_predictions(run_num)
             # assesment
