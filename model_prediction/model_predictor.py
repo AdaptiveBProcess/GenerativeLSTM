@@ -18,7 +18,7 @@ import utils.support as sup
 from model_training import features_manager as feat
 from model_prediction import interfaces as it
 import analyzers.sim_evaluator as ev
-
+from support_modules import traces_evaluation as te
 
 class ModelPredictor():
     """
@@ -45,7 +45,8 @@ class ModelPredictor():
     def execute_predictive_task(self):
         # create examples for next event and suffix
         if self.parms['activity'] == 'pred_log':
-            self.parms['num_cases'] = len(self.log.caseid.unique())
+            #self.parms['num_cases'] = len(self.log.caseid.unique())
+            self.parms['num_cases'] = 250
             self.parms['start_time'] = self.log.start_timestamp.min()
         else:
             feat_mannager = feat.FeaturesMannager(self.parms)
@@ -57,6 +58,27 @@ class ModelPredictor():
             sampler.create(self, self.parms['activity'])
         # predict
         self.imp = self.parms['variant']
+
+        org_log_path = os.path.join('output_files', self.parms['folder'], 'parameters', 'original_log.csv')
+        df_org = pd.read_csv(org_log_path)
+        df_org['start_timestamp'] = pd.to_datetime(df_org['start_timestamp'])
+        df_org['end_timestamp'] = pd.to_datetime(df_org['end_timestamp'])
+
+        self.parms['ac_index'] = self.index_ac = {self.parms['index_ac'][key]:key for key in self.parms['index_ac'].keys()}
+        self.parms['rules'] = te.extract_rules()
+
+        self.parms['traces_gen_path'] = os.path.join('output_files', self.parms['folder'], 'parameters', 'traces_generated')
+        if not os.path.exists(self.parms['traces_gen_path']):
+            os.mkdir(self.parms['traces_gen_path'])
+
+        gs = te.GenerateStats(df_org, self.parms['ac_index'], self.parms['rules']['act_paths'])
+        self.parms['pos_cases_org'], self.parms['total_cases_org'] = gs.get_stats()
+
+        if self.parms['rules']['variation'] == '+':
+            self.parms['new_prop_cases'] = (self.parms['pos_cases_org']/self.parms['total_cases_org']) + self.parms['rules']['prop_variation']
+        elif self.parms['rules']['variation'] == '-':
+            self.parms['new_prop_cases'] = (self.parms['pos_cases_org']/self.parms['total_cases_org']) + self.parms['rules']['prop_variation']
+
         for run_num in range(0, self.parms['rep']):
 
 
@@ -143,6 +165,16 @@ class ModelPredictor():
         # output_folder = os.path.join(self.output_route, 'results')
         if not os.path.exists(self.output_route):
             os.makedirs(self.output_route)
+
+        df_traces_generated, files_gen = te.get_stats_log_traces(self.parms['traces_gen_path'])
+        cols = ['caseid', 'task', 'role', 'start_timestamp','end_timestamp']
+        final_log = pd.concat([df_traces_generated[cols], self.log[cols]])
+        final_log.to_csv(os.path.join(self.parms['traces_gen_path'], 'log_generated.csv'))
+
+        if len(files_gen)>0:
+            for file_gen in files_gen:
+                os.remove(file_gen)
+
         self.predictions.to_csv(
             os.path.join(
                 self.output_route, 'gen_'+ 

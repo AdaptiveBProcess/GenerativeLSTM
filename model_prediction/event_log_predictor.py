@@ -15,12 +15,15 @@ import multiprocessing
 from multiprocessing import Pool
 from tensorflow.keras.models import load_model
 import keras.utils as ku
-import configparser
 import os
+from glob import glob
 import pandas as pd
 from support_modules import traces_evaluation as te
 
 from datetime import timedelta
+import warnings
+
+warnings.filterwarnings("ignore")
 
 class EventLogPredictor():
 
@@ -37,35 +40,8 @@ class EventLogPredictor():
         self.vectorizer = vectorizer
         predictor = self._get_predictor(params['model_type'])
 
-        self.index_ac = {params['index_ac'][key]:key for key in params['index_ac'].keys()}
-        self.org_log_path = os.path.join('output_files', params['folder'], 'parameters', 'original_log.csv')
-        self.df_org = pd.read_csv(self.org_log_path)
-        self.df_org['start_timestamp'] = pd.to_datetime(self.df_org['start_timestamp'])
-        self.df_org['end_timestamp'] = pd.to_datetime(self.df_org['end_timestamp'])
-        self.df_org['rank'] = self.df_org.groupby('caseid')['start_timestamp'].rank().astype(int)
-
-        self.settings = self.extract_rules()
-
-        traces_gen_path = os.path.join('output_files', params['folder'], 'parameters', 'traces_generated')
-        if not os.path.exists(traces_gen_path):
-            os.mkdir(traces_gen_path)
-
         return predictor(params, vectorizer)
     
-    def get_stats_log(self):
-        pass
-
-    def extract_rules(self):
-        config = configparser.ConfigParser()
-        config.read('rules.ini')
-
-        settings = {}
-        settings['path'] = config['RULES']['path']
-        settings['variation'] = config['RULES']['variation'][0]
-        settings['prop_variation'] = float(config['RULES']['variation'][1:])
-
-        return settings
-
     def _get_predictor(self, model_type):
         if model_type in ['shared_cat_cx', 'concatenated_cx',
                           'shared_cat_gru_cx', 'concatenated_gru_cx']:
@@ -369,9 +345,23 @@ class EventLogPredictor():
                             if parms['index_ac'][pos] == 'end':
                                 break
                             i += 1
-                    
-                    print(self.ac_index)
-                    generated_event_log.extend(decode_trace(parms, x_trace, case))
+
+                    trace = decode_trace(parms, x_trace, case)
+                    df_trace = pd.DataFrame.from_records(trace, index=list(trace[0].keys())).reset_index()
+                    cond = te.evaluate_condition(df_trace, parms['ac_index'], parms['rules']['act_paths'])
+
+                    df_traces_generated, files_gen = te.get_stats_log_traces(parms['traces_gen_path'])
+                    n_files_gen = len(files_gen)
+
+                    current_prop = (parms['pos_cases_org'] + n_files_gen)/(parms['total_cases_org'] + n_files_gen)
+
+                    if cond and current_prop <= parms['new_prop_cases']:
+                        generated_event_log.extend(trace)
+                        trace_gen_path = os.path.join(parms['traces_gen_path'],'gen-{}.csv'.format(case))
+                        df_trace['caseid'] = 'gen-' + df_trace['caseid']
+                        df_trace.to_csv(trace_gen_path)
+                        print(current_prop)
+
                 return generated_event_log
             except Exception:
                 traceback.print_exc()
