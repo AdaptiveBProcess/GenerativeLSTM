@@ -39,7 +39,7 @@ def main(argv):
     if not argv:
         # predict_next, pred_sfx
         parameters['activity'] = 'pred_log'
-        parameters['folder'] = '20230417_3E8ABBDA_765B_4740_A305_D925CF5DE07C'
+        parameters['folder'] = '20230418_E99C5B62_8A0B_42C1_B0D5_6D9669490ED6'
         parameters['model_file'] = 'Production.h5'
         parameters['is_single_exec'] = False  # single or batch execution
         # variants and repetitions to be tested Random Choice, Arg Max
