@@ -40,7 +40,7 @@ def evaluate_condition_list(list_case, ac_index, act_paths):
     for task in u_tasks:
         G.add_node(task)
 
-    order = [(x[0], x[1]) for x in [(a, b) for a, b in zip(list_case[:-1], list_case[1:])]]
+    order = [(a, b) for a, b in zip(list_case[:-1], list_case[1:])]
     G.add_edges_from(order)
     conds = [nx.is_simple_path(G, act_path) for act_path in act_paths_idx]
 
