@@ -31,7 +31,7 @@ def main(argv):
                     'Resource': 'user'}
     parameters['one_timestamp'] = False  # Only one timestamp in the log
     parameters['read_options'] = {
-        'timeformat': '%Y-%m-%dT%H:%M:%S.%f',
+        'timeformat': '%Y/%m/%d %H:%M:%S',
         'column_names': column_names,
         'one_timestamp': parameters['one_timestamp']}
     # Parameters settled manually or catched by console for batch operations

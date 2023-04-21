@@ -11,7 +11,7 @@ import sys
 import getopt
 
 from model_prediction import model_predictor as pr
-
+import call_simod as cs
 
 # =============================================================================
 # Main function
@@ -31,7 +31,7 @@ def main(argv):
                     'Resource': 'user'}
     parameters['one_timestamp'] = False  # Only one timestamp in the log
     parameters['read_options'] = {
-        'timeformat': '%Y-%m-%dT%H:%M:%S.%f',
+        'timeformat': '%Y-%m-%d %H:%M:%S',
         'column_names': column_names,
         'one_timestamp': parameters['one_timestamp'],
         'filter_d_attrib': False}
@@ -39,11 +39,12 @@ def main(argv):
     if not argv:
         # predict_next, pred_sfx
         parameters['activity'] = 'pred_log'
-        parameters['folder'] = '20230418_E99C5B62_8A0B_42C1_B0D5_6D9669490ED6'
+        parameters['folder'] = os.path.join('Deep_Gen', '20230420_62834433_5553_4AD4_AB05_7DD8F8115707')
         parameters['model_file'] = 'Production.h5'
+        parameters['log_name'] = parameters['model_file'].split('.')[0]
         parameters['is_single_exec'] = False  # single or batch execution
-        # variants and repetitions to be tested Random Choice, Arg Max
-        parameters['variant'] = 'Random Choice'
+        # variants and repetitions to be tested Random Choice, Arg Max, Rules Based Random Choice, Rules Based Arg Max
+        parameters['variant'] = 'Rules Based Random Choice'
         parameters['rep'] = 1
     else:
         # Catch parms by console
@@ -63,6 +64,9 @@ def main(argv):
     print(parameters['folder'])
     print(parameters['model_file'])
     pr.ModelPredictor(parameters)
+
+    cs.call_simod('{}_TOBE.csv'.format(parameters['log_name']))
+    cs.call_simod('{}_ASIS.csv'.format(parameters['log_name']))
 
 
 if __name__ == "__main__":

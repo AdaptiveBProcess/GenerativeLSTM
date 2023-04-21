@@ -293,6 +293,13 @@ class EventLogPredictor():
                             dtype=np.float32)
                         inputs = [x_ac_ngram, x_rl_ngram, 
                                   x_t_ngram, x_inter_ngram]
+
+                    """df_traces_generated, files_gen = te.get_stats_log_traces(parms['traces_gen_path'])
+                    n_files_gen = len(files_gen)
+                    current_prop = (parms['pos_cases_org'] + n_files_gen)/(parms['total_cases_org'] + n_files_gen)
+                    if current_prop > parms['new_prop_cases']:
+                        break"""
+
                     i = 1
                     while i < parms['max_trace_size']:
                         predictions = model.predict(inputs)
@@ -312,7 +319,7 @@ class EventLogPredictor():
 
                         elif parms['variant'] == 'Rules Based Random Choice':
                             # Use this to get the max prediction
-                            possible_tasks = [x for x in parms['index_ac'].keys() if te.evaluate_condition_list(seq_tasks + x)]
+                            possible_tasks = [x for x in parms['index_ac'].keys() if te.evaluate_condition_list(seq_tasks + [x], parms['ac_index'], parms['rules']['act_paths'])]
                             if len(possible_tasks)>0:
                                 pos = possible_tasks[0]
                             else:
@@ -321,7 +328,7 @@ class EventLogPredictor():
 
                         elif parms['variant'] == 'Rules Based Arg Max':
 
-                            possible_tasks = [x for x in parms['index_ac'].keys() if te.evaluate_condition_list(seq_tasks + x)]
+                            possible_tasks = [x for x in parms['index_ac'].keys() if te.evaluate_condition_list(seq_tasks + [x], parms['ac_index'], parms['rules']['act_paths'])]
                             if len(possible_tasks)>0:
                                 pos = possible_tasks[0]
                             else:
@@ -384,8 +391,6 @@ class EventLogPredictor():
                         df_trace['caseid'] = 'gen-' + df_trace['caseid']
                         df_trace.to_csv(trace_gen_path)
                         print(current_prop)
-                    elif current_prop > parms['new_prop_cases']:
-                        break
 
                 return generated_event_log
             except Exception:

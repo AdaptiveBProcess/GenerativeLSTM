@@ -9,6 +9,8 @@ dependencies:
   - nltk
   - scikit-learn
   - ipywidgets
+  - networkx
+  - xmltodict
   - pip:
     - hyperopt
     - jellyfish

@@ -59,7 +59,7 @@ class ModelPredictor():
         # predict
         self.imp = self.parms['variant']
 
-        org_log_path = os.path.join('output_files', self.parms['folder'], 'parameters', 'original_log.csv')
+        org_log_path = os.path.join('output_files', self.parms['folder'], 'parameters', '{}_ASIS.csv'.format(self.parms['log_name']))
         df_org = pd.read_csv(org_log_path)
         df_org['start_timestamp'] = pd.to_datetime(df_org['start_timestamp'])
         df_org['end_timestamp'] = pd.to_datetime(df_org['end_timestamp'])
@@ -169,7 +169,13 @@ class ModelPredictor():
         df_traces_generated, files_gen = te.get_stats_log_traces(self.parms['traces_gen_path'])
         cols = ['caseid', 'task', 'role', 'start_timestamp','end_timestamp']
         final_log = pd.concat([self.log[cols], df_traces_generated[cols]])
-        final_log.to_csv(os.path.join('output_files', self.parms['folder'], 'parameters', 'log_generated.csv'))
+
+        final_log['start_timestamp'] = pd.to_datetime(final_log['start_timestamp']).dt.strftime(self.parms['read_options']['timeformat'])
+        final_log['end_timestamp'] = pd.to_datetime(final_log['end_timestamp']).dt.strftime(self.parms['read_options']['timeformat'])
+        final_log = final_log.rename({'role':'user'}, axis=1)
+
+        final_log.to_csv(os.path.join('output_files', self.parms['folder'], 'parameters', '{}_TOBE.csv'.format(self.parms['log_name'])))
+        final_log.to_csv(os.path.join('Simod-Coral-Version', 'inputs', '{}_TOBE.csv'.format(self.parms['log_name'])))
 
         if len(files_gen)>0:
             for file_gen in files_gen:

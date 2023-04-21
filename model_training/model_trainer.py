@@ -29,6 +29,7 @@ class ModelTrainer():
     def __init__(self, params):
         """constructor"""
         self.log = self.load_log(params)
+        self.params = params
         # Split validation partitions
         self.log_train = pd.DataFrame()
         self.log_test = pd.DataFrame()
@@ -46,7 +47,7 @@ class ModelTrainer():
         # Preprocess the event-log
         self.preprocess(params)
         # Train model
-        params['output'] = os.path.join('output_files', sup.folder_id())
+        params['output'] = os.path.join('output_files', 'Deep_Gen', sup.folder_id())
         if params['opt_method'] == 'rand_hpc':
             optimizer = hpc_op.ModelHPCOptimizer(params, 
                                                  self.log, 
@@ -62,7 +63,7 @@ class ModelTrainer():
                                           self.rl_weights)
             optimizer.execute_trials()
         # Export results
-        output_path = os.path.join('output_files', sup.folder_id())
+        output_path = os.path.join('output_files', 'Deep_gen', sup.folder_id())
         shutil.copytree(optimizer.best_output, output_path)
         shutil.copy(optimizer.file_name, output_path)
         self.export_parms(output_path, optimizer.best_params)
@@ -203,10 +204,12 @@ class ModelTrainer():
                                             'model_parameters.json'))
         
         self.log.to_csv(os.path.join(output_folder,
-                                          'parameters',
-                                          'original_log.csv'),
+                                     'parameters',
+                                     '{}_ASIS.csv'.format(self.params['file_name'].split('.')[0])),
                              index=False,
                              encoding='utf-8')
+
+        self.log.to_csv(os.path.join('Simod-Coral-Version', 'inputs', '{}_ASIS.csv'.format(self.params['file_name'].split('.')[0])))
         
         self.log_test.to_csv(os.path.join(output_folder,
                                           'parameters',
