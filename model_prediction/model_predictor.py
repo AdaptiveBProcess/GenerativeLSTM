@@ -46,7 +46,7 @@ class ModelPredictor():
         # create examples for next event and suffix
         if self.parms['activity'] == 'pred_log':
             #self.parms['num_cases'] = len(self.log.caseid.unique())
-            self.parms['num_cases'] = 200
+            self.parms['num_cases'] = 100
             self.parms['start_time'] = self.log.start_timestamp.min()
         else:
             feat_mannager = feat.FeaturesMannager(self.parms)

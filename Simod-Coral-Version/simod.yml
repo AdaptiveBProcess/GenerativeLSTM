@@ -1,0 +1,19 @@
+name: simod
+channels:
+  - defaults
+dependencies:
+  - spyder==4.2.0
+  - matplotlib
+  - pandas
+  - lxml
+  - networkx
+  - pillow
+  - seaborn
+  - ipywidgets
+  - xmltodict
+  - pip:
+    - hyperopt
+    - jellyfish
+    - opyenxes
+    - tqdm
+    - git+http://github.com/Mcamargo85/support_modules.git
