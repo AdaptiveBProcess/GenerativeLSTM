@@ -11,7 +11,7 @@ import sys
 import getopt
 
 from model_prediction import model_predictor as pr
-import call_simod as cs
+import support_functions as sf
 
 # =============================================================================
 # Main function
@@ -30,6 +30,7 @@ def main(argv):
                     'lifecycle:transition': 'event_type',
                     'Resource': 'user'}
     parameters['one_timestamp'] = False  # Only one timestamp in the log
+    parameters['include_org_log'] = False
     parameters['read_options'] = {
         'timeformat': '%Y-%m-%d %H:%M:%S',
         'column_names': column_names,
@@ -39,7 +40,7 @@ def main(argv):
     if not argv:
         # predict_next, pred_sfx
         parameters['activity'] = 'pred_log'
-        parameters['folder'] = os.path.join('Deep_Gen', '20230420_62834433_5553_4AD4_AB05_7DD8F8115707')
+        parameters['folder'] = '20230508_8A2DA06E_2FB3_43B8_AD6E_7AAE2143FF14'
         parameters['model_file'] = 'Production.h5'
         parameters['log_name'] = parameters['model_file'].split('.')[0]
         parameters['is_single_exec'] = False  # single or batch execution
@@ -64,10 +65,6 @@ def main(argv):
     print(parameters['folder'])
     print(parameters['model_file'])
     pr.ModelPredictor(parameters)
-
-    cs.call_simod('{}_TOBE.csv'.format(parameters['log_name']))
-    cs.call_simod('{}_ASIS.csv'.format(parameters['log_name']))
-
 
 if __name__ == "__main__":
     main(sys.argv[1:])

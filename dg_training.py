@@ -61,7 +61,7 @@ def main(argv):
     parameters['batch_size'] = 32  # Usually 32/64/128/256
     parameters['norm_method'] = ['max', 'lognorm']
     parameters['imp'] = 1
-    parameters['epochs'] = 200
+    parameters['epochs'] = 20
     parameters['n_size'] = [5, 10, 15]
     parameters['l_size'] = [50, 100]
     parameters['lstm_act'] = ['selu', 'tanh']

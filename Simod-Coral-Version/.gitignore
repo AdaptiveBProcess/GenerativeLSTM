@@ -1,7 +1,0 @@
-outputs
-*.pyc
-*.stats
-logs_meta
-callcentre.*
-insurance.*
-poc_processmining.*

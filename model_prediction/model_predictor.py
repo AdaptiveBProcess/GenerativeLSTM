@@ -46,7 +46,8 @@ class ModelPredictor():
         # create examples for next event and suffix
         if self.parms['activity'] == 'pred_log':
             #self.parms['num_cases'] = len(self.log.caseid.unique())
-            self.parms['num_cases'] = 100
+            self.parms['len_log'] = len(self.log.caseid.unique())
+            self.parms['num_cases'] = 150
             self.parms['start_time'] = self.log.start_timestamp.min()
         else:
             feat_mannager = feat.FeaturesMannager(self.parms)
@@ -71,21 +72,19 @@ class ModelPredictor():
         if not os.path.exists(self.parms['traces_gen_path']):
             os.mkdir(self.parms['traces_gen_path'])
 
-        gs = te.GenerateStats(df_org, self.parms['ac_index'], self.parms['rules']['act_paths'])
+        gs = te.GenerateStats(df_org, self.parms['ac_index'], self.parms['rules']['path'], self.parms['rules']['rule'])        
         self.parms['pos_cases_org'], self.parms['total_cases_org'] = gs.get_stats()
 
         if self.parms['rules']['variation'] == '+':
             self.parms['new_prop_cases'] = (self.parms['pos_cases_org']/self.parms['total_cases_org']) + self.parms['rules']['prop_variation']
         elif self.parms['rules']['variation'] == '-':
-            self.parms['new_prop_cases'] = (self.parms['pos_cases_org']/self.parms['total_cases_org']) + self.parms['rules']['prop_variation']
+            self.parms['new_prop_cases'] = (self.parms['pos_cases_org']/self.parms['total_cases_org']) - self.parms['rules']['prop_variation']
 
         for run_num in range(0, self.parms['rep']):
 
-
             #Modificar
             self.predict_values(run_num)
-                        
-            
+    
             # export predictions
             self.export_predictions(run_num)
             # assesment
@@ -168,14 +167,23 @@ class ModelPredictor():
 
         df_traces_generated, files_gen = te.get_stats_log_traces(self.parms['traces_gen_path'])
         cols = ['caseid', 'task', 'role', 'start_timestamp','end_timestamp']
-        final_log = pd.concat([self.log[cols], df_traces_generated[cols]])
+
+        if self.parms['include_org_log']:
+            log_filtered = pd.DataFrame(data=[], columns=cols)
+            for caseid in self.log['caseid'].drop_duplicates():
+                log_tmp = self.log[self.log['caseid']==caseid]
+                if te.evaluate_condition(log_tmp, self.ac_index, self.parms['rules']['path'], self.parms['rules']['rule']):
+                    log_filtered = pd.concat([log_filtered, log_tmp])
+
+            final_log = pd.concat([log_filtered, df_traces_generated[cols]])
+        else:
+            final_log = df_traces_generated[cols]
 
         final_log['start_timestamp'] = pd.to_datetime(final_log['start_timestamp']).dt.strftime(self.parms['read_options']['timeformat'])
         final_log['end_timestamp'] = pd.to_datetime(final_log['end_timestamp']).dt.strftime(self.parms['read_options']['timeformat'])
         final_log = final_log.rename({'role':'user'}, axis=1)
 
-        final_log.to_csv(os.path.join('output_files', self.parms['folder'], 'parameters', '{}_TOBE.csv'.format(self.parms['log_name'])))
-        final_log.to_csv(os.path.join('Simod-Coral-Version', 'inputs', '{}_TOBE.csv'.format(self.parms['log_name'])))
+        final_log.to_csv(os.path.join('output_files', self.parms['folder'], 'parameters', '{}_TOBE.csv'.format(self.parms['log_name'])), index=False)
 
         if len(files_gen)>0:
             for file_gen in files_gen:
@@ -324,10 +332,10 @@ class EvaluateTask():
         """
         sim_values = list()
         log = copy.deepcopy(log)
-        log = log[~log.task.isin(['Start', 'End', 'start', 'end'])]
+        log = log[~log['task'].isin(['Start', 'End', 'start', 'end'])]
         log['caseid'] = log['caseid'].astype(str)
         log['caseid'] = 'Case' + log['caseid']
-        sim_log = sim_log[~sim_log.task.isin(['Start', 'End', 'start', 'end'])]
+        sim_log = sim_log[~sim_log['task'].isin(['Start', 'End', 'start', 'end'])]
         evaluator = ev.SimilarityEvaluator(log, sim_log, parms)
         metrics = ['tsd', 'day_hour_emd', 'log_mae', 'dl', 'mae']
         for metric in metrics:

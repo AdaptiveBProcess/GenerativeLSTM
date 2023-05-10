@@ -10,6 +10,7 @@ import csv
 import pandas as pd
 import numpy as np
 import shutil
+import pm4py
 
 import readers.log_reader as lr
 import utils.support as sup
@@ -47,7 +48,7 @@ class ModelTrainer():
         # Preprocess the event-log
         self.preprocess(params)
         # Train model
-        params['output'] = os.path.join('output_files', 'Deep_Gen', sup.folder_id())
+        params['output'] = os.path.join('output_files', sup.folder_id())
         if params['opt_method'] == 'rand_hpc':
             optimizer = hpc_op.ModelHPCOptimizer(params, 
                                                  self.log, 
@@ -63,7 +64,7 @@ class ModelTrainer():
                                           self.rl_weights)
             optimizer.execute_trials()
         # Export results
-        output_path = os.path.join('output_files', 'Deep_gen', sup.folder_id())
+        output_path = os.path.join('output_files', sup.folder_id())
         shutil.copytree(optimizer.best_output, output_path)
         shutil.copy(optimizer.file_name, output_path)
         self.export_parms(output_path, optimizer.best_params)
@@ -203,13 +204,14 @@ class ModelTrainer():
                                             'parameters',
                                             'model_parameters.json'))
         
+        cols = ['caseid', 'task', 'user', 'start_timestamp','end_timestamp']
+        
         self.log.to_csv(os.path.join(output_folder,
                                      'parameters',
                                      '{}_ASIS.csv'.format(self.params['file_name'].split('.')[0])),
                              index=False,
                              encoding='utf-8')
 
-        self.log.to_csv(os.path.join('Simod-Coral-Version', 'inputs', '{}_ASIS.csv'.format(self.params['file_name'].split('.')[0])))
         
         self.log_test.to_csv(os.path.join(output_folder,
                                           'parameters',

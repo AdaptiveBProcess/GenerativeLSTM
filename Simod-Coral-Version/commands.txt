@@ -1,3 +1,0 @@
-cd C:\DanielBaron\Simod-Coral-Version
-conda activate simod
-python simod_optimizer.py
