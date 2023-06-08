@@ -202,7 +202,10 @@ class EventLogPredictor():
         pbar_async(p, 'generating traces:')
         pool.close()
         # Save results
-        event_log = list(itertools.chain(*p.get()))
+        try:
+            event_log = list(itertools.chain(*p.get()))
+        except:
+            event_log = []
         return event_log
 
 

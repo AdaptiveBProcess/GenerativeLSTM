@@ -98,11 +98,11 @@ class MergeModels:
     def simulate(self):
         args = ['java', '-jar', self.settings['bimp_path'], self.settings['output_path'], '-csv', self.settings['csv_output_path']]
         result = subprocess.run(args, stdout=subprocess.PIPE, text=True)
-        if result.returncode == 1:
+        if result.returncode == 0:
             print("Simulation was successfully executed")
-        else:
-            execption_output = [result.stdout.split('\n')[i-1] for i in range(len(result.stdout.split('\n'))) if 'BPSimulatorException' in result.stdout.split('\n')[i]][0]
-            print("Execution failed :", execption_output)
+        elif result.returncode == 1:
+            execption_output = [result.stdout.split('\n')[i-1] for i in range(len(result.stdout.split('\n'))) if 'BPSimulatorException' in result.stdout.split('\n')[i]]
+            print("Execution failed :", ' '.join(execption_output))
         
 
     def save_model(self):

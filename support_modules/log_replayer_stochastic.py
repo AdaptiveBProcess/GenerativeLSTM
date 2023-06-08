@@ -32,9 +32,6 @@ class LogReplayerS:
         self.find_branches()
         self.count_branc_cases()
 
-    #def get_initial_task(self, node_id):
-    #    return [x.get('sourceRef') for x in self.sequence_flows if x.get('targetRef') == node_id]
-    
     def get_initial_task(self, node_id):
         start_tasks = []
         for seq_flow in self.sequence_flows:
@@ -120,5 +117,19 @@ class LogReplayerS:
                         if sum(self.branching_probs[key].values()) != 0:
                             branchings[id_branch] = round(self.branching_probs[key][task_id]/sum(self.branching_probs[key].values()), 2)
             new_branching_probs[key] = branchings
-        
+
+        # Verify and adjust if necessary to ensure the sum is exactly 1
+        for key in new_branching_probs:
+            inner_dict = new_branching_probs[key]
+            sum_probabilities = sum(inner_dict.values())
+            if sum_probabilities != 1:
+                adjustment = 1 - sum_probabilities
+                max_value_key = max(inner_dict, key=inner_dict.get)
+                inner_dict[max_value_key] += adjustment
+
+        # Round the probabilities to 2 decimal places
+        for inner_dict in new_branching_probs.values():
+            for key in inner_dict:
+                inner_dict[key] = round(inner_dict[key], 2)
+
         self.branching_probs = new_branching_probs

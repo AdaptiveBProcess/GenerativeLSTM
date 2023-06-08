@@ -19,6 +19,7 @@ from model_training import features_manager as feat
 from model_prediction import interfaces as it
 import analyzers.sim_evaluator as ev
 from support_modules import traces_evaluation as te
+from support_modules import xes_writer as xw
 
 class ModelPredictor():
     """
@@ -47,7 +48,7 @@ class ModelPredictor():
         if self.parms['activity'] == 'pred_log':
             #self.parms['num_cases'] = len(self.log.caseid.unique())
             self.parms['len_log'] = len(self.log.caseid.unique())
-            self.parms['num_cases'] = 150
+            self.parms['num_cases'] = len(self.log.caseid.unique())
             self.parms['start_time'] = self.log.start_timestamp.min()
         else:
             feat_mannager = feat.FeaturesMannager(self.parms)
@@ -183,7 +184,19 @@ class ModelPredictor():
         final_log['end_timestamp'] = pd.to_datetime(final_log['end_timestamp']).dt.strftime(self.parms['read_options']['timeformat'])
         final_log = final_log.rename({'role':'user'}, axis=1)
 
-        final_log.to_csv(os.path.join('output_files', self.parms['folder'], 'parameters', '{}_TOBE.csv'.format(self.parms['log_name'])), index=False)
+        column_names = {'Case ID': 'caseid',
+                        'Activity': 'task',
+                        'lifecycle:transition': 'event_type',
+                        'Resource': 'user'}
+        self.parms['read_options'] = {
+            'timeformat': self.parms['read_options']['timeformat'],
+            'column_names': column_names,
+            'one_timestamp': self.parms['read_options']['one_timestamp'],
+            'filter_d_attrib': self.parms['read_options']['filter_d_attrib']
+        }
+        self.parms['output_file'] = os.path.join('input_files', 'spmd', self.parms['log_name'] + '.xes')
+
+        xw.XesWriter(final_log, self.parms)
 
         if len(files_gen)>0:
             for file_gen in files_gen:
@@ -335,12 +348,17 @@ class EvaluateTask():
         log = log[~log['task'].isin(['Start', 'End', 'start', 'end'])]
         log['caseid'] = log['caseid'].astype(str)
         log['caseid'] = 'Case' + log['caseid']
-        sim_log = sim_log[~sim_log['task'].isin(['Start', 'End', 'start', 'end'])]
-        evaluator = ev.SimilarityEvaluator(log, sim_log, parms)
-        metrics = ['tsd', 'day_hour_emd', 'log_mae', 'dl', 'mae']
-        for metric in metrics:
-            evaluator.measure_distance(metric)
-            sim_values.append({**{'run_num': rep_num}, **evaluator.similarity})
+
+        print(sim_log.columns)
+        try:
+            sim_log = sim_log[~sim_log['task'].isin(['Start', 'End', 'start', 'end'])]
+            evaluator = ev.SimilarityEvaluator(log, sim_log, parms)
+            metrics = ['tsd', 'day_hour_emd', 'log_mae', 'dl', 'mae']
+            for metric in metrics:
+                evaluator.measure_distance(metric)
+                sim_values.append({**{'run_num': rep_num}, **evaluator.similarity})
+        except:
+            pass
         return sim_values
 
     @staticmethod

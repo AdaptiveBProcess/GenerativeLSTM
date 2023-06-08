@@ -37,7 +37,7 @@ def main(argv):
     # Parameters settled manually or catched by console for batch operations
     if not argv:
         # Event-log filename
-        parameters['file_name'] = 'Production.csv'
+        parameters['file_name'] = 'Production.xes'
         parameters['model_family'] = 'lstm'
         parameters['opt_method'] = 'bayesian'  # 'rand_hpc', 'bayesian'
         parameters['max_eval'] = 1
