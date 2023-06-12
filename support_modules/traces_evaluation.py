@@ -106,8 +106,8 @@ def evaluate_condition(df_case, ac_index, act_paths, rule):
 class GenerateStats:
     def __init__(self, log, ac_index, act_paths, rule) -> None:
         self.log = log
-        self.log['start_timestamp'] = pd.to_datetime(self.log['start_timestamp'])
-        self.log['end_timestamp'] = pd.to_datetime(self.log['end_timestamp'])
+        self.log['start_timestamp'] = pd.to_datetime(self.log['start_timestamp'], format='ISO8601')
+        self.log['end_timestamp'] = pd.to_datetime(self.log['end_timestamp'], format='ISO8601')
         self.log['rank'] = self.log.groupby('caseid')['start_timestamp'].rank().astype(int)
         self.ac_index = ac_index
         self.act_paths = act_paths

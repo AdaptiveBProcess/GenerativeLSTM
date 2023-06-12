@@ -10,6 +10,7 @@ import copy
 
 import pandas as pd
 import numpy as np
+from dateutil import parser
 import configparser as cp
 
 import readers.log_reader as lr
@@ -63,8 +64,9 @@ class ModelPredictor():
 
         org_log_path = os.path.join('output_files', self.parms['folder'], 'parameters', '{}_ASIS.csv'.format(self.parms['log_name']))
         df_org = pd.read_csv(org_log_path)
-        df_org['start_timestamp'] = pd.to_datetime(df_org['start_timestamp'])
-        df_org['end_timestamp'] = pd.to_datetime(df_org['end_timestamp'])
+        
+        df_org['start_timestamp'] = pd.to_datetime(df_org['start_timestamp'], format='ISO8601')
+        df_org['end_timestamp'] = pd.to_datetime(df_org['end_timestamp'], format='ISO8601')
 
         self.parms['ac_index'] = self.index_ac = {self.parms['index_ac'][key]:key for key in self.parms['index_ac'].keys()}
         self.parms['rules'] = te.extract_rules()
@@ -80,6 +82,8 @@ class ModelPredictor():
             self.parms['new_prop_cases'] = (self.parms['pos_cases_org']/self.parms['total_cases_org']) + self.parms['rules']['prop_variation']
         elif self.parms['rules']['variation'] == '-':
             self.parms['new_prop_cases'] = (self.parms['pos_cases_org']/self.parms['total_cases_org']) - self.parms['rules']['prop_variation']
+        elif self.parms['rules']['variation'] == '=':
+            self.parms['new_prop_cases'] = self.parms['rules']['prop_variation']
 
         for run_num in range(0, self.parms['rep']):
 

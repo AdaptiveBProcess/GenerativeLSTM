@@ -80,14 +80,18 @@ def main(argv):
                     'lifecycle:transition': 'event_type',
                     'Resource': 'user'}
     parameters['one_timestamp'] = False  # Only one timestamp in the log
-    parameters['include_org_log'] = True
+    parameters['include_org_log'] = False
     parameters['read_options'] = {
-        'timeformat': "%Y-%m-%d %H:%M:%S%z",
+
+        #Production and Purchasing: "%Y-%m-%d %H:%M:%S%z"
+        #RunningExample: "%Y-%m-%dT%H:%M:%S.%fZ"
+
+        'timeformat': "%Y-%m-%d %H:%M:%S.%f%z",
         'column_names': column_names,
         'one_timestamp': parameters['one_timestamp'],
         'filter_d_attrib': False}
     
-    parameters['filename'] = 'Production.xes'
+    parameters['filename'] = 'RunningExample.xes'
     parameters['input_path'] = 'input_files'
 
     parameters['sm3_path'] = os.path.join('external_tools', 'splitminer3', 'bpmtk.jar')
@@ -103,7 +107,9 @@ def main(argv):
 
         #Purchasing Example:'20230607_CBA1A809_F060_4535_838C_1A9ED50215F5' 
         #Production: '20230607_3D7257DF_043C_4982_998B_21E4B913BDD0'
-        parameters['folder'] = '20230607_3D7257DF_043C_4982_998B_21E4B913BDD0' 
+        #RunningExample: '20230608_D3A16EE8_B83C_4930_B894_F3ADE345E1B2'
+
+        parameters['folder'] = '20230608_D3A16EE8_B83C_4930_B894_F3ADE345E1B2' 
         parameters['model_file'] = parameters['filename'].split('.')[0] + '.h5'
         parameters['log_name'] = parameters['model_file'].split('.')[0]
         parameters['is_single_exec'] = False  # single or batch execution
@@ -129,7 +135,7 @@ def main(argv):
     print(parameters['model_file'])
 
     # Call Simod
-    #call_simod(parameters['filename'])
+    call_simod(parameters['filename'])
 
     #Generative model prediction
     pr.ModelPredictor(parameters)
