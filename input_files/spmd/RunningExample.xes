@@ -9,22 +9,6 @@
 	<trace>
 		<string key="concept:name" value="gen-Case000"/>
 		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
 			<string key="concept:name" value="Task C"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
@@ -33,12 +17,28 @@
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
 		</event>
 		<event>
 			<string key="concept:name" value="start"/>
@@ -60,22 +60,6 @@
 	<trace>
 		<string key="concept:name" value="gen-Case005"/>
 		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
 			<string key="concept:name" value="Task C"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
@@ -84,14 +68,6 @@
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
 			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 2"/>
 		</event>
@@ -106,27 +82,35 @@
 		<event>
 			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
 		</event>
 	</trace>
 	<trace>
 		<string key="concept:name" value="gen-Case010"/>
 		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
 			<string key="concept:name" value="Task C"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
@@ -135,11 +119,27 @@
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 2"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 2"/>
 		</event>
 		<event>
@@ -162,22 +162,6 @@
 	<trace>
 		<string key="concept:name" value="gen-Case015"/>
 		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
 			<string key="concept:name" value="Task C"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
@@ -186,12 +170,28 @@
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 2"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
 			<string key="concept:name" value="start"/>
@@ -203,32 +203,16 @@
 		</event>
 		<event>
 			<string key="concept:name" value="start"/>
-			<string key="org:resource" value="Role 2"/>
+			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
 			<string key="concept:name" value="start"/>
-			<string key="org:resource" value="Role 2"/>
+			<string key="org:resource" value="Role 1"/>
 		</event>
 	</trace>
 	<trace>
 		<string key="concept:name" value="gen-Case020"/>
 		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
 			<string key="concept:name" value="Task C"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
@@ -237,11 +221,19 @@
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
@@ -259,27 +251,19 @@
 		<event>
 			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
 		</event>
 	</trace>
 	<trace>
 		<string key="concept:name" value="gen-Case025"/>
 		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
 			<string key="concept:name" value="Task C"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
@@ -288,11 +272,27 @@
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 2"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 2"/>
 		</event>
 		<event>
@@ -315,22 +315,6 @@
 	<trace>
 		<string key="concept:name" value="gen-Case030"/>
 		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
 			<string key="concept:name" value="Task C"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
@@ -339,11 +323,27 @@
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
@@ -366,22 +366,6 @@
 	<trace>
 		<string key="concept:name" value="gen-Case035"/>
 		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
 			<string key="concept:name" value="Task C"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
@@ -390,12 +374,28 @@
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 2"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
 			<string key="concept:name" value="start"/>
@@ -407,32 +407,16 @@
 		</event>
 		<event>
 			<string key="concept:name" value="start"/>
-			<string key="org:resource" value="Role 2"/>
+			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
 			<string key="concept:name" value="start"/>
-			<string key="org:resource" value="Role 2"/>
+			<string key="org:resource" value="Role 1"/>
 		</event>
 	</trace>
 	<trace>
 		<string key="concept:name" value="gen-Case040"/>
 		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
 			<string key="concept:name" value="Task C"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
@@ -441,12 +425,28 @@
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 2"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
 			<string key="concept:name" value="start"/>
@@ -468,22 +468,6 @@
 	<trace>
 		<string key="concept:name" value="gen-Case045"/>
 		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
 			<string key="concept:name" value="Task C"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
@@ -492,12 +476,28 @@
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
 		</event>
 		<event>
 			<string key="concept:name" value="start"/>
@@ -519,22 +519,6 @@
 	<trace>
 		<string key="concept:name" value="gen-Case050"/>
 		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
 			<string key="concept:name" value="Task C"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
@@ -543,11 +527,27 @@
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
@@ -560,32 +560,16 @@
 		</event>
 		<event>
 			<string key="concept:name" value="start"/>
-			<string key="org:resource" value="Role 2"/>
+			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
 			<string key="concept:name" value="start"/>
-			<string key="org:resource" value="Role 2"/>
+			<string key="org:resource" value="Role 1"/>
 		</event>
 	</trace>
 	<trace>
 		<string key="concept:name" value="gen-Case055"/>
 		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task A"/>
-			<string key="org:resource" value="Role 1"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
-			<string key="concept:name" value="Task B"/>
-			<string key="org:resource" value="Role 2"/>
-		</event>
-		<event>
 			<string key="concept:name" value="Task C"/>
 			<string key="org:resource" value="Role 1"/>
 		</event>
@@ -594,12 +578,20 @@
 			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 2"/>
 		</event>
 		<event>
-			<string key="concept:name" value="Task A"/>
+			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
 		</event>
 		<event>
 			<string key="concept:name" value="start"/>
@@ -616,6 +608,14 @@
 		<event>
 			<string key="concept:name" value="start"/>
 			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
 		</event>
 	</trace>
 </log>

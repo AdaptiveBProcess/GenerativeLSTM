@@ -5,73 +5,33 @@
     <endEvent id="node_42f5798c-9ba6-4598-99b6-d257680e6f9b" name="" />
     <task id="node_88442fec-6919-483e-9e88-4966349a3c41" name="Task G" />
     <task id="node_fcfcf01f-ae3e-4d7c-a01a-4979dc1a372c" name="Task C">
-      <incoming>Flow_0dhs3bm</incoming>
-      <outgoing>Flow_1m0nchs</outgoing>
+      <outgoing>Flow_1t8uv25</outgoing>
     </task>
     <task id="node_5a9ba34f-a794-47ab-a863-7f7276649b73" name="End" />
-    <task id="node_2e926831-d1d0-4cb0-a7f3-8dda558fbca4" name="Task F" />
-    <task id="node_6dca319c-443a-4f4e-80f7-2d823422f246" name="Start">
-      <outgoing>Flow_0dhs3bm</outgoing>
+    <task id="node_2e926831-d1d0-4cb0-a7f3-8dda558fbca4" name="Task F">
+      <incoming>node_3bedd7d0-fc4b-4188-a05b-e9054c7f1714</incoming>
     </task>
-    <task id="node_f280b921-8da5-4cde-bfeb-92fffe0f8834" name="Task E" />
-    <task id="node_bdddfdbd-8249-478d-aa7f-030f8477d0fd" name="Task A">
-      <incoming>Flow_1y4w3h9</incoming>
-      <outgoing>Flow_041z0sa</outgoing>
+    <task id="node_6dca319c-443a-4f4e-80f7-2d823422f246" name="Start" />
+    <task id="node_f280b921-8da5-4cde-bfeb-92fffe0f8834" name="Task E">
+      <incoming>Flow_1t8uv25</incoming>
     </task>
-    <task id="node_44266230-66aa-44f0-a5a3-ed21e641989b" name="Task D" />
-    <task id="node_62424f04-de60-4fe0-8ff8-8d0b56fc8380" name="Task B">
-      <incoming>Flow_1m0nchs</incoming>
-      <outgoing>Flow_1y4w3h9</outgoing>
-    </task>
+    <task id="node_bdddfdbd-8249-478d-aa7f-030f8477d0fd" name="Task A" />
+    <task id="node_62424f04-de60-4fe0-8ff8-8d0b56fc8380" name="Task B" />
     <sequenceFlow id="node_a7d88cd5-9439-4392-95b7-4625cf3b1ca0" name="" sourceRef="node_2e926831-d1d0-4cb0-a7f3-8dda558fbca4" targetRef="node_88442fec-6919-483e-9e88-4966349a3c41" />
+    <sequenceFlow id="node_f0246bbf-e55d-4c1b-b898-1f3e72939023" name="" sourceRef="node_6dca319c-443a-4f4e-80f7-2d823422f246" targetRef="node_bdddfdbd-8249-478d-aa7f-030f8477d0fd" />
+    <sequenceFlow id="node_e0417c1c-46a9-4a37-9a93-44c9cc4ba55b" name="" sourceRef="node_bdddfdbd-8249-478d-aa7f-030f8477d0fd" targetRef="node_62424f04-de60-4fe0-8ff8-8d0b56fc8380" />
     <sequenceFlow id="node_7e9d1feb-0f07-4419-9617-eff2e1d3af37" name="" sourceRef="node_5a9ba34f-a794-47ab-a863-7f7276649b73" targetRef="node_42f5798c-9ba6-4598-99b6-d257680e6f9b" />
+    <sequenceFlow id="node_6b9ef931-b593-4d55-994a-79c44a51cf49" name="" sourceRef="node_62424f04-de60-4fe0-8ff8-8d0b56fc8380" targetRef="node_fcfcf01f-ae3e-4d7c-a01a-4979dc1a372c" />
     <sequenceFlow id="node_94d0c0bb-da78-431c-980e-2a756b222f29" name="" sourceRef="node_9212433d-5f6b-4163-b1ba-7ade72baaa40" targetRef="node_6dca319c-443a-4f4e-80f7-2d823422f246" />
     <sequenceFlow id="node_80764f2c-31e0-4d92-a78e-b40740aae765" name="" sourceRef="node_88442fec-6919-483e-9e88-4966349a3c41" targetRef="node_5a9ba34f-a794-47ab-a863-7f7276649b73" />
-    <sequenceFlow id="node_b2b2d737-48bd-4355-9443-9478643a321f" name="" sourceRef="node_6a681fe8-b85f-46f1-9a5f-39d5334db7d9" targetRef="node_44266230-66aa-44f0-a5a3-ed21e641989b" />
-    <sequenceFlow id="node_b930ba38-ae40-404b-914c-1537224b5467" name="" sourceRef="node_6a681fe8-b85f-46f1-9a5f-39d5334db7d9" targetRef="node_f280b921-8da5-4cde-bfeb-92fffe0f8834" />
-    <sequenceFlow id="node_bb38daad-df3c-47b7-9105-87791d9fb338" name="" sourceRef="node_d1a991e6-0159-4f27-b1ee-f3a0ec8fe299" targetRef="node_2e926831-d1d0-4cb0-a7f3-8dda558fbca4" />
-    <sequenceFlow id="node_3bedd7d0-fc4b-4188-a05b-e9054c7f1714" name="" sourceRef="node_f280b921-8da5-4cde-bfeb-92fffe0f8834" targetRef="node_d1a991e6-0159-4f27-b1ee-f3a0ec8fe299" />
-    <sequenceFlow id="node_9b13cdc1-6800-40e1-b93e-a36d5f54e746" name="" sourceRef="node_44266230-66aa-44f0-a5a3-ed21e641989b" targetRef="node_d1a991e6-0159-4f27-b1ee-f3a0ec8fe299" />
-    <inclusiveGateway id="node_6a681fe8-b85f-46f1-9a5f-39d5334db7d9" name="">
-      <incoming>Flow_041z0sa</incoming>
-      <outgoing>node_b2b2d737-48bd-4355-9443-9478643a321f</outgoing>
-      <outgoing>node_b930ba38-ae40-404b-914c-1537224b5467</outgoing>
-    </inclusiveGateway>
-    <inclusiveGateway id="node_d1a991e6-0159-4f27-b1ee-f3a0ec8fe299" name="">
-      <incoming>node_3bedd7d0-fc4b-4188-a05b-e9054c7f1714</incoming>
-      <incoming>node_9b13cdc1-6800-40e1-b93e-a36d5f54e746</incoming>
-      <outgoing>node_bb38daad-df3c-47b7-9105-87791d9fb338</outgoing>
-    </inclusiveGateway>
-    <sequenceFlow id="Flow_0dhs3bm" sourceRef="node_6dca319c-443a-4f4e-80f7-2d823422f246" targetRef="node_fcfcf01f-ae3e-4d7c-a01a-4979dc1a372c" />
-    <sequenceFlow id="Flow_1m0nchs" sourceRef="node_fcfcf01f-ae3e-4d7c-a01a-4979dc1a372c" targetRef="node_62424f04-de60-4fe0-8ff8-8d0b56fc8380" />
-    <sequenceFlow id="Flow_1y4w3h9" sourceRef="node_62424f04-de60-4fe0-8ff8-8d0b56fc8380" targetRef="node_bdddfdbd-8249-478d-aa7f-030f8477d0fd" />
-    <sequenceFlow id="Flow_041z0sa" sourceRef="node_bdddfdbd-8249-478d-aa7f-030f8477d0fd" targetRef="node_6a681fe8-b85f-46f1-9a5f-39d5334db7d9" />
+    <sequenceFlow id="node_3bedd7d0-fc4b-4188-a05b-e9054c7f1714" name="" sourceRef="node_f280b921-8da5-4cde-bfeb-92fffe0f8834" targetRef="node_2e926831-d1d0-4cb0-a7f3-8dda558fbca4" />
+    <sequenceFlow id="Flow_1t8uv25" sourceRef="node_fcfcf01f-ae3e-4d7c-a01a-4979dc1a372c" targetRef="node_f280b921-8da5-4cde-bfeb-92fffe0f8834" />
   </process>
   <bpmndi:BPMNDiagram id="id_-770052596">
     <bpmndi:BPMNPlane bpmnElement="proc_33176221">
-      <bpmndi:BPMNEdge bpmnElement="node_9b13cdc1-6800-40e1-b93e-a36d5f54e746">
-        <di:waypoint x="751" y="121" />
-        <di:waypoint x="814" y="121" />
-        <di:waypoint x="814" y="145" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="node_3bedd7d0-fc4b-4188-a05b-e9054c7f1714">
-        <di:waypoint x="751" y="191" />
-        <di:waypoint x="814" y="191" />
-        <di:waypoint x="814" y="169" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="node_bb38daad-df3c-47b7-9105-87791d9fb338">
-        <di:waypoint x="826" y="156" />
+        <di:waypoint x="740" y="156" />
         <di:waypoint x="876" y="156" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="node_b930ba38-ae40-404b-914c-1537224b5467">
-        <di:waypoint x="609" y="169" />
-        <di:waypoint x="609" y="191" />
-        <di:waypoint x="671" y="191" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="node_b2b2d737-48bd-4355-9443-9478643a321f">
-        <di:waypoint x="609" y="145" />
-        <di:waypoint x="609" y="121" />
-        <di:waypoint x="671" y="121" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="node_80764f2c-31e0-4d92-a78e-b40740aae765">
         <di:waypoint x="1046" y="156" />
@@ -81,35 +41,31 @@
         <di:waypoint x="13.5" y="156" />
         <di:waypoint x="116" y="156" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="node_6b9ef931-b593-4d55-994a-79c44a51cf49">
+        <di:waypoint x="416" y="156" />
+        <di:waypoint x="470" y="156" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="node_7e9d1feb-0f07-4419-9617-eff2e1d3af37">
         <di:waypoint x="1176" y="156" />
         <di:waypoint x="1278.5" y="156" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="node_e0417c1c-46a9-4a37-9a93-44c9cc4ba55b">
+        <di:waypoint x="246" y="156" />
+        <di:waypoint x="376" y="156" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="node_f0246bbf-e55d-4c1b-b898-1f3e72939023">
+        <di:waypoint x="116" y="156" />
+        <di:waypoint x="246" y="156" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="node_a7d88cd5-9439-4392-95b7-4625cf3b1ca0">
         <di:waypoint x="916" y="156" />
         <di:waypoint x="1046" y="156" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0dhs3bm_di" bpmnElement="Flow_0dhs3bm">
-        <di:waypoint x="156" y="156" />
-        <di:waypoint x="178" y="156" />
-        <di:waypoint x="178" y="160" />
-        <di:waypoint x="200" y="160" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1m0nchs_di" bpmnElement="Flow_1m0nchs">
-        <di:waypoint x="280" y="157" />
-        <di:waypoint x="308" y="157" />
-        <di:waypoint x="308" y="160" />
-        <di:waypoint x="336" y="160" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1y4w3h9_di" bpmnElement="Flow_1y4w3h9">
-        <di:waypoint x="416" y="156" />
-        <di:waypoint x="443" y="156" />
-        <di:waypoint x="443" y="160" />
-        <di:waypoint x="470" y="160" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_041z0sa_di" bpmnElement="Flow_041z0sa">
-        <di:waypoint x="550" y="157" />
-        <di:waypoint x="597" y="157" />
+      <bpmndi:BPMNEdge id="Flow_1t8uv25_di" bpmnElement="Flow_1t8uv25">
+        <di:waypoint x="550" y="156" />
+        <di:waypoint x="605" y="156" />
+        <di:waypoint x="605" y="155" />
+        <di:waypoint x="660" y="155" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape bpmnElement="node_9212433d-5f6b-4163-b1ba-7ade72baaa40">
         <dc:Bounds x="1" y="143.5" width="25" height="25" />
@@ -135,30 +91,20 @@
         <dc:Bounds x="76" y="136" width="80" height="40" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="node_f280b921-8da5-4cde-bfeb-92fffe0f8834">
-        <dc:Bounds x="671" y="171" width="80" height="40" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="node_44266230-66aa-44f0-a5a3-ed21e641989b">
-        <dc:Bounds x="671" y="101" width="80" height="40" />
+      <bpmndi:BPMNShape bpmnElement="node_bdddfdbd-8249-478d-aa7f-030f8477d0fd">
+        <dc:Bounds x="206" y="136" width="80" height="40" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="node_62424f04-de60-4fe0-8ff8-8d0b56fc8380">
         <dc:Bounds x="336" y="136" width="80" height="40" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0gsm513_di" bpmnElement="node_6a681fe8-b85f-46f1-9a5f-39d5334db7d9">
-        <dc:Bounds x="596" y="144" width="25" height="25" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1eclnmh_di" bpmnElement="node_d1a991e6-0159-4f27-b1ee-f3a0ec8fe299">
-        <dc:Bounds x="801" y="144" width="25" height="25" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="node_fcfcf01f-ae3e-4d7c-a01a-4979dc1a372c">
-        <dc:Bounds x="200" y="137" width="80" height="40" />
+      <bpmndi:BPMNShape bpmnElement="node_f280b921-8da5-4cde-bfeb-92fffe0f8834">
+        <dc:Bounds x="660" y="136" width="80" height="40" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="node_bdddfdbd-8249-478d-aa7f-030f8477d0fd">
-        <dc:Bounds x="470" y="137" width="80" height="40" />
+      <bpmndi:BPMNShape bpmnElement="node_fcfcf01f-ae3e-4d7c-a01a-4979dc1a372c">
+        <dc:Bounds x="470" y="136" width="80" height="40" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
@@ -232,14 +178,6 @@
               <qbp:resourceId>qbp_0af2ff7b-d81a-4c02-828e-264d4cd7ab6a</qbp:resourceId>
             </qbp:resourceIds>
           </qbp:element>
-          <qbp:element elementId="node_44266230-66aa-44f0-a5a3-ed21e641989b" id="qbp_a022a7b1-90d3-4faa-8437-bfb41d119754">
-            <qbp:durationDistribution type="LOGNORMAL" mean="3002.1" arg1="506481545.8" arg2="0">
-              <qbp:timeUnit>seconds</qbp:timeUnit>
-            </qbp:durationDistribution>
-            <qbp:resourceIds>
-              <qbp:resourceId>qbp_77eac1fc-7452-48ea-abb1-a6d3abc25e4e</qbp:resourceId>
-            </qbp:resourceIds>
-          </qbp:element>
           <qbp:element elementId="node_62424f04-de60-4fe0-8ff8-8d0b56fc8380" id="qbp_9b38592c-5a67-4d0f-b61c-b5a29ea76b55">
             <qbp:durationDistribution type="LOGNORMAL" mean="2194.0" arg1="183697137.4" arg2="0">
               <qbp:timeUnit>seconds</qbp:timeUnit>
@@ -265,9 +203,6 @@
             </qbp:resourceIds>
           </qbp:element>
         </qbp:elements>
-        <qbp:sequenceFlows>
-          <qbp:sequenceFlow elementId="node_b930ba38-ae40-404b-914c-1537224b5467" executionProbability="0.99" />
-          <qbp:sequenceFlow elementId="node_b2b2d737-48bd-4355-9443-9478643a321f" executionProbability="0.01" />
-        </qbp:sequenceFlows>
+        <qbp:sequenceFlows />
       </qbp:processSimulationInfo>
 </definitions>

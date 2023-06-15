@@ -84,7 +84,8 @@ def main(argv):
     parameters['read_options'] = {
 
         #Production and Purchasing: "%Y-%m-%d %H:%M:%S%z"
-        #RunningExample: "%Y-%m-%dT%H:%M:%S.%fZ"
+        #RunningExample: "%Y-%m-%d %H:%M:%S.%f%z"
+        #ConsultaDM: "%Y-%m-%d %H:%M:%S.%f%z"
 
         'timeformat': "%Y-%m-%d %H:%M:%S.%f%z",
         'column_names': column_names,
@@ -108,6 +109,7 @@ def main(argv):
         #Purchasing Example:'20230607_CBA1A809_F060_4535_838C_1A9ED50215F5' 
         #Production: '20230607_3D7257DF_043C_4982_998B_21E4B913BDD0'
         #RunningExample: '20230608_D3A16EE8_B83C_4930_B894_F3ADE345E1B2'
+        #ConsultaDM: '20230612_44F45CD2_96E5_479C_9770_051FC4F5E479'
 
         parameters['folder'] = '20230608_D3A16EE8_B83C_4930_B894_F3ADE345E1B2' 
         parameters['model_file'] = parameters['filename'].split('.')[0] + '.h5'
@@ -135,7 +137,7 @@ def main(argv):
     print(parameters['model_file'])
 
     # Call Simod
-    call_simod(parameters['filename'])
+    #call_simod(parameters['filename'])
 
     #Generative model prediction
     pr.ModelPredictor(parameters)
