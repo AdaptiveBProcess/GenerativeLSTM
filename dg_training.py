@@ -32,8 +32,8 @@ def main(argv):
     parameters['one_timestamp'] = False  # Only one timestamp in the log
     parameters['read_options'] = {
         #RunningExample: "%Y-%m-%dT%H:%M:%S.%fZ"
-        #PurchasginExample y Production: '%Y/%m/%d %H:%M:%S'
-        'timeformat': "%Y-%m-%dT%H:%M:%S.%fZ",
+        #PurchasingExample y Production: '%Y/%m/%d %H:%M:%S'
+        'timeformat': '%Y/%m/%d %H:%M:%S',
         'column_names': column_names,
         'one_timestamp': parameters['one_timestamp']}
     # Parameters settled manually or catched by console for batch operations
@@ -42,7 +42,7 @@ def main(argv):
         parameters['file_name'] = 'ConsultaDataMining201618.xes'
         parameters['model_family'] = 'lstm'
         parameters['opt_method'] = 'bayesian'  # 'rand_hpc', 'bayesian'
-        parameters['max_eval'] = 1
+        parameters['max_eval'] = 10
     else:
         # Catch parms by console
         try:
@@ -63,7 +63,7 @@ def main(argv):
     parameters['batch_size'] = 32  # Usually 32/64/128/256
     parameters['norm_method'] = ['max', 'lognorm']
     parameters['imp'] = 1
-    parameters['epochs'] = 20
+    parameters['epochs'] = 200
     parameters['n_size'] = [5, 10, 15]
     parameters['l_size'] = [50, 100]
     parameters['lstm_act'] = ['selu', 'tanh']

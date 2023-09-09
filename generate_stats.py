@@ -93,6 +93,13 @@ for generated_file in generated_files:
     df_stats_tmp = extract_stats(generated_file, event_log, rule, 'Generated')
     df_stats = pd.concat([df_stats, df_stats_tmp])
 
+#Pivot data
+df_paper = df_stats.sort_values(by=['Metric', 'Rule', 'Event Log Type'])[['Event Log', 'Event Log Type', 'Rule', 'Metric', 'Average']]
+df_paper = df_paper[df_paper['Metric'].isin(['Cost', 'Process Cycle Time'])]
+df_paper = df_paper.pivot(index=['Event Log', 'Rule', 'Metric'], columns='Event Log Type', values='Average')
+df_paper = df_paper.reset_index()
+df_paper['Error'] = abs((df_paper['Generated'] - df_paper['Manual']) / df_paper['Manual'])
+
 #Save file
-output_csv_path = os.path.join('output_files', 'consolidated_stats.csv')
-df_stats.to_csv(output_csv_path, index=False)
+output_csv_path = os.path.join('output_files', 'consolidated_results.xlsx')
+df_paper.to_excel(output_csv_path, index=False)

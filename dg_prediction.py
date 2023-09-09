@@ -10,6 +10,7 @@ import subprocess
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import sys
 import getopt
+import shutil
 
 from model_prediction import model_predictor as pr
 import support_functions as sf
@@ -29,10 +30,23 @@ def call_simod(file_name):
     print('----------------------------------------------------------------------')
     print('-------------------     RUNNING SIMOD    -----------------------------')
     print('----------------------------------------------------------------------')
-    os.chdir('../Simod-2.3.1/')
-    bash_command = 'bash.sh'
-    subprocess.run([bash_command, file_name], shell=True)
-    os.chdir('../GenerativeLSTM/')
+
+    simod_files = os.listdir(os.path.join('input_files', 'simod'))
+
+    #Copy event log file to Simod
+    source_file = os.path.join('input_files', file_name)
+    destination_file = os.path.join('..', 'Simod-2.3.1','inputs', file_name)
+    shutil.copy(source_file, destination_file)
+
+    if file_name not in simod_files:
+
+        os.chdir('../Simod-2.3.1/')
+        bash_command = 'bash.sh'
+        subprocess.run([bash_command, file_name], shell=True)
+        os.chdir('../GenerativeLSTM/')
+    
+    #Delete event log file from Simod
+    os.remove(destination_file)
 
 def call_spmd(parameters):
     print('----------------------------------------------------------------------')
@@ -84,15 +98,15 @@ def main(argv):
     parameters['read_options'] = {
 
         #Production and Purchasing: "%Y-%m-%d %H:%M:%S%z"
-        #RunningExample: "%Y-%m-%d %H:%M:%S.%f%z"
-        #ConsultaDM: "%Y-%m-%d %H:%M:%S.%f%z"
+        #RunningExample: "%Y-%m-%d %H:%M:%S%z"
+        #ConsultaDataMining201618: "%Y-%m-%d %H:%M:%S%z"
 
-        'timeformat': "%Y-%m-%d %H:%M:%S.%f%z",
+        'timeformat': "%Y-%m-%d %H:%M:%S%z",
         'column_names': column_names,
         'one_timestamp': parameters['one_timestamp'],
         'filter_d_attrib': False}
     
-    parameters['filename'] = 'RunningExample.xes'
+    parameters['filename'] = 'Production.xes'
     parameters['input_path'] = 'input_files'
 
     parameters['sm3_path'] = os.path.join('external_tools', 'splitminer3', 'bpmtk.jar')
@@ -106,12 +120,12 @@ def main(argv):
         # predict_next, pred_sfx
         parameters['activity'] = 'pred_log'
 
-        #Purchasing Example:'20230607_CBA1A809_F060_4535_838C_1A9ED50215F5' 
-        #Production: '20230607_3D7257DF_043C_4982_998B_21E4B913BDD0'
-        #RunningExample: '20230608_D3A16EE8_B83C_4930_B894_F3ADE345E1B2'
-        #ConsultaDM: '20230612_44F45CD2_96E5_479C_9770_051FC4F5E479'
+        #PurchasingExample:'20230615_13B0567C_E061_48DD_834E_459450B6076F' 
+        #Production: '20230615_FF2C5479_8FD9_4E8A_9473_F298F8D2618D'
+        #RunningExample: '20230615_337FD5C6_4BEA_4D3C_A7B4_57E09596867E'
+        #ConsultaDataMining201618: '20230615_10C7EA49_AF7D_48B6_8039_E007B2F61885'
 
-        parameters['folder'] = '20230608_D3A16EE8_B83C_4930_B894_F3ADE345E1B2' 
+        parameters['folder'] = '20230615_FF2C5479_8FD9_4E8A_9473_F298F8D2618D' 
         parameters['model_file'] = parameters['filename'].split('.')[0] + '.h5'
         parameters['log_name'] = parameters['model_file'].split('.')[0]
         parameters['is_single_exec'] = False  # single or batch execution
@@ -137,16 +151,16 @@ def main(argv):
     print(parameters['model_file'])
 
     # Call Simod
-    #call_simod(parameters['filename'])
+    call_simod(parameters['filename'])
 
     #Generative model prediction
-    pr.ModelPredictor(parameters)
+    #pr.ModelPredictor(parameters)
 
     #Call SPMD
-    spmd = call_spmd(parameters)
+    #spmd = call_spmd(parameters)
 
     #Call Merger
-    call_merger(parameters, spmd)
+    #call_merger(parameters, spmd)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

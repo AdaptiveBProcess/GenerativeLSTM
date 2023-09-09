@@ -1,0 +1,851 @@
+caseid,task,start_timestamp,end_timestamp,resource
+0,Start,2016-05-18 21:56:01.0,2016-05-18 21:56:01.0,SYSTEM
+0,Traer informacion estudiante - banner,2016-05-18 21:56:01.0,2016-05-18 21:56:01.0,Role 1
+0,Radicar Solicitud Homologacion,2016-05-18 21:56:01.0,2016-05-18 21:56:01.001,Role 1
+0,Validar solicitud,2016-05-18 21:56:01.001,2016-05-18 22:27:15.12,Role 2
+1,Start,2016-05-18 23:36:13.025,2016-05-18 23:36:13.025,SYSTEM
+1,Traer informacion estudiante - banner,2016-05-18 23:36:13.025,2016-05-18 23:36:13.025,Role 1
+1,Radicar Solicitud Homologacion,2016-05-18 23:36:13.025,2016-05-18 23:38:43.431,Role 1
+2,Start,2016-05-19 00:25:51.727,2016-05-19 00:25:51.727,SYSTEM
+2,Traer informacion estudiante - banner,2016-05-19 00:25:51.727,2016-05-19 00:25:51.727,Role 1
+2,Radicar Solicitud Homologacion,2016-05-19 00:25:51.727,2016-05-19 00:26:20.208,Role 1
+2,Validar solicitud,2016-05-19 00:26:20.208,2016-05-19 00:35:44.486,Role 2
+1,Validar solicitud,2016-05-18 23:38:43.431,2016-05-19 00:38:38.811,Role 2
+3,Start,2016-05-19 03:03:31.677,2016-05-19 03:03:31.677,SYSTEM
+3,Traer informacion estudiante - banner,2016-05-19 03:03:31.677,2016-05-19 03:03:31.677,Role 1
+3,Radicar Solicitud Homologacion,2016-05-19 03:03:31.677,2016-05-19 03:03:31.712,Role 1
+3,Validar solicitud,2016-05-19 03:03:31.712,2016-05-19 03:15:10.717,Role 2
+4,Start,2016-05-19 03:42:36.4,2016-05-19 03:42:36.4,SYSTEM
+4,Traer informacion estudiante - banner,2016-05-19 03:42:36.4,2016-05-19 03:42:36.4,Role 1
+4,Radicar Solicitud Homologacion,2016-05-19 03:42:36.4,2016-05-19 03:42:49.49,Role 1
+5,Start,2016-05-19 12:06:28.194,2016-05-19 12:06:28.194,SYSTEM
+6,Start,2016-05-19 12:23:40.942,2016-05-19 12:23:40.942,SYSTEM
+5,Traer informacion estudiante - banner,2016-05-19 12:06:28.194,2016-05-19 14:00:00.0,Role 1
+6,Traer informacion estudiante - banner,2016-05-19 12:23:40.942,2016-05-19 14:00:00.0,Role 1
+5,Radicar Solicitud Homologacion,2016-05-19 14:00:00.0,2016-05-19 14:04:56.983,Role 1
+5,Validar solicitud,2016-05-19 14:04:56.983,2016-05-19 14:26:18.011,Role 2
+6,Radicar Solicitud Homologacion,2016-05-19 14:00:00.0,2016-05-19 14:36:01.767,Role 1
+4,Validar solicitud,2016-05-19 03:42:49.49,2016-05-19 14:43:55.126,Role 2
+6,Validar solicitud,2016-05-19 14:36:01.767,2016-05-19 15:29:52.747,Role 2
+0,Recepcion de documentos,2016-05-18 22:27:15.12,2016-05-19 15:36:20.915,Role 7
+0,Homologacion por grupo de cursos,2016-05-19 15:36:20.915,2016-05-19 16:05:07.357,Role 3
+0,Revisar curso,2016-05-19 16:05:07.357,2016-05-19 16:12:10.786,Role 2
+7,Start,2016-05-19 16:13:00.947,2016-05-19 16:13:00.947,SYSTEM
+7,Traer informacion estudiante - banner,2016-05-19 16:13:00.947,2016-05-19 16:13:00.947,Role 1
+7,Radicar Solicitud Homologacion,2016-05-19 16:13:00.947,2016-05-19 16:13:29.679,Role 1
+8,Start,2016-05-19 16:13:43.146,2016-05-19 16:13:43.146,SYSTEM
+8,Traer informacion estudiante - banner,2016-05-19 16:13:43.146,2016-05-19 16:13:43.146,Role 1
+7,Validar solicitud,2016-05-19 16:13:29.679,2016-05-19 16:13:59.59,Role 2
+8,Radicar Solicitud Homologacion,2016-05-19 16:13:43.146,2016-05-19 16:22:04.503,Role 1
+0,Evaluacion curso,2016-05-19 16:12:10.786,2016-05-19 16:37:00.212,Role 4
+0,Validar solicitud / pre-homologacion,2016-05-19 16:37:00.212,2016-05-19 16:38:28.405,Role 2
+8,Validar solicitud,2016-05-19 16:22:04.503,2016-05-19 17:06:16.372,Role 2
+2,Recepcion de documentos,2016-05-19 15:36:20.915,2016-05-19 17:13:53.328,Role 7
+1,Recepcion de documentos,2016-05-19 17:13:53.328,2016-05-19 17:18:15.376,Role 7
+2,Homologacion por grupo de cursos,2016-05-19 17:13:53.328,2016-05-19 18:35:28.97,Role 3
+2,Revisar curso,2016-05-19 18:35:28.97,2016-05-19 18:53:25.764,Role 2
+2,Evaluacion curso,2016-05-19 18:53:25.764,2016-05-19 19:04:27.276,Role 4
+2,Validacion final,2016-05-19 19:04:27.276,2016-05-19 19:04:38.121,Role 2
+2,Visto Bueno Cierre Proceso,2016-05-19 19:04:38.121,2016-05-19 19:22:54.885,Role 3
+2,Transferir Creditos,2016-05-19 19:22:54.885,2016-05-19 19:26:49.267,Role 3
+2,Transferir creditos homologables,2016-05-19 19:26:49.267,2016-05-19 19:26:49.267,Role 3
+2,End,2016-05-19 19:26:49.267,2016-05-19 19:26:49.267,SYSTEM
+1,Homologacion por grupo de cursos,2016-05-19 17:18:15.376,2016-05-19 19:50:08.643,Role 3
+1,Revisar curso,2016-05-19 19:50:08.643,2016-05-19 19:57:09.364,Role 2
+1,Evaluacion curso,2016-05-19 19:57:09.364,2016-05-19 20:01:35.615,Role 4
+1,Validar solicitud / pre-homologacion,2016-05-19 20:01:35.615,2016-05-19 20:02:13.501,Role 2
+9,Start,2016-05-19 22:03:18.927,2016-05-19 22:03:18.927,SYSTEM
+9,Traer informacion estudiante - banner,2016-05-19 22:03:18.927,2016-05-19 22:03:18.927,Role 1
+9,Radicar Solicitud Homologacion,2016-05-19 22:03:18.927,2016-05-19 22:03:18.968,Role 1
+9,Validar solicitud,2016-05-19 22:03:18.968,2016-05-19 22:29:16.846,Role 2
+10,Start,2016-05-19 22:42:33.996,2016-05-19 22:42:33.996,SYSTEM
+10,Traer informacion estudiante - banner,2016-05-19 22:42:33.996,2016-05-19 22:42:33.996,Role 1
+10,Radicar Solicitud Homologacion,2016-05-19 22:42:33.996,2016-05-19 22:42:33.996,Role 1
+10,Validar solicitud,2016-05-19 22:42:33.996,2016-05-19 23:05:24.02,Role 2
+3,Recepcion de documentos,2016-05-19 17:18:15.376,2016-05-19 23:41:38.904,Role 7
+3,Homologacion por grupo de cursos,2016-05-19 23:41:38.904,2016-05-20 00:04:56.645,Role 3
+11,Start,2016-05-20 00:16:00.673,2016-05-20 00:16:00.673,SYSTEM
+11,Traer informacion estudiante - banner,2016-05-20 00:16:00.673,2016-05-20 00:16:00.673,Role 1
+11,Radicar Solicitud Homologacion,2016-05-20 00:16:00.673,2016-05-20 00:16:01.02,Role 1
+3,Revisar curso,2016-05-20 00:04:56.645,2016-05-20 00:17:45.777,Role 2
+3,Evaluacion curso,2016-05-20 00:17:45.777,2016-05-20 00:20:44.948,Role 4
+3,Validar solicitud / pre-homologacion,2016-05-20 00:20:44.948,2016-05-20 00:21:43.135,Role 2
+11,Validar solicitud,2016-05-20 00:16:01.02,2016-05-20 00:27:58.249,Role 2
+5,Recepcion de documentos,2016-05-19 23:41:38.904,2016-05-20 00:34:11.619,Role 7
+12,Start,2016-05-20 00:43:09.991,2016-05-20 00:43:09.991,SYSTEM
+12,Traer informacion estudiante - banner,2016-05-20 00:43:09.991,2016-05-20 00:43:09.991,Role 1
+12,Radicar Solicitud Homologacion,2016-05-20 00:43:09.991,2016-05-20 00:43:09.994,Role 1
+5,Homologacion por grupo de cursos,2016-05-20 00:34:11.619,2016-05-20 00:53:11.776,Role 3
+5,Revisar curso,2016-05-20 00:53:11.776,2016-05-20 00:55:18.011,Role 2
+5,Evaluacion curso,2016-05-20 00:55:18.011,2016-05-20 00:57:28.59,Role 4
+12,Validar solicitud,2016-05-20 00:43:09.994,2016-05-20 00:58:51.59,Role 2
+5,Validar solicitud / pre-homologacion,2016-05-20 00:57:28.59,2016-05-20 01:02:14.478,Role 2
+4,Recepcion de documentos,2016-05-20 00:34:11.619,2016-05-20 01:06:20.334,Role 7
+4,Homologacion por grupo de cursos,2016-05-20 01:06:20.334,2016-05-20 01:15:55.579,Role 3
+4,Revisar curso,2016-05-20 01:15:55.579,2016-05-20 01:34:22.038,Role 2
+4,Evaluacion curso,2016-05-20 01:34:22.038,2016-05-20 01:47:00.788,Role 4
+13,Start,2016-05-20 01:51:03.6,2016-05-20 01:51:03.6,SYSTEM
+13,Traer informacion estudiante - banner,2016-05-20 01:51:03.6,2016-05-20 01:51:03.6,Role 1
+13,Radicar Solicitud Homologacion,2016-05-20 01:51:03.6,2016-05-20 01:51:03.6,Role 1
+4,Validar solicitud / pre-homologacion,2016-05-20 01:47:00.788,2016-05-20 01:51:27.277,Role 2
+13,Validar solicitud,2016-05-20 01:51:03.6,2016-05-20 01:57:55.838,Role 2
+14,Start,2016-05-20 02:19:55.355,2016-05-20 02:19:55.355,SYSTEM
+14,Traer informacion estudiante - banner,2016-05-20 02:19:55.355,2016-05-20 02:19:55.355,Role 1
+14,Radicar Solicitud Homologacion,2016-05-20 02:19:55.355,2016-05-20 02:19:56.563,Role 1
+14,Validar solicitud,2016-05-20 02:19:56.563,2016-05-20 02:41:41.035,Role 2
+15,Start,2016-05-20 14:08:24.534,2016-05-20 14:08:24.534,SYSTEM
+15,Traer informacion estudiante - banner,2016-05-20 14:08:24.534,2016-05-20 15:00:00.0,Role 1
+15,Radicar Solicitud Homologacion,2016-05-20 15:00:00.0,2016-05-20 15:00:00.027,Role 1
+15,Validar solicitud,2016-05-20 15:00:00.027,2016-05-20 15:12:22.594,Role 2
+6,Recepcion de documentos,2016-05-20 01:06:20.334,2016-05-20 16:20:23.973,Role 7
+6,Homologacion por grupo de cursos,2016-05-20 16:20:23.973,2016-05-20 16:53:23.372,Role 3
+6,Revisar curso,2016-05-20 16:53:23.372,2016-05-20 16:54:38.437,Role 2
+6,Evaluacion curso,2016-05-20 16:54:38.437,2016-05-20 17:04:12.438,Role 4
+6,Validar solicitud / pre-homologacion,2016-05-20 17:04:12.438,2016-05-20 17:07:07.913,Role 2
+7,Recepcion de documentos,2016-05-20 16:20:23.973,2016-05-20 18:03:19.262,Role 7
+7,Homologacion por grupo de cursos,2016-05-20 18:03:19.262,2016-05-20 18:36:41.389,Role 3
+7,Revisar curso,2016-05-20 18:36:41.389,2016-05-20 18:40:16.435,Role 2
+7,Evaluacion curso,2016-05-20 18:40:16.435,2016-05-20 18:47:52.62,Role 4
+7,Validar solicitud / pre-homologacion,2016-05-20 18:47:52.62,2016-05-20 18:49:04.296,Role 2
+0,Avanzar recepcion documentos,2016-05-20 18:03:19.262,2016-05-20 18:53:35.262,Role 7
+0,Validacion final,2016-05-20 18:53:35.262,2016-05-20 19:10:17.13,Role 2
+0,Visto Bueno Cierre Proceso,2016-05-20 19:10:17.13,2016-05-20 19:21:34.054,Role 3
+0,Transferir Creditos,2016-05-20 19:21:34.054,2016-05-20 19:21:39.652,Role 3
+0,Transferir creditos homologables,2016-05-20 19:21:39.652,2016-05-20 19:21:39.652,Role 3
+0,End,2016-05-20 19:21:39.652,2016-05-20 19:21:39.652,SYSTEM
+8,Recepcion de documentos,2016-05-20 18:53:35.262,2016-05-20 20:14:09.768,Role 7
+1,Avanzar recepcion documentos,2016-05-20 20:14:09.768,2016-05-20 21:04:25.768,Role 7
+1,Validacion final,2016-05-20 21:04:25.768,2016-05-20 21:07:41.367,Role 2
+16,Start,2016-05-20 21:21:48.887,2016-05-20 21:21:48.887,SYSTEM
+16,Traer informacion estudiante - banner,2016-05-20 21:21:48.887,2016-05-20 21:21:48.887,Role 1
+16,Radicar Solicitud Homologacion,2016-05-20 21:21:48.887,2016-05-20 21:22:16.458,Role 1
+16,Validar solicitud,2016-05-20 21:22:16.458,2016-05-20 21:24:34.017,Role 2
+1,Visto Bueno Cierre Proceso,2016-05-20 21:07:41.367,2016-05-20 21:43:30.726,Role 3
+1,Transferir Creditos,2016-05-20 21:43:30.726,2016-05-20 21:44:20.857,Role 3
+1,Transferir creditos homologables,2016-05-20 21:44:20.857,2016-05-20 21:44:20.857,Role 3
+1,End,2016-05-20 21:44:20.857,2016-05-20 21:44:20.857,SYSTEM
+8,Homologacion por grupo de cursos,2016-05-20 20:14:09.768,2016-05-20 22:22:34.515,Role 3
+8,Revisar curso,2016-05-20 22:22:34.515,2016-05-20 22:24:03.012,Role 2
+8,Evaluacion curso,2016-05-20 22:24:03.012,2016-05-20 22:24:38.175,Role 4
+8,Validar solicitud / pre-homologacion,2016-05-20 22:24:38.175,2016-05-20 22:26:33.799,Role 2
+9,Recepcion de documentos,2016-05-20 21:04:25.768,2016-05-20 23:35:19.88,Role 7
+9,Homologacion por grupo de cursos,2016-05-20 23:35:19.88,2016-05-20 23:40:05.672,Role 3
+9,Revisar curso,2016-05-20 23:40:05.672,2016-05-20 23:53:27.995,Role 2
+9,Evaluacion curso,2016-05-20 23:53:27.995,2016-05-20 23:56:28.34,Role 4
+9,Validar solicitud / pre-homologacion,2016-05-20 23:56:28.34,2016-05-20 23:57:00.236,Role 2
+17,Start,2016-05-21 01:57:51.583,2016-05-21 01:57:51.583,SYSTEM
+17,Traer informacion estudiante - banner,2016-05-21 01:57:51.583,2016-05-21 01:57:51.583,Role 1
+17,Radicar Solicitud Homologacion,2016-05-21 01:57:51.583,2016-05-21 01:57:51.594,Role 1
+17,Validar solicitud,2016-05-21 01:57:51.594,2016-05-21 14:09:29.551,Role 2
+18,Start,2016-05-21 14:11:52.008,2016-05-21 14:11:52.008,SYSTEM
+18,Traer informacion estudiante - banner,2016-05-21 14:11:52.008,2016-05-21 14:11:52.008,Role 1
+18,Radicar Solicitud Homologacion,2016-05-21 14:11:52.008,2016-05-21 14:11:52.008,Role 1
+18,Validar solicitud,2016-05-21 14:11:52.008,2016-05-21 14:37:03.269,Role 2
+19,Start,2016-05-21 15:00:28.571,2016-05-21 15:00:28.571,SYSTEM
+19,Traer informacion estudiante - banner,2016-05-21 15:00:28.571,2016-05-21 15:00:28.571,Role 1
+19,Radicar Solicitud Homologacion,2016-05-21 15:00:28.571,2016-05-21 15:00:28.578,Role 1
+19,Validar solicitud,2016-05-21 15:00:28.578,2016-05-21 15:30:52.953,Role 2
+20,Start,2016-05-21 16:37:23.901,2016-05-21 16:37:23.901,SYSTEM
+20,Traer informacion estudiante - banner,2016-05-21 16:37:23.901,2016-05-21 16:37:23.901,Role 1
+20,Radicar Solicitud Homologacion,2016-05-21 16:37:23.901,2016-05-21 17:10:03.773,Role 1
+20,Validar solicitud,2016-05-21 17:10:03.773,2016-05-21 17:46:42.193,Role 2
+21,Start,2016-05-21 18:22:06.263,2016-05-21 18:22:06.263,SYSTEM
+21,Traer informacion estudiante - banner,2016-05-21 18:22:06.263,2016-05-21 18:22:06.263,Role 1
+21,Radicar Solicitud Homologacion,2016-05-21 18:22:06.263,2016-05-21 18:22:06.561,Role 1
+10,Recepcion de documentos,2016-05-20 23:35:19.88,2016-05-21 18:34:29.161,Role 7
+22,Start,2016-05-21 18:44:44.761,2016-05-21 18:44:44.761,SYSTEM
+22,Traer informacion estudiante - banner,2016-05-21 18:44:44.761,2016-05-21 18:44:44.761,Role 1
+10,Homologacion por grupo de cursos,2016-05-21 18:34:29.161,2016-05-21 19:01:33.545,Role 3
+10,Revisar curso,2016-05-21 19:01:33.545,2016-05-21 19:02:49.254,Role 2
+10,Evaluacion curso,2016-05-21 19:02:49.254,2016-05-21 19:04:03.366,Role 4
+10,Validar solicitud / pre-homologacion,2016-05-21 19:04:03.366,2016-05-21 19:09:28.07,Role 2
+23,Start,2016-05-21 19:09:30.296,2016-05-21 19:09:30.296,SYSTEM
+23,Traer informacion estudiante - banner,2016-05-21 19:09:30.296,2016-05-21 19:09:30.296,Role 1
+21,Validar solicitud,2016-05-21 18:22:06.561,2016-05-21 19:10:01.228,Role 2
+22,Radicar Solicitud Homologacion,2016-05-21 18:44:44.761,2016-05-21 19:11:02.603,Role 1
+22,Validar solicitud,2016-05-21 19:11:02.603,2016-05-21 19:17:29.214,Role 2
+3,Avanzar recepcion documentos,2016-05-21 18:34:29.161,2016-05-21 19:24:45.161,Role 7
+3,Validacion final,2016-05-21 19:24:45.161,2016-05-21 19:25:38.275,Role 2
+3,Visto Bueno Cierre Proceso,2016-05-21 19:25:38.275,2016-05-21 19:28:22.082,Role 3
+3,Transferir Creditos,2016-05-21 19:28:22.082,2016-05-21 19:28:22.746,Role 3
+3,Transferir creditos homologables,2016-05-21 19:28:22.746,2016-05-21 19:28:22.746,Role 3
+3,End,2016-05-21 19:28:22.746,2016-05-21 19:28:22.746,SYSTEM
+11,Recepcion de documentos,2016-05-21 19:24:45.161,2016-05-21 19:31:22.51,Role 7
+23,Radicar Solicitud Homologacion,2016-05-21 19:09:30.296,2016-05-21 19:43:53.435,Role 1
+11,Homologacion por grupo de cursos,2016-05-21 19:31:22.51,2016-05-21 20:06:25.763,Role 3
+11,Revisar curso,2016-05-21 20:06:25.763,2016-05-21 20:15:30.715,Role 2
+11,Evaluacion curso,2016-05-21 20:15:30.715,2016-05-21 20:36:45.182,Role 4
+23,Validar solicitud,2016-05-21 19:43:53.435,2016-05-21 20:37:18.757,Role 2
+11,Validar solicitud / pre-homologacion,2016-05-21 20:36:45.182,2016-05-21 20:41:47.113,Role 2
+24,Start,2016-05-21 20:43:14.744,2016-05-21 20:43:14.744,SYSTEM
+24,Traer informacion estudiante - banner,2016-05-21 20:43:14.744,2016-05-21 20:43:14.744,Role 1
+24,Radicar Solicitud Homologacion,2016-05-21 20:43:14.744,2016-05-21 20:43:14.748,Role 1
+24,Validar solicitud,2016-05-21 20:43:14.748,2016-05-21 20:44:42.43,Role 2
+25,Start,2016-05-21 20:57:33.382,2016-05-21 20:57:33.382,SYSTEM
+25,Traer informacion estudiante - banner,2016-05-21 20:57:33.382,2016-05-21 20:57:33.382,Role 1
+25,Radicar Solicitud Homologacion,2016-05-21 20:57:33.382,2016-05-21 20:59:38.048,Role 1
+26,Start,2016-05-21 21:06:40.174,2016-05-21 21:06:40.174,SYSTEM
+26,Traer informacion estudiante - banner,2016-05-21 21:06:40.174,2016-05-21 21:06:40.174,Role 1
+26,Radicar Solicitud Homologacion,2016-05-21 21:06:40.174,2016-05-21 21:06:40.174,Role 1
+25,Validar solicitud,2016-05-21 20:59:38.048,2016-05-21 21:10:32.555,Role 2
+26,Validar solicitud,2016-05-21 21:06:40.174,2016-05-21 21:21:11.121,Role 2
+27,Start,2016-05-21 21:27:56.667,2016-05-21 21:27:56.667,SYSTEM
+27,Traer informacion estudiante - banner,2016-05-21 21:27:56.667,2016-05-21 21:27:56.667,Role 1
+27,Radicar Solicitud Homologacion,2016-05-21 21:27:56.667,2016-05-21 21:28:46.758,Role 1
+27,Validar solicitud,2016-05-21 21:28:46.758,2016-05-21 21:30:25.965,Role 2
+12,Recepcion de documentos,2016-05-21 19:31:22.51,2016-05-21 23:25:44.331,Role 7
+5,Avanzar recepcion documentos,2016-05-21 23:25:44.331,2016-05-22 00:17:00.331,Role 7
+5,Validacion final,2016-05-22 00:17:00.331,2016-05-22 00:21:06.939,Role 2
+5,Visto Bueno Cierre Proceso,2016-05-22 00:21:06.939,2016-05-22 00:22:41.676,Role 3
+5,Transferir Creditos,2016-05-22 00:22:41.676,2016-05-22 00:25:56.712,Role 3
+5,Transferir creditos homologables,2016-05-22 00:25:56.712,2016-05-22 00:25:56.712,Role 3
+5,End,2016-05-22 00:25:56.712,2016-05-22 00:25:56.712,SYSTEM
+28,Start,2016-05-22 03:55:42.715,2016-05-22 03:55:42.715,SYSTEM
+28,Traer informacion estudiante - banner,2016-05-22 03:55:42.715,2016-05-22 03:55:42.715,Role 1
+29,Start,2016-05-22 20:06:45.812,2016-05-22 20:06:45.812,SYSTEM
+30,Start,2016-05-22 23:53:23.04,2016-05-22 23:53:23.04,SYSTEM
+31,Start,2016-05-23 18:36:08.879,2016-05-23 18:36:08.879,SYSTEM
+32,Start,2016-05-24 02:03:52.658,2016-05-24 02:03:52.658,SYSTEM
+33,Start,2016-05-24 02:23:13.035,2016-05-24 02:23:13.035,SYSTEM
+34,Start,2016-05-24 02:52:14.196,2016-05-24 02:52:14.196,SYSTEM
+35,Start,2016-05-24 04:04:34.21,2016-05-24 04:04:34.21,SYSTEM
+36,Start,2016-05-24 04:18:51.432,2016-05-24 04:18:51.432,SYSTEM
+37,Start,2016-05-24 13:48:25.026,2016-05-24 13:48:25.026,SYSTEM
+29,Traer informacion estudiante - banner,2016-05-22 20:06:45.812,2016-05-24 14:00:00.0,Role 1
+30,Traer informacion estudiante - banner,2016-05-22 23:53:23.04,2016-05-24 14:00:00.0,Role 1
+31,Traer informacion estudiante - banner,2016-05-23 18:36:08.879,2016-05-24 14:00:00.0,Role 1
+32,Traer informacion estudiante - banner,2016-05-24 02:03:52.658,2016-05-24 14:00:00.0,Role 1
+33,Traer informacion estudiante - banner,2016-05-24 02:23:13.035,2016-05-24 14:00:00.0,Role 1
+34,Traer informacion estudiante - banner,2016-05-24 02:52:14.196,2016-05-24 14:00:00.0,Role 1
+35,Traer informacion estudiante - banner,2016-05-24 04:04:34.21,2016-05-24 14:00:00.0,Role 1
+36,Traer informacion estudiante - banner,2016-05-24 04:18:51.432,2016-05-24 14:00:00.0,Role 1
+37,Traer informacion estudiante - banner,2016-05-24 13:48:25.026,2016-05-24 14:00:00.0,Role 1
+33,Radicar Solicitud Homologacion,2016-05-24 14:00:00.0,2016-05-24 14:00:00.0,Role 1
+31,Radicar Solicitud Homologacion,2016-05-24 14:00:00.0,2016-05-24 14:00:00.002,Role 1
+30,Radicar Solicitud Homologacion,2016-05-24 14:00:00.0,2016-05-24 14:00:00.063,Role 1
+28,Radicar Solicitud Homologacion,2016-05-22 03:55:42.715,2016-05-24 14:00:00.185,Role 1
+34,Radicar Solicitud Homologacion,2016-05-24 14:00:00.0,2016-05-24 14:00:00.847,Role 1
+35,Radicar Solicitud Homologacion,2016-05-24 14:00:00.0,2016-05-24 14:00:00.929,Role 1
+32,Radicar Solicitud Homologacion,2016-05-24 14:00:00.0,2016-05-24 14:00:05.762,Role 1
+29,Radicar Solicitud Homologacion,2016-05-24 14:00:00.0,2016-05-24 14:01:18.779,Role 1
+37,Radicar Solicitud Homologacion,2016-05-24 14:00:00.0,2016-05-24 14:04:09.778,Role 1
+33,Validar solicitud,2016-05-24 14:00:00.0,2016-05-24 14:06:20.353,Role 2
+30,Validar solicitud,2016-05-24 14:00:00.063,2016-05-24 14:07:42.395,Role 2
+4,Avanzar recepcion documentos,2016-05-22 00:17:00.331,2016-05-24 14:08:16.331,Role 7
+28,Validar solicitud,2016-05-24 14:00:00.185,2016-05-24 14:08:29.298,Role 2
+4,Validacion final,2016-05-24 14:08:16.331,2016-05-24 14:11:52.196,Role 2
+13,Recepcion de documentos,2016-05-24 14:08:16.331,2016-05-24 14:13:09.246,Role 7
+4,Visto Bueno Cierre Proceso,2016-05-24 14:11:52.196,2016-05-24 14:14:55.928,Role 3
+29,Validar solicitud,2016-05-24 14:01:18.779,2016-05-24 14:16:06.058,Role 2
+4,Transferir Creditos,2016-05-24 14:14:55.928,2016-05-24 14:17:38.435,Role 3
+4,Transferir creditos homologables,2016-05-24 14:17:38.435,2016-05-24 14:17:38.435,Role 3
+4,End,2016-05-24 14:17:38.435,2016-05-24 14:17:38.435,SYSTEM
+31,Validar solicitud,2016-05-24 14:00:00.002,2016-05-24 14:19:54.321,Role 2
+34,Validar solicitud,2016-05-24 14:00:00.847,2016-05-24 14:28:04.677,Role 2
+35,Validar solicitud,2016-05-24 14:00:00.929,2016-05-24 14:32:42.764,Role 2
+13,Homologacion por grupo de cursos,2016-05-24 14:13:09.246,2016-05-24 14:35:06.481,Role 3
+13,Revisar curso,2016-05-24 14:35:06.481,2016-05-24 14:38:46.715,Role 2
+37,Validar solicitud,2016-05-24 14:04:09.778,2016-05-24 14:42:45.443,Role 2
+13,Evaluacion curso,2016-05-24 14:38:46.715,2016-05-24 14:46:50.175,Role 4
+13,Validar solicitud / pre-homologacion,2016-05-24 14:46:50.175,2016-05-24 14:52:10.079,Role 2
+36,Radicar Solicitud Homologacion,2016-05-24 14:00:00.0,2016-05-24 15:00:37.695,Role 1
+36,Validar solicitud,2016-05-24 15:00:37.695,2016-05-24 15:11:18.794,Role 2
+32,Validar solicitud,2016-05-24 14:00:05.762,2016-05-24 15:16:51.742,Role 2
+38,Start,2016-05-24 17:24:32.181,2016-05-24 17:24:32.181,SYSTEM
+38,Traer informacion estudiante - banner,2016-05-24 17:24:32.181,2016-05-24 17:24:32.181,Role 1
+38,Radicar Solicitud Homologacion,2016-05-24 17:24:32.181,2016-05-24 17:24:40.192,Role 1
+12,Homologacion por grupo de cursos,2016-05-21 23:25:44.331,2016-05-24 17:53:38.601,Role 3
+12,Revisar curso,2016-05-24 17:53:38.601,2016-05-24 17:56:21.933,Role 2
+12,Evaluacion curso,2016-05-24 17:56:21.933,2016-05-24 17:59:37.9,Role 4
+12,Validar solicitud / pre-homologacion,2016-05-24 17:59:37.9,2016-05-24 18:03:30.31,Role 2
+38,Validar solicitud,2016-05-24 17:24:40.192,2016-05-24 18:27:43.883,Role 2
+14,Recepcion de documentos,2016-05-24 14:13:09.246,2016-05-24 20:18:57.824,Role 7
+14,Homologacion por grupo de cursos,2016-05-24 20:18:57.824,2016-05-24 20:52:13.373,Role 3
+14,Revisar curso,2016-05-24 20:52:13.373,2016-05-24 20:55:04.56,Role 2
+39,Start,2016-05-24 21:03:34.207,2016-05-24 21:03:34.207,SYSTEM
+39,Traer informacion estudiante - banner,2016-05-24 21:03:34.207,2016-05-24 21:03:34.207,Role 1
+39,Radicar Solicitud Homologacion,2016-05-24 21:03:34.207,2016-05-24 21:05:12.502,Role 1
+14,Evaluacion curso,2016-05-24 20:55:04.56,2016-05-24 21:29:40.899,Role 4
+14,Validar solicitud / pre-homologacion,2016-05-24 21:29:40.899,2016-05-24 21:29:57.484,Role 2
+15,Recepcion de documentos,2016-05-24 20:18:57.824,2016-05-24 21:40:27.208,Role 7
+39,Validar solicitud,2016-05-24 21:05:12.502,2016-05-24 21:43:16.927,Role 2
+39,Homologacion por grupo de cursos,2016-05-24 21:43:16.927,2016-05-24 21:51:47.118,Role 3
+15,Homologacion por grupo de cursos,2016-05-24 21:40:27.208,2016-05-24 21:58:39.386,Role 3
+40,Start,2016-05-24 21:58:49.29,2016-05-24 21:58:49.29,SYSTEM
+40,Traer informacion estudiante - banner,2016-05-24 21:58:49.29,2016-05-24 21:58:49.29,Role 1
+15,Revisar curso,2016-05-24 21:58:39.386,2016-05-24 21:58:50.984,Role 2
+40,Radicar Solicitud Homologacion,2016-05-24 21:58:49.29,2016-05-24 22:04:32.722,Role 1
+39,Revisar curso,2016-05-24 21:51:47.118,2016-05-24 22:06:02.233,Role 2
+39,Evaluacion curso,2016-05-24 22:06:02.233,2016-05-24 22:06:47.988,Role 4
+39,Validar solicitud / pre-homologacion,2016-05-24 22:06:47.988,2016-05-24 22:08:03.256,Role 2
+15,Evaluacion curso,2016-05-24 21:58:50.984,2016-05-24 22:18:58.104,Role 4
+15,Validar solicitud / pre-homologacion,2016-05-24 22:18:58.104,2016-05-24 22:21:13.995,Role 2
+6,Avanzar recepcion documentos,2016-05-24 21:40:27.208,2016-05-24 22:30:43.208,Role 7
+6,Validacion final,2016-05-24 22:30:43.208,2016-05-24 22:35:41.022,Role 2
+41,Start,2016-05-24 22:43:58.965,2016-05-24 22:43:58.965,SYSTEM
+41,Traer informacion estudiante - banner,2016-05-24 22:43:58.965,2016-05-24 22:43:58.965,Role 1
+41,Radicar Solicitud Homologacion,2016-05-24 22:43:58.965,2016-05-24 22:44:03.074,Role 1
+40,Validar solicitud,2016-05-24 22:04:32.722,2016-05-24 22:45:13.873,Role 2
+41,Validar solicitud,2016-05-24 22:44:03.074,2016-05-24 22:54:27.505,Role 2
+42,Start,2016-05-24 23:15:08.608,2016-05-24 23:15:08.608,SYSTEM
+42,Traer informacion estudiante - banner,2016-05-24 23:15:08.608,2016-05-24 23:15:08.608,Role 1
+42,Radicar Solicitud Homologacion,2016-05-24 23:15:08.608,2016-05-24 23:16:32.264,Role 1
+7,Avanzar recepcion documentos,2016-05-24 22:30:43.208,2016-05-24 23:20:59.208,Role 7
+42,Validar solicitud,2016-05-24 23:16:32.264,2016-05-24 23:21:47.574,Role 2
+43,Start,2016-05-24 23:27:32.521,2016-05-24 23:27:32.521,SYSTEM
+43,Traer informacion estudiante - banner,2016-05-24 23:27:32.521,2016-05-24 23:27:32.521,Role 1
+43,Radicar Solicitud Homologacion,2016-05-24 23:27:32.521,2016-05-24 23:27:39.265,Role 1
+6,Visto Bueno Cierre Proceso,2016-05-24 22:35:41.022,2016-05-24 23:31:16.439,Role 3
+6,End,2016-05-24 23:31:16.439,2016-05-24 23:31:16.439,SYSTEM
+7,Validacion final,2016-05-24 23:20:59.208,2016-05-24 23:32:02.745,Role 2
+43,Validar solicitud,2016-05-24 23:27:39.265,2016-05-24 23:50:38.764,Role 2
+7,Visto Bueno Cierre Proceso,2016-05-24 23:32:02.745,2016-05-25 00:31:10.49,Role 3
+7,Transferir Creditos,2016-05-25 00:31:10.49,2016-05-25 00:31:27.241,Role 3
+7,Transferir creditos homologables,2016-05-25 00:31:27.241,2016-05-25 00:31:27.241,Role 3
+7,End,2016-05-25 00:31:27.241,2016-05-25 00:31:27.241,SYSTEM
+44,Start,2016-05-25 01:38:08.611,2016-05-25 01:38:08.611,SYSTEM
+44,Traer informacion estudiante - banner,2016-05-25 01:38:08.611,2016-05-25 01:38:08.611,Role 1
+44,Radicar Solicitud Homologacion,2016-05-25 01:38:08.611,2016-05-25 01:38:08.611,Role 1
+44,Validar solicitud,2016-05-25 01:38:08.611,2016-05-25 01:44:41.225,Role 2
+45,Start,2016-05-25 01:50:41.321,2016-05-25 01:50:41.321,SYSTEM
+45,Traer informacion estudiante - banner,2016-05-25 01:50:41.321,2016-05-25 01:50:41.321,Role 1
+45,Radicar Solicitud Homologacion,2016-05-25 01:50:41.321,2016-05-25 01:50:43.342,Role 1
+45,Validar solicitud,2016-05-25 01:50:43.342,2016-05-25 02:09:03.901,Role 2
+16,Recepcion de documentos,2016-05-24 23:20:59.208,2016-05-25 15:01:57.359,Role 7
+16,Homologacion por grupo de cursos,2016-05-25 15:01:57.359,2016-05-25 15:36:53.478,Role 3
+8,Avanzar recepcion documentos,2016-05-25 15:01:57.359,2016-05-25 15:52:13.359,Role 7
+8,Validacion final,2016-05-25 15:52:13.359,2016-05-25 15:54:37.378,Role 2
+8,Visto Bueno Cierre Proceso,2016-05-25 15:54:37.378,2016-05-25 16:03:22.219,Role 3
+8,Transferir Creditos,2016-05-25 16:03:22.219,2016-05-25 16:07:03.454,Role 3
+8,Transferir creditos homologables,2016-05-25 16:07:03.454,2016-05-25 16:07:03.454,Role 3
+8,End,2016-05-25 16:07:03.454,2016-05-25 16:07:03.454,SYSTEM
+16,Revisar curso,2016-05-25 15:36:53.478,2016-05-25 16:10:32.296,Role 2
+46,Start,2016-05-25 16:27:35.799,2016-05-25 16:27:35.799,SYSTEM
+46,Traer informacion estudiante - banner,2016-05-25 16:27:35.799,2016-05-25 16:27:35.799,Role 1
+46,Radicar Solicitud Homologacion,2016-05-25 16:27:35.799,2016-05-25 16:27:35.863,Role 1
+9,Avanzar recepcion documentos,2016-05-25 15:52:13.359,2016-05-25 16:42:29.359,Role 7
+16,Evaluacion curso,2016-05-25 16:10:32.296,2016-05-25 16:43:50.445,Role 4
+16,Validar solicitud / pre-homologacion,2016-05-25 16:43:50.445,2016-05-25 16:44:53.796,Role 2
+9,Validacion final,2016-05-25 16:42:29.359,2016-05-25 16:45:15.586,Role 2
+9,Visto Bueno Cierre Proceso,2016-05-25 16:45:15.586,2016-05-25 16:54:57.269,Role 3
+9,Transferir Creditos,2016-05-25 16:54:57.269,2016-05-25 16:56:25.013,Role 3
+9,Transferir creditos homologables,2016-05-25 16:56:25.013,2016-05-25 16:56:25.013,Role 3
+9,End,2016-05-25 16:56:25.013,2016-05-25 16:56:25.013,SYSTEM
+46,Validar solicitud,2016-05-25 16:27:35.863,2016-05-25 16:57:08.226,Role 2
+17,Recepcion de documentos,2016-05-25 16:42:29.359,2016-05-25 17:10:09.002,Role 7
+18,Recepcion de documentos,2016-05-25 17:10:09.002,2016-05-25 17:11:42.154,Role 7
+47,Start,2016-05-25 17:39:21.488,2016-05-25 17:39:21.488,SYSTEM
+47,Traer informacion estudiante - banner,2016-05-25 17:39:21.488,2016-05-25 17:39:21.488,Role 1
+47,Radicar Solicitud Homologacion,2016-05-25 17:39:21.488,2016-05-25 17:39:33.811,Role 1
+47,Validar solicitud,2016-05-25 17:39:33.811,2016-05-25 17:42:31.11,Role 2
+19,Recepcion de documentos,2016-05-25 17:11:42.154,2016-05-25 17:46:47.295,Role 7
+17,Homologacion por grupo de cursos,2016-05-25 17:10:09.002,2016-05-25 17:58:20.44,Role 3
+17,Revisar curso,2016-05-25 17:58:20.44,2016-05-25 17:59:11.623,Role 2
+17,Evaluacion curso,2016-05-25 17:59:11.623,2016-05-25 18:00:38.969,Role 4
+17,Validar solicitud / pre-homologacion,2016-05-25 18:00:38.969,2016-05-25 18:03:00.001,Role 2
+18,Homologacion por grupo de cursos,2016-05-25 17:11:42.154,2016-05-25 19:15:22.908,Role 3
+18,Revisar curso,2016-05-25 19:15:22.908,2016-05-25 19:16:20.337,Role 2
+18,Evaluacion curso,2016-05-25 19:16:20.337,2016-05-25 19:18:27.045,Role 4
+18,Validar solicitud / pre-homologacion,2016-05-25 19:18:27.045,2016-05-25 19:18:30.663,Role 2
+19,Homologacion por grupo de cursos,2016-05-25 17:46:47.295,2016-05-25 19:42:50.845,Role 3
+19,Revisar curso,2016-05-25 19:42:50.845,2016-05-25 19:44:55.016,Role 2
+19,Evaluacion curso,2016-05-25 19:44:55.016,2016-05-25 19:47:15.965,Role 4
+19,Validar solicitud / pre-homologacion,2016-05-25 19:47:15.965,2016-05-25 19:50:27.95,Role 2
+48,Start,2016-05-25 20:06:34.62,2016-05-25 20:06:34.62,SYSTEM
+48,Traer informacion estudiante - banner,2016-05-25 20:06:34.62,2016-05-25 20:06:34.62,Role 1
+48,Radicar Solicitud Homologacion,2016-05-25 20:06:34.62,2016-05-25 20:06:56.535,Role 1
+49,Start,2016-05-25 20:39:44.094,2016-05-25 20:39:44.094,SYSTEM
+49,Traer informacion estudiante - banner,2016-05-25 20:39:44.094,2016-05-25 20:39:44.094,Role 1
+49,Radicar Solicitud Homologacion,2016-05-25 20:39:44.094,2016-05-25 20:39:46.861,Role 1
+20,Recepcion de documentos,2016-05-25 17:46:47.295,2016-05-25 20:54:40.921,Role 7
+49,Validar solicitud,2016-05-25 20:39:46.861,2016-05-25 21:12:55.639,Role 2
+20,Homologacion por grupo de cursos,2016-05-25 20:54:40.921,2016-05-25 21:13:27.061,Role 3
+20,Revisar curso,2016-05-25 21:13:27.061,2016-05-25 21:17:07.823,Role 2
+20,Evaluacion curso,2016-05-25 21:17:07.823,2016-05-25 21:20:54.827,Role 4
+20,Validar solicitud / pre-homologacion,2016-05-25 21:20:54.827,2016-05-25 21:21:09.905,Role 2
+10,Avanzar recepcion documentos,2016-05-25 20:54:40.921,2016-05-25 21:44:56.921,Role 7
+10,Validacion final,2016-05-25 21:44:56.921,2016-05-25 21:46:32.253,Role 2
+21,Recepcion de documentos,2016-05-25 21:44:56.921,2016-05-25 22:09:12.024,Role 7
+21,Homologacion por grupo de cursos,2016-05-25 22:09:12.024,2016-05-25 22:29:06.609,Role 3
+22,Recepcion de documentos,2016-05-25 22:09:12.024,2016-05-25 22:31:02.277,Role 7
+21,Revisar curso,2016-05-25 22:29:06.609,2016-05-25 22:44:29.03,Role 2
+22,Homologacion por grupo de cursos,2016-05-25 22:31:02.277,2016-05-25 22:46:30.648,Role 3
+22,Revisar curso,2016-05-25 22:46:30.648,2016-05-25 22:49:24.871,Role 2
+10,Visto Bueno Cierre Proceso,2016-05-25 21:46:32.253,2016-05-25 22:50:17.771,Role 3
+10,Transferir Creditos,2016-05-25 22:50:17.771,2016-05-25 22:52:51.538,Role 3
+10,Transferir creditos homologables,2016-05-25 22:52:51.538,2016-05-25 22:52:51.538,Role 3
+10,End,2016-05-25 22:52:51.538,2016-05-25 22:52:51.538,SYSTEM
+50,Start,2016-05-25 23:34:14.274,2016-05-25 23:34:14.274,SYSTEM
+50,Traer informacion estudiante - banner,2016-05-25 23:34:14.274,2016-05-25 23:34:14.274,Role 1
+50,Radicar Solicitud Homologacion,2016-05-25 23:34:14.274,2016-05-25 23:34:15.752,Role 1
+50,Validar solicitud,2016-05-25 23:34:15.752,2016-05-25 23:39:59.182,Role 2
+48,Validar solicitud,2016-05-25 20:06:56.535,2016-05-26 00:07:59.351,Role 2
+22,Evaluacion curso,2016-05-25 22:49:24.871,2016-05-26 01:03:32.116,Role 4
+22,Validar solicitud / pre-homologacion,2016-05-26 01:03:32.116,2016-05-26 01:03:41.672,Role 2
+21,Evaluacion curso,2016-05-25 22:44:29.03,2016-05-26 01:41:08.546,Role 4
+21,Validar solicitud / pre-homologacion,2016-05-26 01:41:08.546,2016-05-26 01:42:03.526,Role 2
+51,Start,2016-05-26 12:18:19.762,2016-05-26 12:18:19.762,SYSTEM
+51,Traer informacion estudiante - banner,2016-05-26 12:18:19.762,2016-05-26 12:18:19.762,Role 1
+52,Start,2016-05-26 13:05:26.267,2016-05-26 13:05:26.267,SYSTEM
+52,Traer informacion estudiante - banner,2016-05-26 13:05:26.267,2016-05-26 14:00:00.0,Role 1
+52,Radicar Solicitud Homologacion,2016-05-26 14:00:00.0,2016-05-26 14:00:00.0,Role 1
+51,Radicar Solicitud Homologacion,2016-05-26 12:18:19.762,2016-05-26 14:00:00.042,Role 1
+52,Validar solicitud,2016-05-26 14:00:00.0,2016-05-26 14:06:16.463,Role 2
+53,Start,2016-05-26 14:14:16.077,2016-05-26 14:14:16.077,SYSTEM
+53,Traer informacion estudiante - banner,2016-05-26 14:14:16.077,2016-05-26 14:14:16.077,Role 1
+53,Radicar Solicitud Homologacion,2016-05-26 14:14:16.077,2016-05-26 14:14:16.348,Role 1
+53,Validar solicitud,2016-05-26 14:14:16.348,2016-05-26 14:17:27.063,Role 2
+51,Validar solicitud,2016-05-26 14:00:00.042,2016-05-26 14:17:36.707,Role 2
+23,Recepcion de documentos,2016-05-25 22:31:02.277,2016-05-26 14:34:06.104,Role 7
+54,Start,2016-05-26 14:38:40.967,2016-05-26 14:38:40.967,SYSTEM
+54,Traer informacion estudiante - banner,2016-05-26 14:38:40.967,2016-05-26 14:38:40.967,Role 1
+54,Radicar Solicitud Homologacion,2016-05-26 14:38:40.967,2016-05-26 14:38:56.98,Role 1
+11,Avanzar recepcion documentos,2016-05-26 14:34:06.104,2016-05-26 15:24:22.104,Role 7
+11,Validacion final,2016-05-26 15:24:22.104,2016-05-26 15:32:36.935,Role 2
+54,Validar solicitud,2016-05-26 14:38:56.98,2016-05-26 15:47:41.576,Role 2
+11,Visto Bueno Cierre Proceso,2016-05-26 15:32:36.935,2016-05-26 15:52:05.501,Role 3
+11,Transferir Creditos,2016-05-26 15:52:05.501,2016-05-26 15:55:08.678,Role 3
+11,Transferir creditos homologables,2016-05-26 15:55:08.678,2016-05-26 15:55:08.678,Role 3
+11,End,2016-05-26 15:55:08.678,2016-05-26 15:55:08.678,SYSTEM
+55,Start,2016-05-26 16:13:47.645,2016-05-26 16:13:47.645,SYSTEM
+55,Traer informacion estudiante - banner,2016-05-26 16:13:47.645,2016-05-26 16:13:47.645,Role 1
+55,Radicar Solicitud Homologacion,2016-05-26 16:13:47.645,2016-05-26 16:15:30.302,Role 1
+55,Validar solicitud,2016-05-26 16:15:30.302,2016-05-26 16:39:23.761,Role 2
+23,Homologacion por grupo de cursos,2016-05-26 14:34:06.104,2016-05-26 16:39:37.455,Role 3
+23,Revisar curso,2016-05-26 16:39:37.455,2016-05-26 16:42:14.7,Role 2
+24,Recepcion de documentos,2016-05-26 15:24:22.104,2016-05-26 16:49:00.662,Role 7
+24,Homologacion por grupo de cursos,2016-05-26 16:49:00.662,2016-05-26 17:15:35.141,Role 3
+24,Revisar curso,2016-05-26 17:15:35.141,2016-05-26 17:17:25.743,Role 2
+24,Evaluacion curso,2016-05-26 17:17:25.743,2016-05-26 17:19:06.758,Role 4
+56,Start,2016-05-26 17:20:27.603,2016-05-26 17:20:27.603,SYSTEM
+56,Traer informacion estudiante - banner,2016-05-26 17:20:27.603,2016-05-26 17:20:27.603,Role 1
+56,Radicar Solicitud Homologacion,2016-05-26 17:20:27.603,2016-05-26 17:20:31.322,Role 1
+24,Validar solicitud / pre-homologacion,2016-05-26 17:19:06.758,2016-05-26 17:25:58.185,Role 2
+56,Validar solicitud,2016-05-26 17:20:31.322,2016-05-26 17:36:30.068,Role 2
+23,Evaluacion curso,2016-05-26 16:42:14.7,2016-05-26 17:48:26.196,Role 4
+23,Validar solicitud / pre-homologacion,2016-05-26 17:48:26.196,2016-05-26 17:52:17.03,Role 2
+25,Recepcion de documentos,2016-05-26 16:49:00.662,2016-05-26 21:42:00.386,Role 7
+26,Recepcion de documentos,2016-05-26 21:42:00.386,2016-05-26 22:23:58.459,Role 7
+26,Homologacion por grupo de cursos,2016-05-26 22:23:58.459,2016-05-26 23:25:35.746,Role 3
+26,Revisar curso,2016-05-26 23:25:35.746,2016-05-26 23:28:00.785,Role 2
+26,Evaluacion curso,2016-05-26 23:28:00.785,2016-05-26 23:30:40.104,Role 4
+26,Validar solicitud / pre-homologacion,2016-05-26 23:30:40.104,2016-05-26 23:30:51.845,Role 2
+25,Homologacion por grupo de cursos,2016-05-26 21:42:00.386,2016-05-26 23:53:02.643,Role 3
+25,Revisar curso,2016-05-26 23:53:02.643,2016-05-26 23:58:54.079,Role 2
+25,Evaluacion curso,2016-05-26 23:58:54.079,2016-05-27 00:01:44.604,Role 4
+25,Validar solicitud / pre-homologacion,2016-05-27 00:01:44.604,2016-05-27 00:02:10.84,Role 2
+27,Recepcion de documentos,2016-05-26 22:23:58.459,2016-05-27 02:43:06.804,Role 7
+27,Homologacion por grupo de cursos,2016-05-27 02:43:06.804,2016-05-27 15:08:09.773,Role 3
+27,Revisar curso,2016-05-27 15:08:09.773,2016-05-27 15:13:30.134,Role 2
+27,Evaluacion curso,2016-05-27 15:13:30.134,2016-05-27 15:22:08.785,Role 4
+27,Validar solicitud / pre-homologacion,2016-05-27 15:22:08.785,2016-05-27 15:23:32.584,Role 2
+33,Recepcion de documentos,2016-05-27 02:43:06.804,2016-05-27 18:09:20.102,Role 7
+33,Homologacion por grupo de cursos,2016-05-27 18:09:20.102,2016-05-27 18:30:24.48,Role 3
+33,Revisar curso,2016-05-27 18:30:24.48,2016-05-27 18:30:52.087,Role 2
+33,Evaluacion curso,2016-05-27 18:30:52.087,2016-05-27 18:51:01.211,Role 4
+33,Validar solicitud / pre-homologacion,2016-05-27 18:51:01.211,2016-05-27 18:51:01.675,Role 2
+30,Recepcion de documentos,2016-05-27 18:09:20.102,2016-05-27 19:42:34.706,Role 7
+30,Homologacion por grupo de cursos,2016-05-27 19:42:34.706,2016-05-27 20:01:17.932,Role 3
+30,Revisar curso,2016-05-27 20:01:17.932,2016-05-27 20:02:31.809,Role 2
+30,Evaluacion curso,2016-05-27 20:02:31.809,2016-05-27 21:39:55.924,Role 4
+30,Validar solicitud / pre-homologacion,2016-05-27 21:39:55.924,2016-05-27 21:40:07.362,Role 2
+28,Recepcion de documentos,2016-05-27 19:42:34.706,2016-05-27 22:52:50.095,Role 7
+28,Homologacion por grupo de cursos,2016-05-27 22:52:50.095,2016-05-28 01:11:15.947,Role 3
+28,Revisar curso,2016-05-28 01:11:15.947,2016-05-28 01:12:44.253,Role 2
+28,Evaluacion curso,2016-05-28 01:12:44.253,2016-05-28 01:23:26.411,Role 4
+28,Validar solicitud / pre-homologacion,2016-05-28 01:23:26.411,2016-05-28 01:23:39.602,Role 2
+29,Recepcion de documentos,2016-05-27 22:52:50.095,2016-05-28 16:40:56.076,Role 7
+29,Homologacion por grupo de cursos,2016-05-28 16:40:56.076,2016-05-28 16:58:50.807,Role 3
+29,Revisar curso,2016-05-28 16:58:50.807,2016-05-28 17:45:04.267,Role 2
+29,Evaluacion curso,2016-05-28 17:45:04.267,2016-05-28 17:51:44.253,Role 4
+29,Validar solicitud / pre-homologacion,2016-05-28 17:51:44.253,2016-05-28 17:55:13.294,Role 2
+31,Recepcion de documentos,2016-05-28 16:40:56.076,2016-05-28 19:42:01.051,Role 7
+31,Homologacion por grupo de cursos,2016-05-28 19:42:01.051,2016-05-28 20:24:13.765,Role 3
+31,Revisar curso,2016-05-28 20:24:13.765,2016-05-28 20:24:47.418,Role 2
+31,Evaluacion curso,2016-05-28 20:24:47.418,2016-05-28 20:34:37.612,Role 4
+31,Validar solicitud / pre-homologacion,2016-05-28 20:34:37.612,2016-05-28 20:35:55.093,Role 2
+34,Recepcion de documentos,2016-05-28 19:42:01.051,2016-05-28 20:48:52.932,Role 7
+34,Homologacion por grupo de cursos,2016-05-28 20:48:52.932,2016-05-28 21:06:45.157,Role 3
+34,Revisar curso,2016-05-28 21:06:45.157,2016-05-28 21:17:39.392,Role 2
+34,Evaluacion curso,2016-05-28 21:17:39.392,2016-05-28 21:53:55.547,Role 4
+34,Validar solicitud / pre-homologacion,2016-05-28 21:53:55.547,2016-05-28 21:58:06.099,Role 2
+35,Recepcion de documentos,2016-05-28 20:48:52.932,2016-05-28 22:24:41.745,Role 7
+37,Recepcion de documentos,2016-05-28 22:24:41.745,2016-05-29 00:27:32.163,Role 7
+37,Homologacion por grupo de cursos,2016-05-29 00:27:32.163,2016-05-29 00:31:57.296,Role 3
+37,Revisar curso,2016-05-29 00:31:57.296,2016-05-29 00:34:14.015,Role 2
+37,Evaluacion curso,2016-05-29 00:34:14.015,2016-05-31 14:05:56.767,Role 4
+37,Validar solicitud / pre-homologacion,2016-05-31 14:05:56.767,2016-05-31 14:09:29.531,Role 2
+13,Avanzar recepcion documentos,2016-05-29 00:27:32.163,2016-05-31 14:18:48.163,Role 7
+13,Validacion final,2016-05-31 14:18:48.163,2016-05-31 14:23:34.718,Role 2
+13,Visto Bueno Cierre Proceso,2016-05-31 14:23:34.718,2016-05-31 14:25:54.664,Role 3
+13,Transferir Creditos,2016-05-31 14:25:54.664,2016-05-31 14:29:55.046,Role 3
+13,Transferir creditos homologables,2016-05-31 14:29:55.046,2016-05-31 14:29:55.046,Role 3
+13,End,2016-05-31 14:29:55.046,2016-05-31 14:29:55.046,SYSTEM
+35,Homologacion por grupo de cursos,2016-05-28 22:24:41.745,2016-05-31 14:56:41.903,Role 3
+35,Revisar curso,2016-05-31 14:56:41.903,2016-05-31 15:05:14.352,Role 2
+35,Evaluacion curso,2016-05-31 15:05:14.352,2016-05-31 15:12:39.154,Role 4
+36,Recepcion de documentos,2016-05-31 14:18:48.163,2016-05-31 15:21:19.204,Role 7
+35,Validar solicitud / pre-homologacion,2016-05-31 15:12:39.154,2016-05-31 15:22:14.376,Role 2
+36,Homologacion por grupo de cursos,2016-05-31 15:21:19.204,2016-05-31 15:48:33.506,Role 3
+36,Revisar curso,2016-05-31 15:48:33.506,2016-05-31 16:13:53.082,Role 2
+36,Evaluacion curso,2016-05-31 16:13:53.082,2016-05-31 16:34:58.808,Role 4
+36,Validar solicitud / pre-homologacion,2016-05-31 16:34:58.808,2016-05-31 16:35:05.454,Role 2
+32,Recepcion de documentos,2016-05-31 15:21:19.204,2016-05-31 16:50:37.431,Role 7
+12,Avanzar recepcion documentos,2016-05-31 16:50:37.431,2016-05-31 17:40:53.431,Role 7
+12,Validacion final,2016-05-31 17:40:53.431,2016-05-31 17:41:20.787,Role 2
+12,Visto Bueno Cierre Proceso,2016-05-31 17:41:20.787,2016-05-31 17:49:50.367,Role 3
+12,Transferir Creditos,2016-05-31 17:49:50.367,2016-05-31 17:58:58.292,Role 3
+12,Transferir creditos homologables,2016-05-31 17:58:58.292,2016-05-31 17:58:58.292,Role 3
+12,End,2016-05-31 17:58:58.292,2016-05-31 17:58:58.292,SYSTEM
+32,Homologacion por grupo de cursos,2016-05-31 16:50:37.431,2016-05-31 18:19:48.61,Role 3
+32,Revisar curso,2016-05-31 18:19:48.61,2016-05-31 18:32:15.129,Role 2
+38,Recepcion de documentos,2016-05-31 17:40:53.431,2016-05-31 18:50:02.783,Role 7
+32,Evaluacion curso,2016-05-31 18:32:15.129,2016-05-31 19:06:16.286,Role 4
+32,Validar solicitud / pre-homologacion,2016-05-31 19:06:16.286,2016-05-31 19:07:01.178,Role 2
+38,Homologacion por grupo de cursos,2016-05-31 18:50:02.783,2016-05-31 19:23:38.48,Role 3
+38,Revisar curso,2016-05-31 19:23:38.48,2016-05-31 19:26:56.71,Role 2
+38,Evaluacion curso,2016-05-31 19:26:56.71,2016-05-31 19:31:31.385,Role 4
+38,Validar solicitud / pre-homologacion,2016-05-31 19:31:31.385,2016-05-31 19:31:42.576,Role 2
+14,Avanzar recepcion documentos,2016-05-31 18:50:02.783,2016-05-31 19:40:18.783,Role 7
+14,Validacion final,2016-05-31 19:40:18.783,2016-05-31 19:43:30.299,Role 2
+14,Visto Bueno Cierre Proceso,2016-05-31 19:43:30.299,2016-05-31 19:53:04.521,Role 3
+14,Transferir Creditos,2016-05-31 19:53:04.521,2016-05-31 19:56:45.276,Role 3
+14,Transferir creditos homologables,2016-05-31 19:56:45.276,2016-05-31 19:56:45.276,Role 3
+14,End,2016-05-31 19:56:45.276,2016-05-31 19:56:45.276,SYSTEM
+39,Avanzar recepcion documentos,2016-05-31 19:40:18.783,2016-05-31 20:30:34.783,Role 7
+39,Validacion final,2016-05-31 20:30:34.783,2016-05-31 20:34:06.407,Role 2
+39,Visto Bueno Cierre Proceso,2016-05-31 20:34:06.407,2016-05-31 21:06:39.895,Role 3
+39,Transferir Creditos,2016-05-31 21:06:39.895,2016-05-31 21:07:18.804,Role 3
+39,Transferir creditos homologables,2016-05-31 21:07:18.804,2016-05-31 21:07:18.804,Role 3
+39,End,2016-05-31 21:07:18.804,2016-05-31 21:07:18.804,SYSTEM
+15,Avanzar recepcion documentos,2016-05-31 20:30:34.783,2016-05-31 21:20:50.783,Role 7
+15,Validacion final,2016-05-31 21:20:50.783,2016-05-31 21:26:40.781,Role 2
+40,Recepcion de documentos,2016-05-31 21:20:50.783,2016-05-31 21:51:41.94,Role 7
+15,Visto Bueno Cierre Proceso,2016-05-31 21:26:40.781,2016-05-31 21:52:37.422,Role 3
+15,Transferir Creditos,2016-05-31 21:52:37.422,2016-05-31 21:59:35.706,Role 3
+15,Transferir creditos homologables,2016-05-31 21:59:35.706,2016-05-31 21:59:35.706,Role 3
+15,End,2016-05-31 21:59:35.706,2016-05-31 21:59:35.706,SYSTEM
+41,Recepcion de documentos,2016-05-31 21:51:41.94,2016-05-31 22:37:05.522,Role 7
+41,Homologacion por grupo de cursos,2016-05-31 22:37:05.522,2016-05-31 23:45:29.03,Role 3
+41,Revisar curso,2016-05-31 23:45:29.03,2016-05-31 23:46:01.65,Role 2
+41,Evaluacion curso,2016-05-31 23:46:01.65,2016-05-31 23:49:50.617,Role 4
+41,Validar solicitud / pre-homologacion,2016-05-31 23:49:50.617,2016-05-31 23:57:33.102,Role 2
+40,Homologacion por grupo de cursos,2016-05-31 21:51:41.94,2016-06-01 01:13:50.691,Role 3
+40,Revisar curso,2016-06-01 01:13:50.691,2016-06-01 01:14:05.116,Role 2
+40,Evaluacion curso,2016-06-01 01:14:05.116,2016-06-01 01:18:38.971,Role 4
+40,Validar solicitud / pre-homologacion,2016-06-01 01:18:38.971,2016-06-01 01:18:50.872,Role 2
+42,Recepcion de documentos,2016-05-31 22:37:05.522,2016-06-01 02:40:08.313,Role 7
+43,Recepcion de documentos,2016-06-01 02:40:08.313,2016-06-01 14:42:38.619,Role 7
+44,Recepcion de documentos,2016-06-01 14:42:38.619,2016-06-01 14:56:54.296,Role 7
+45,Recepcion de documentos,2016-06-01 14:56:54.296,2016-06-01 15:26:59.441,Role 7
+44,Homologacion por grupo de cursos,2016-06-01 14:56:54.296,2016-06-01 15:30:36.657,Role 3
+44,Revisar curso,2016-06-01 15:30:36.657,2016-06-01 15:38:25.328,Role 2
+45,Homologacion por grupo de cursos,2016-06-01 15:26:59.441,2016-06-01 15:56:04.28,Role 3
+44,Evaluacion curso,2016-06-01 15:38:25.328,2016-06-01 16:00:55.067,Role 4
+44,Validar solicitud / pre-homologacion,2016-06-01 16:00:55.067,2016-06-01 16:01:59.615,Role 2
+45,Revisar curso,2016-06-01 15:56:04.28,2016-06-01 16:02:22.468,Role 2
+43,Homologacion por grupo de cursos,2016-06-01 14:42:38.619,2016-06-01 16:10:26.104,Role 3
+45,Evaluacion curso,2016-06-01 16:02:22.468,2016-06-01 16:11:54.502,Role 4
+45,Validar solicitud / pre-homologacion,2016-06-01 16:11:54.502,2016-06-01 16:13:47.217,Role 2
+43,Revisar curso,2016-06-01 16:10:26.104,2016-06-01 16:14:23.105,Role 2
+43,Evaluacion curso,2016-06-01 16:14:23.105,2016-06-01 16:16:53.506,Role 4
+16,Avanzar recepcion documentos,2016-06-01 15:26:59.441,2016-06-01 16:17:15.441,Role 7
+16,Validacion final,2016-06-01 16:17:15.441,2016-06-01 16:19:10.229,Role 2
+43,Validar solicitud / pre-homologacion,2016-06-01 16:16:53.506,2016-06-01 16:25:14.452,Role 2
+16,Visto Bueno Cierre Proceso,2016-06-01 16:19:10.229,2016-06-01 17:00:32.049,Role 3
+16,Transferir Creditos,2016-06-01 17:00:32.049,2016-06-01 17:04:50.189,Role 3
+16,Transferir creditos homologables,2016-06-01 17:04:50.189,2016-06-01 17:04:50.189,Role 3
+16,End,2016-06-01 17:04:50.189,2016-06-01 17:04:50.189,SYSTEM
+46,Recepcion de documentos,2016-06-01 16:17:15.441,2016-06-01 17:43:50.108,Role 7
+46,Homologacion por grupo de cursos,2016-06-01 17:43:50.108,2016-06-01 18:17:31.223,Role 3
+42,Homologacion por grupo de cursos,2016-06-01 02:40:08.313,2016-06-01 18:21:09.625,Role 3
+42,Revisar curso,2016-06-01 18:21:09.625,2016-06-01 18:21:21.272,Role 2
+46,Revisar curso,2016-06-01 18:17:31.223,2016-06-01 18:24:08.424,Role 2
+46,Evaluacion curso,2016-06-01 18:24:08.424,2016-06-01 18:34:45.178,Role 4
+46,Validar solicitud / pre-homologacion,2016-06-01 18:34:45.178,2016-06-01 18:34:49.281,Role 2
+42,Evaluacion curso,2016-06-01 18:21:21.272,2016-06-01 18:38:09.981,Role 4
+42,Validar solicitud / pre-homologacion,2016-06-01 18:38:09.981,2016-06-01 18:38:24.691,Role 2
+47,Recepcion de documentos,2016-06-01 17:43:50.108,2016-06-01 18:44:55.329,Role 7
+47,Homologacion por grupo de cursos,2016-06-01 18:44:55.329,2016-06-01 19:14:54.964,Role 3
+47,Revisar curso,2016-06-01 19:14:54.964,2016-06-01 19:15:59.377,Role 2
+17,Avanzar recepcion documentos,2016-06-01 18:44:55.329,2016-06-01 19:35:11.329,Role 7
+17,Validacion final,2016-06-01 19:35:11.329,2016-06-01 19:41:59.145,Role 2
+47,Evaluacion curso,2016-06-01 19:15:59.377,2016-06-01 19:47:14.207,Role 4
+47,Validar solicitud / pre-homologacion,2016-06-01 19:47:14.207,2016-06-01 19:48:46.534,Role 2
+17,Visto Bueno Cierre Proceso,2016-06-01 19:41:59.145,2016-06-01 19:55:16.753,Role 3
+17,Transferir Creditos,2016-06-01 19:55:16.753,2016-06-01 19:58:36.647,Role 3
+17,Transferir creditos homologables,2016-06-01 19:58:36.647,2016-06-01 19:58:36.647,Role 3
+17,End,2016-06-01 19:58:36.647,2016-06-01 19:58:36.647,SYSTEM
+18,Avanzar recepcion documentos,2016-06-01 19:35:11.329,2016-06-01 20:25:27.329,Role 7
+18,Validacion final,2016-06-01 20:25:27.329,2016-06-01 20:29:36.517,Role 2
+18,Visto Bueno Cierre Proceso,2016-06-01 20:29:36.517,2016-06-01 20:41:44.322,Role 3
+18,Transferir Creditos,2016-06-01 20:41:44.322,2016-06-01 20:44:15.109,Role 3
+18,Transferir creditos homologables,2016-06-01 20:44:15.109,2016-06-01 20:44:15.109,Role 3
+18,End,2016-06-01 20:44:15.109,2016-06-01 20:44:15.109,SYSTEM
+19,Avanzar recepcion documentos,2016-06-01 20:25:27.329,2016-06-01 21:15:43.329,Role 7
+49,Recepcion de documentos,2016-06-01 21:15:43.329,2016-06-01 21:18:22.946,Role 7
+19,Validacion final,2016-06-01 21:15:43.329,2016-06-01 21:18:43.088,Role 2
+49,Homologacion por grupo de cursos,2016-06-01 21:18:22.946,2016-06-01 21:23:34.287,Role 3
+49,Revisar curso,2016-06-01 21:23:34.287,2016-06-01 21:31:09.563,Role 2
+19,Visto Bueno Cierre Proceso,2016-06-01 21:18:43.088,2016-06-01 21:38:34.886,Role 3
+19,Transferir Creditos,2016-06-01 21:38:34.886,2016-06-01 21:43:26.288,Role 3
+19,Transferir creditos homologables,2016-06-01 21:43:26.288,2016-06-01 21:43:26.288,Role 3
+19,End,2016-06-01 21:43:26.288,2016-06-01 21:43:26.288,SYSTEM
+49,Evaluacion curso,2016-06-01 21:31:09.563,2016-06-01 21:44:01.343,Role 4
+49,Validar solicitud / pre-homologacion,2016-06-01 21:44:01.343,2016-06-01 21:45:34.103,Role 2
+20,Avanzar recepcion documentos,2016-06-01 21:18:22.946,2016-06-01 22:08:38.946,Role 7
+20,Validacion final,2016-06-01 22:08:38.946,2016-06-01 22:10:13.402,Role 2
+50,Recepcion de documentos,2016-06-01 22:08:38.946,2016-06-01 22:19:51.616,Role 7
+20,Visto Bueno Cierre Proceso,2016-06-01 22:10:13.402,2016-06-01 22:21:41.069,Role 3
+20,Transferir Creditos,2016-06-01 22:21:41.069,2016-06-01 22:23:59.806,Role 3
+20,Transferir creditos homologables,2016-06-01 22:23:59.806,2016-06-01 22:23:59.806,Role 3
+20,End,2016-06-01 22:23:59.806,2016-06-01 22:23:59.806,SYSTEM
+50,Homologacion por grupo de cursos,2016-06-01 22:19:51.616,2016-06-01 22:49:06.247,Role 3
+50,Revisar curso,2016-06-01 22:49:06.247,2016-06-01 23:43:56.655,Role 2
+50,Evaluacion curso,2016-06-01 23:43:56.655,2016-06-01 23:58:06.593,Role 4
+50,Validar solicitud / pre-homologacion,2016-06-01 23:58:06.593,2016-06-01 23:58:07.284,Role 2
+48,Recepcion de documentos,2016-06-01 22:19:51.616,2016-06-02 16:59:44.199,Role 7
+22,Avanzar recepcion documentos,2016-06-02 16:59:44.199,2016-06-02 17:50:00.199,Role 7
+48,Homologacion por grupo de cursos,2016-06-02 16:59:44.199,2016-06-02 17:50:58.095,Role 3
+22,Validacion final,2016-06-02 17:50:00.199,2016-06-02 17:53:01.035,Role 2
+48,Revisar curso,2016-06-02 17:50:58.095,2016-06-02 17:53:54.352,Role 2
+22,Visto Bueno Cierre Proceso,2016-06-02 17:53:01.035,2016-06-02 18:21:26.541,Role 3
+22,Transferir Creditos,2016-06-02 18:21:26.541,2016-06-02 18:23:17.38,Role 3
+22,Transferir creditos homologables,2016-06-02 18:23:17.38,2016-06-02 18:23:17.38,Role 3
+22,End,2016-06-02 18:23:17.38,2016-06-02 18:23:17.38,SYSTEM
+48,Evaluacion curso,2016-06-02 17:53:54.352,2016-06-02 18:31:42.24,Role 4
+48,Validar solicitud / pre-homologacion,2016-06-02 18:31:42.24,2016-06-02 18:32:47.079,Role 2
+21,Avanzar recepcion documentos,2016-06-02 17:50:00.199,2016-06-02 18:40:16.199,Role 7
+21,Validacion final,2016-06-02 18:40:16.199,2016-06-02 18:42:12.671,Role 2
+21,Visto Bueno Cierre Proceso,2016-06-02 18:42:12.671,2016-06-02 18:55:34.536,Role 3
+21,Transferir Creditos,2016-06-02 18:55:34.536,2016-06-02 18:58:16.692,Role 3
+21,Transferir creditos homologables,2016-06-02 18:58:16.692,2016-06-02 18:58:16.692,Role 3
+21,End,2016-06-02 18:58:16.692,2016-06-02 18:58:16.692,SYSTEM
+52,Recepcion de documentos,2016-06-02 18:40:16.199,2016-06-02 19:39:59.836,Role 7
+53,Recepcion de documentos,2016-06-02 19:39:59.836,2016-06-02 20:21:39.371,Role 7
+53,Homologacion por grupo de cursos,2016-06-02 20:21:39.371,2016-06-02 20:29:51.534,Role 3
+53,Revisar curso,2016-06-02 20:29:51.534,2016-06-02 20:31:58.628,Role 2
+52,Homologacion por grupo de cursos,2016-06-02 19:39:59.836,2016-06-02 20:32:17.624,Role 3
+52,Revisar curso,2016-06-02 20:32:17.624,2016-06-02 20:33:35.676,Role 2
+53,Evaluacion curso,2016-06-02 20:31:58.628,2016-06-02 20:39:03.837,Role 4
+53,Validar solicitud / pre-homologacion,2016-06-02 20:39:03.837,2016-06-02 20:39:05.716,Role 2
+52,Evaluacion curso,2016-06-02 20:33:35.676,2016-06-02 20:43:47.049,Role 4
+52,Validar solicitud / pre-homologacion,2016-06-02 20:43:47.049,2016-06-02 20:45:29.492,Role 2
+51,Recepcion de documentos,2016-06-02 20:21:39.371,2016-06-03 02:34:30.603,Role 7
+54,Recepcion de documentos,2016-06-03 02:34:30.603,2016-06-03 02:58:09.755,Role 7
+54,Homologacion por grupo de cursos,2016-06-03 02:58:09.755,2016-06-03 15:28:13.834,Role 3
+54,Revisar curso,2016-06-03 15:28:13.834,2016-06-03 15:29:59.486,Role 2
+51,Homologacion por grupo de cursos,2016-06-03 02:34:30.603,2016-06-03 15:33:30.938,Role 3
+51,Revisar curso,2016-06-03 15:33:30.938,2016-06-03 15:36:28.369,Role 2
+51,Evaluacion curso,2016-06-03 15:36:28.369,2016-06-03 15:38:54.638,Role 4
+51,Validar solicitud / pre-homologacion,2016-06-03 15:38:54.638,2016-06-03 15:43:49.081,Role 2
+54,Evaluacion curso,2016-06-03 15:29:59.486,2016-06-03 15:45:46.14,Role 4
+54,Validar solicitud / pre-homologacion,2016-06-03 15:45:46.14,2016-06-03 15:46:54.157,Role 2
+55,Recepcion de documentos,2016-06-03 02:58:09.755,2016-06-03 16:51:51.87,Role 7
+55,Homologacion por grupo de cursos,2016-06-03 16:51:51.87,2016-06-03 17:03:36.236,Role 3
+55,Revisar curso,2016-06-03 17:03:36.236,2016-06-03 17:04:40.536,Role 2
+55,Evaluacion curso,2016-06-03 17:04:40.536,2016-06-03 17:25:23.249,Role 4
+55,Validar solicitud / pre-homologacion,2016-06-03 17:25:23.249,2016-06-03 17:27:15.403,Role 2
+24,Avanzar recepcion documentos,2016-06-03 16:51:51.87,2016-06-03 17:42:07.87,Role 7
+24,Validacion final,2016-06-03 17:42:07.87,2016-06-03 17:46:18.692,Role 2
+24,Visto Bueno Cierre Proceso,2016-06-03 17:46:18.692,2016-06-03 17:49:40.361,Role 3
+24,Transferir Creditos,2016-06-03 17:49:40.361,2016-06-03 17:51:06.11,Role 3
+24,Transferir creditos homologables,2016-06-03 17:51:06.11,2016-06-03 17:51:06.11,Role 3
+24,End,2016-06-03 17:51:06.11,2016-06-03 17:51:06.11,SYSTEM
+56,Recepcion de documentos,2016-06-03 17:42:07.87,2016-06-03 17:53:45.809,Role 7
+56,Homologacion por grupo de cursos,2016-06-03 17:53:45.809,2016-06-03 18:01:06.036,Role 3
+56,Revisar curso,2016-06-03 18:01:06.036,2016-06-03 18:08:49.565,Role 2
+56,Evaluacion curso,2016-06-03 18:08:49.565,2016-06-03 18:12:57.645,Role 4
+56,Validar solicitud / pre-homologacion,2016-06-03 18:12:57.645,2016-06-03 18:21:07.628,Role 2
+23,Avanzar recepcion documentos,2016-06-03 17:53:45.809,2016-06-03 18:44:01.809,Role 7
+23,Validacion final,2016-06-03 18:44:01.809,2016-06-03 18:46:04.015,Role 2
+23,Visto Bueno Cierre Proceso,2016-06-03 18:46:04.015,2016-06-03 19:14:04.575,Role 3
+23,Transferir Creditos,2016-06-03 19:14:04.575,2016-06-03 19:16:06.111,Role 3
+23,Transferir creditos homologables,2016-06-03 19:16:06.111,2016-06-03 19:16:06.111,Role 3
+23,End,2016-06-03 19:16:06.111,2016-06-03 19:16:06.111,SYSTEM
+26,Avanzar recepcion documentos,2016-06-03 18:44:01.809,2016-06-03 19:34:17.809,Role 7
+26,Validacion final,2016-06-03 19:34:17.809,2016-06-03 19:40:24.968,Role 2
+26,Visto Bueno Cierre Proceso,2016-06-03 19:40:24.968,2016-06-03 19:56:23.714,Role 3
+26,Transferir Creditos,2016-06-03 19:56:23.714,2016-06-03 19:58:28.675,Role 3
+26,Transferir creditos homologables,2016-06-03 19:58:28.675,2016-06-03 19:58:28.675,Role 3
+26,End,2016-06-03 19:58:28.675,2016-06-03 19:58:28.675,SYSTEM
+25,Avanzar recepcion documentos,2016-06-03 19:34:17.809,2016-06-03 20:24:33.809,Role 7
+25,Validacion final,2016-06-03 20:24:33.809,2016-06-03 20:24:40.842,Role 2
+25,Visto Bueno Cierre Proceso,2016-06-03 20:24:40.842,2016-06-03 20:31:00.121,Role 3
+25,Transferir Creditos,2016-06-03 20:31:00.121,2016-06-03 20:32:07.199,Role 3
+25,Transferir creditos homologables,2016-06-03 20:32:07.199,2016-06-03 20:32:07.199,Role 3
+25,End,2016-06-03 20:32:07.199,2016-06-03 20:32:07.199,SYSTEM
+27,Avanzar recepcion documentos,2016-06-03 20:24:33.809,2016-06-03 21:14:49.809,Role 7
+27,Validacion final,2016-06-03 21:14:49.809,2016-06-03 21:20:54.287,Role 2
+27,Visto Bueno Cierre Proceso,2016-06-03 21:20:54.287,2016-06-03 21:25:05.688,Role 3
+27,Transferir Creditos,2016-06-03 21:25:05.688,2016-06-03 21:27:52.813,Role 3
+27,Transferir creditos homologables,2016-06-03 21:27:52.813,2016-06-03 21:27:52.813,Role 3
+27,End,2016-06-03 21:27:52.813,2016-06-03 21:27:52.813,SYSTEM
+33,Avanzar recepcion documentos,2016-06-03 21:14:49.809,2016-06-03 22:05:05.809,Role 7
+33,Validacion final,2016-06-03 22:05:05.809,2016-06-03 22:11:05.853,Role 2
+33,Visto Bueno Cierre Proceso,2016-06-03 22:11:05.853,2016-06-03 22:22:57.297,Role 3
+33,Transferir Creditos,2016-06-03 22:22:57.297,2016-06-03 22:23:27.41,Role 3
+33,Transferir creditos homologables,2016-06-03 22:23:27.41,2016-06-03 22:23:27.41,Role 3
+33,End,2016-06-03 22:23:27.41,2016-06-03 22:23:27.41,SYSTEM
+30,Avanzar recepcion documentos,2016-06-03 22:05:05.809,2016-06-03 22:55:21.809,Role 7
+30,Validacion final,2016-06-03 22:55:21.809,2016-06-03 22:57:55.162,Role 2
+30,Visto Bueno Cierre Proceso,2016-06-03 22:57:55.162,2016-06-03 23:13:01.658,Role 3
+30,Transferir Creditos,2016-06-03 23:13:01.658,2016-06-03 23:13:42.404,Role 3
+30,Transferir creditos homologables,2016-06-03 23:13:42.404,2016-06-03 23:13:42.404,Role 3
+30,End,2016-06-03 23:13:42.404,2016-06-03 23:13:42.404,SYSTEM
+28,Avanzar recepcion documentos,2016-06-03 22:55:21.809,2016-06-03 23:45:37.809,Role 7
+28,Validacion final,2016-06-03 23:45:37.809,2016-06-03 23:54:23.826,Role 2
+28,Visto Bueno Cierre Proceso,2016-06-03 23:54:23.826,2016-06-04 00:06:18.647,Role 3
+28,Transferir Creditos,2016-06-04 00:06:18.647,2016-06-04 00:06:54.019,Role 3
+28,Transferir creditos homologables,2016-06-04 00:06:54.019,2016-06-04 00:06:54.019,Role 3
+28,End,2016-06-04 00:06:54.019,2016-06-04 00:06:54.019,SYSTEM
+29,Avanzar recepcion documentos,2016-06-03 23:45:37.809,2016-06-04 00:36:53.809,Role 7
+29,Validacion final,2016-06-04 00:36:53.809,2016-06-04 00:39:28.52,Role 2
+29,Visto Bueno Cierre Proceso,2016-06-04 00:39:28.52,2016-06-04 00:41:26.364,Role 3
+29,Transferir Creditos,2016-06-04 00:41:26.364,2016-06-04 00:41:49.113,Role 3
+29,Transferir creditos homologables,2016-06-04 00:41:49.113,2016-06-04 00:41:49.113,Role 3
+29,End,2016-06-04 00:41:49.113,2016-06-04 00:41:49.113,SYSTEM
+31,Avanzar recepcion documentos,2016-06-04 00:36:53.809,2016-06-04 01:27:09.809,Role 7
+31,Validacion final,2016-06-04 01:27:09.809,2016-06-04 01:27:11.208,Role 2
+31,Visto Bueno Cierre Proceso,2016-06-04 01:27:11.208,2016-06-04 01:57:28.172,Role 3
+31,Transferir Creditos,2016-06-04 01:57:28.172,2016-06-04 01:57:45.991,Role 3
+31,Transferir creditos homologables,2016-06-04 01:57:45.991,2016-06-04 01:57:45.991,Role 3
+31,End,2016-06-04 01:57:45.991,2016-06-04 01:57:45.991,SYSTEM
+34,Avanzar recepcion documentos,2016-06-04 01:27:09.809,2016-06-04 14:18:25.809,Role 7
+34,Validacion final,2016-06-04 14:18:25.809,2016-06-04 14:20:45.373,Role 2
+34,Visto Bueno Cierre Proceso,2016-06-04 14:20:45.373,2016-06-04 14:26:24.149,Role 3
+34,Transferir Creditos,2016-06-04 14:26:24.149,2016-06-04 14:26:57.034,Role 3
+34,Transferir creditos homologables,2016-06-04 14:26:57.034,2016-06-04 14:26:57.034,Role 3
+34,End,2016-06-04 14:26:57.034,2016-06-04 14:26:57.034,SYSTEM
+37,Avanzar recepcion documentos,2016-06-04 14:18:25.809,2016-06-04 15:08:41.809,Role 7
+37,Validacion final,2016-06-04 15:08:41.809,2016-06-04 15:11:05.365,Role 2
+37,Visto Bueno Cierre Proceso,2016-06-04 15:11:05.365,2016-06-04 15:30:31.366,Role 3
+37,Transferir Creditos,2016-06-04 15:30:31.366,2016-06-04 15:36:45.137,Role 3
+37,Transferir creditos homologables,2016-06-04 15:36:45.137,2016-06-04 15:36:45.137,Role 3
+37,End,2016-06-04 15:36:45.137,2016-06-04 15:36:45.137,SYSTEM
+35,Avanzar recepcion documentos,2016-06-04 15:08:41.809,2016-06-04 15:58:57.809,Role 7
+35,Validacion final,2016-06-04 15:58:57.809,2016-06-04 15:59:25.34,Role 2
+35,Visto Bueno Cierre Proceso,2016-06-04 15:59:25.34,2016-06-04 16:34:37.892,Role 3
+35,Transferir Creditos,2016-06-04 16:34:37.892,2016-06-04 16:35:16.487,Role 3
+35,Transferir creditos homologables,2016-06-04 16:35:16.487,2016-06-04 16:35:16.487,Role 3
+35,End,2016-06-04 16:35:16.487,2016-06-04 16:35:16.487,SYSTEM
+36,Avanzar recepcion documentos,2016-06-04 15:58:57.809,2016-06-04 16:49:13.809,Role 7
+36,Validacion final,2016-06-04 16:49:13.809,2016-06-04 17:01:51.14,Role 2
+32,Avanzar recepcion documentos,2016-06-04 16:49:13.809,2016-06-04 17:39:29.809,Role 7
+32,Validacion final,2016-06-04 17:39:29.809,2016-06-04 17:44:18.492,Role 2
+36,Visto Bueno Cierre Proceso,2016-06-04 17:01:51.14,2016-06-04 17:51:04.962,Role 3
+36,Transferir Creditos,2016-06-04 17:51:04.962,2016-06-04 17:56:46.595,Role 3
+36,Transferir creditos homologables,2016-06-04 17:56:46.595,2016-06-04 17:56:46.595,Role 3
+36,End,2016-06-04 17:56:46.595,2016-06-04 17:56:46.595,SYSTEM
+32,Visto Bueno Cierre Proceso,2016-06-04 17:44:18.492,2016-06-04 18:06:05.39,Role 3
+32,Transferir Creditos,2016-06-04 18:06:05.39,2016-06-04 18:10:17.546,Role 3
+32,Transferir creditos homologables,2016-06-04 18:10:17.546,2016-06-04 18:10:17.546,Role 3
+32,End,2016-06-04 18:10:17.546,2016-06-04 18:10:17.546,SYSTEM
+38,Avanzar recepcion documentos,2016-06-04 17:39:29.809,2016-06-04 18:29:45.809,Role 7
+38,Validacion final,2016-06-04 18:29:45.809,2016-06-04 18:31:05.177,Role 2
+38,Visto Bueno Cierre Proceso,2016-06-04 18:31:05.177,2016-06-04 18:48:06.219,Role 3
+38,Transferir Creditos,2016-06-04 18:48:06.219,2016-06-04 18:49:20.316,Role 3
+38,Transferir creditos homologables,2016-06-04 18:49:20.316,2016-06-04 18:49:20.316,Role 3
+38,End,2016-06-04 18:49:20.316,2016-06-04 18:49:20.316,SYSTEM
+41,Avanzar recepcion documentos,2016-06-04 18:29:45.809,2016-06-04 19:20:01.809,Role 7
+41,Validacion final,2016-06-04 19:20:01.809,2016-06-04 19:23:39.383,Role 2
+41,Visto Bueno Cierre Proceso,2016-06-04 19:23:39.383,2016-06-04 19:32:22.765,Role 3
+41,Transferir Creditos,2016-06-04 19:32:22.765,2016-06-04 19:39:32.457,Role 3
+41,Transferir creditos homologables,2016-06-04 19:39:32.457,2016-06-04 19:39:32.457,Role 3
+41,End,2016-06-04 19:39:32.457,2016-06-04 19:39:32.457,SYSTEM
+40,Avanzar recepcion documentos,2016-06-04 19:20:01.809,2016-06-04 20:10:17.809,Role 7
+40,Validacion final,2016-06-04 20:10:17.809,2016-06-04 20:12:28.413,Role 2
+40,Visto Bueno Cierre Proceso,2016-06-04 20:12:28.413,2016-06-04 20:18:45.137,Role 3
+40,Transferir Creditos,2016-06-04 20:18:45.137,2016-06-04 20:19:12.763,Role 3
+40,Transferir creditos homologables,2016-06-04 20:19:12.763,2016-06-04 20:19:12.763,Role 3
+40,End,2016-06-04 20:19:12.763,2016-06-04 20:19:12.763,SYSTEM
+44,Avanzar recepcion documentos,2016-06-04 20:10:17.809,2016-06-04 21:00:33.809,Role 7
+44,Validacion final,2016-06-04 21:00:33.809,2016-06-04 21:01:10.278,Role 2
+44,Visto Bueno Cierre Proceso,2016-06-04 21:01:10.278,2016-06-04 21:22:33.669,Role 3
+44,Transferir Creditos,2016-06-04 21:22:33.669,2016-06-04 21:25:22.656,Role 3
+44,Transferir creditos homologables,2016-06-04 21:25:22.656,2016-06-04 21:25:22.656,Role 3
+44,End,2016-06-04 21:25:22.656,2016-06-04 21:25:22.656,SYSTEM
+45,Avanzar recepcion documentos,2016-06-04 21:00:33.809,2016-06-04 21:50:49.809,Role 7
+45,Validacion final,2016-06-04 21:50:49.809,2016-06-04 21:51:41.738,Role 2
+45,Visto Bueno Cierre Proceso,2016-06-04 21:51:41.738,2016-06-04 22:03:25.951,Role 3
+45,Transferir Creditos,2016-06-04 22:03:25.951,2016-06-04 22:12:52.961,Role 3
+45,Transferir creditos homologables,2016-06-04 22:12:52.961,2016-06-04 22:12:52.961,Role 3
+45,End,2016-06-04 22:12:52.961,2016-06-04 22:12:52.961,SYSTEM
+43,Avanzar recepcion documentos,2016-06-04 21:50:49.809,2016-06-04 22:41:05.809,Role 7
+43,Validacion final,2016-06-04 22:41:05.809,2016-06-04 22:49:50.476,Role 2
+43,Visto Bueno Cierre Proceso,2016-06-04 22:49:50.476,2016-06-04 23:29:52.975,Role 3
+43,Transferir Creditos,2016-06-04 23:29:52.975,2016-06-04 23:30:37.389,Role 3
+43,Transferir creditos homologables,2016-06-04 23:30:37.389,2016-06-04 23:30:37.389,Role 3
+43,End,2016-06-04 23:30:37.389,2016-06-04 23:30:37.389,SYSTEM
+46,Avanzar recepcion documentos,2016-06-04 22:41:05.809,2016-06-04 23:31:21.809,Role 7
+46,Validacion final,2016-06-04 23:31:21.809,2016-06-04 23:38:34.929,Role 2
+46,Visto Bueno Cierre Proceso,2016-06-04 23:38:34.929,2016-06-05 00:06:53.493,Role 3
+46,Transferir Creditos,2016-06-05 00:06:53.493,2016-06-05 00:09:43.429,Role 3
+46,Transferir creditos homologables,2016-06-05 00:09:43.429,2016-06-05 00:09:43.429,Role 3
+46,End,2016-06-05 00:09:43.429,2016-06-05 00:09:43.429,SYSTEM
+42,Avanzar recepcion documentos,2016-06-04 23:31:21.809,2016-06-05 00:22:37.809,Role 7
+42,Validacion final,2016-06-05 00:22:37.809,2016-06-05 00:25:19.46,Role 2
+47,Avanzar recepcion documentos,2016-06-05 00:22:37.809,2016-06-07 14:13:53.809,Role 7
+47,Validacion final,2016-06-07 14:13:53.809,2016-06-07 14:15:39.288,Role 2
+47,Visto Bueno Cierre Proceso,2016-06-07 14:15:39.288,2016-06-07 14:21:34.156,Role 3
+47,Transferir Creditos,2016-06-07 14:21:34.156,2016-06-07 14:22:51.451,Role 3
+47,Transferir creditos homologables,2016-06-07 14:22:51.451,2016-06-07 14:22:51.451,Role 3
+47,End,2016-06-07 14:22:51.451,2016-06-07 14:22:51.451,SYSTEM
+42,Visto Bueno Cierre Proceso,2016-06-05 00:25:19.46,2016-06-07 14:28:50.529,Role 3
+42,Transferir Creditos,2016-06-07 14:28:50.529,2016-06-07 14:38:43.646,Role 3
+42,Transferir creditos homologables,2016-06-07 14:38:43.646,2016-06-07 14:38:43.646,Role 3
+42,End,2016-06-07 14:38:43.646,2016-06-07 14:38:43.646,SYSTEM
+49,Avanzar recepcion documentos,2016-06-07 14:13:53.809,2016-06-07 15:04:09.809,Role 7
+49,Validacion final,2016-06-07 15:04:09.809,2016-06-07 15:08:50.544,Role 2
+49,Visto Bueno Cierre Proceso,2016-06-07 15:08:50.544,2016-06-07 15:12:55.315,Role 3
+49,Transferir Creditos,2016-06-07 15:12:55.315,2016-06-07 15:14:02.309,Role 3
+49,Transferir creditos homologables,2016-06-07 15:14:02.309,2016-06-07 15:14:02.309,Role 3
+49,End,2016-06-07 15:14:02.309,2016-06-07 15:14:02.309,SYSTEM
+50,Avanzar recepcion documentos,2016-06-07 15:04:09.809,2016-06-07 15:54:25.809,Role 7
+50,Validacion final,2016-06-07 15:54:25.809,2016-06-07 15:56:20.224,Role 2
+50,Visto Bueno Cierre Proceso,2016-06-07 15:56:20.224,2016-06-07 16:11:04.523,Role 3
+50,Transferir Creditos,2016-06-07 16:11:04.523,2016-06-07 16:13:26.009,Role 3
+50,Transferir creditos homologables,2016-06-07 16:13:26.009,2016-06-07 16:13:26.009,Role 3
+50,End,2016-06-07 16:13:26.009,2016-06-07 16:13:26.009,SYSTEM
+48,Avanzar recepcion documentos,2016-06-07 15:54:25.809,2016-06-07 16:44:41.809,Role 7
+48,Validacion final,2016-06-07 16:44:41.809,2016-06-07 16:44:42.952,Role 2
+48,Visto Bueno Cierre Proceso,2016-06-07 16:44:42.952,2016-06-07 16:55:46.7,Role 3
+48,Transferir Creditos,2016-06-07 16:55:46.7,2016-06-07 16:56:57.808,Role 3
+48,Transferir creditos homologables,2016-06-07 16:56:57.808,2016-06-07 16:56:57.808,Role 3
+48,End,2016-06-07 16:56:57.808,2016-06-07 16:56:57.808,SYSTEM
+53,Avanzar recepcion documentos,2016-06-07 16:44:41.809,2016-06-07 17:34:57.809,Role 7
+53,Validacion final,2016-06-07 17:34:57.809,2016-06-07 17:36:01.777,Role 2
+53,Visto Bueno Cierre Proceso,2016-06-07 17:36:01.777,2016-06-07 17:39:32.285,Role 3
+53,Transferir Creditos,2016-06-07 17:39:32.285,2016-06-07 17:40:07.408,Role 3
+53,Transferir creditos homologables,2016-06-07 17:40:07.408,2016-06-07 17:40:07.408,Role 3
+53,End,2016-06-07 17:40:07.408,2016-06-07 17:40:07.408,SYSTEM
+52,Avanzar recepcion documentos,2016-06-07 17:34:57.809,2016-06-07 18:25:13.809,Role 7
+52,Validacion final,2016-06-07 18:25:13.809,2016-06-07 18:27:04.4,Role 2
+52,Visto Bueno Cierre Proceso,2016-06-07 18:27:04.4,2016-06-07 18:42:43.547,Role 3
+52,Transferir Creditos,2016-06-07 18:42:43.547,2016-06-07 18:43:04.462,Role 3
+52,Transferir creditos homologables,2016-06-07 18:43:04.462,2016-06-07 18:43:04.462,Role 3
+52,End,2016-06-07 18:43:04.462,2016-06-07 18:43:04.462,SYSTEM
+51,Avanzar recepcion documentos,2016-06-07 18:25:13.809,2016-06-07 19:15:29.809,Role 7
+51,Validacion final,2016-06-07 19:15:29.809,2016-06-07 19:15:52.705,Role 2
+51,Visto Bueno Cierre Proceso,2016-06-07 19:15:52.705,2016-06-07 19:33:32.21,Role 3
+51,Transferir Creditos,2016-06-07 19:33:32.21,2016-06-07 19:36:17.053,Role 3
+51,Transferir creditos homologables,2016-06-07 19:36:17.053,2016-06-07 19:36:17.053,Role 3
+51,End,2016-06-07 19:36:17.053,2016-06-07 19:36:17.053,SYSTEM
+54,Avanzar recepcion documentos,2016-06-07 19:15:29.809,2016-06-07 20:05:45.809,Role 7
+54,Validacion final,2016-06-07 20:05:45.809,2016-06-07 20:15:26.693,Role 2
+54,Visto Bueno Cierre Proceso,2016-06-07 20:15:26.693,2016-06-07 20:50:59.454,Role 3
+54,Transferir Creditos,2016-06-07 20:50:59.454,2016-06-07 20:52:27.388,Role 3
+54,Transferir creditos homologables,2016-06-07 20:52:27.388,2016-06-07 20:52:27.388,Role 3
+54,End,2016-06-07 20:52:27.388,2016-06-07 20:52:27.388,SYSTEM
+55,Avanzar recepcion documentos,2016-06-07 20:05:45.809,2016-06-07 20:56:01.809,Role 7
+55,Validacion final,2016-06-07 20:56:01.809,2016-06-07 20:57:43.327,Role 2
+55,Visto Bueno Cierre Proceso,2016-06-07 20:57:43.327,2016-06-07 21:00:07.788,Role 3
+55,Transferir Creditos,2016-06-07 21:00:07.788,2016-06-07 21:02:22.595,Role 3
+55,Transferir creditos homologables,2016-06-07 21:02:22.595,2016-06-07 21:02:22.595,Role 3
+55,End,2016-06-07 21:02:22.595,2016-06-07 21:02:22.595,SYSTEM
+56,Avanzar recepcion documentos,2016-06-07 20:56:01.809,2016-06-07 21:46:17.809,Role 7
+56,Validacion final,2016-06-07 21:46:17.809,2016-06-07 21:52:25.426,Role 2
+56,Visto Bueno Cierre Proceso,2016-06-07 21:52:25.426,2016-06-07 22:11:11.585,Role 3
+56,Transferir Creditos,2016-06-07 22:11:11.585,2016-06-07 22:13:22.605,Role 3
+56,Transferir creditos homologables,2016-06-07 22:13:22.605,2016-06-07 22:13:22.605,Role 3
+56,End,2016-06-07 22:13:22.605,2016-06-07 22:13:22.605,SYSTEM

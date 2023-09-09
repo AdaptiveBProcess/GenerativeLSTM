@@ -1,0 +1,675 @@
+caseid,task,start_timestamp,end_timestamp,resource
+0,Start,2011-06-21 01:00:00.0,2011-06-21 01:00:00.0,SYSTEM
+1,Start,2011-06-21 01:43:47.582,2011-06-21 01:43:47.582,SYSTEM
+2,Start,2011-06-21 01:44:51.73,2011-06-21 01:44:51.73,SYSTEM
+0,Create Purchase Requisition,2011-06-21 01:00:00.0,2011-06-21 04:25:38.351,Role 8
+0,Analyze Purchase Requisition,2011-06-21 04:25:38.351,2011-06-21 04:29:09.396,Role 2
+0,Create Request for Quotation,2011-06-21 04:29:09.396,2011-06-21 04:30:43.902,Role 2
+1,Create Purchase Requisition,2011-06-21 04:25:38.351,2011-06-21 04:43:31.257,Role 8
+3,Start,2011-06-21 04:44:34.073,2011-06-21 04:44:34.073,SYSTEM
+1,Analyze Purchase Requisition,2011-06-21 04:43:31.257,2011-06-21 04:47:35.393,Role 2
+1,Create Request for Quotation,2011-06-21 04:47:35.393,2011-06-21 04:49:31.581,Role 2
+0,Analyze Request for Quotation,2011-06-21 04:30:43.902,2011-06-21 04:52:43.109,Role 6
+4,Start,2011-06-21 11:24:52.922,2011-06-21 11:24:52.922,SYSTEM
+5,Start,2011-06-21 11:37:40.332,2011-06-21 11:37:40.332,SYSTEM
+6,Start,2011-06-21 12:29:28.616,2011-06-21 12:29:28.616,SYSTEM
+7,Start,2011-06-21 12:38:27.772,2011-06-21 12:38:27.772,SYSTEM
+8,Start,2011-06-21 21:08:13.115,2011-06-21 21:08:13.115,SYSTEM
+2,Create Purchase Requisition,2011-06-21 04:43:31.257,2011-06-21 21:16:07.877,Role 8
+0,Send Request for Quotation to Supplier,2011-06-21 04:52:43.109,2011-06-21 21:20:54.144,Role 5
+2,Analyze Purchase Requisition,2011-06-21 21:16:07.877,2011-06-21 21:26:02.66,Role 2
+2,Create Request for Quotation,2011-06-21 21:26:02.66,2011-06-21 21:28:28.797,Role 2
+1,Analyze Request for Quotation,2011-06-21 04:52:43.109,2011-06-21 21:35:06.06,Role 6
+1,Send Request for Quotation to Supplier,2011-06-21 21:35:06.06,2011-06-21 21:58:49.733,Role 5
+2,Analyze Request for Quotation,2011-06-21 21:35:06.06,2011-06-22 01:01:32.587,Role 6
+3,Create Purchase Requisition,2011-06-21 21:16:07.877,2011-06-22 01:03:52.86,Role 8
+3,Analyze Purchase Requisition,2011-06-22 01:03:52.86,2011-06-22 01:11:55.791,Role 2
+3,Create Request for Quotation,2011-06-22 01:11:55.791,2011-06-22 01:14:16.197,Role 2
+2,Send Request for Quotation to Supplier,2011-06-22 01:01:32.587,2011-06-22 01:20:06.18,Role 5
+3,Analyze Request for Quotation,2011-06-22 01:14:16.197,2011-06-22 01:40:05.403,Role 6
+3,Send Request for Quotation to Supplier,2011-06-22 01:40:05.403,2011-06-22 01:51:39.974,Role 5
+4,Create Purchase Requisition,2011-06-22 01:03:52.86,2011-06-22 01:55:48.334,Role 8
+4,Analyze Purchase Requisition,2011-06-22 01:55:48.334,2011-06-22 01:58:31.923,Role 2
+9,Start,2011-06-22 02:22:12.351,2011-06-22 02:22:12.351,SYSTEM
+10,Start,2011-06-22 02:55:39.902,2011-06-22 02:55:39.902,SYSTEM
+4,Create Request for Quotation,2011-06-22 01:58:31.923,2011-06-22 03:01:56.682,Role 2
+4,Analyze Request for Quotation,2011-06-22 03:01:56.682,2011-06-22 03:25:13.947,Role 6
+5,Create Purchase Requisition,2011-06-22 01:55:48.334,2011-06-22 03:36:06.678,Role 8
+5,Analyze Purchase Requisition,2011-06-22 03:36:06.678,2011-06-22 03:40:55.522,Role 2
+5,Create Request for Quotation,2011-06-22 03:40:55.522,2011-06-22 03:42:50.957,Role 2
+6,Create Purchase Requisition,2011-06-22 03:36:06.678,2011-06-22 03:51:20.248,Role 8
+6,Analyze Purchase Requisition,2011-06-22 03:51:20.248,2011-06-22 03:57:24.529,Role 2
+11,Start,2011-06-22 05:27:47.985,2011-06-22 05:27:47.985,SYSTEM
+12,Start,2011-06-22 11:43:56.843,2011-06-22 11:43:56.843,SYSTEM
+13,Start,2011-06-22 12:38:16.419,2011-06-22 12:38:16.419,SYSTEM
+14,Start,2011-06-22 19:06:31.328,2011-06-22 19:06:31.328,SYSTEM
+15,Start,2011-06-22 19:48:53.161,2011-06-22 19:48:53.161,SYSTEM
+16,Start,2011-06-22 23:50:43.497,2011-06-22 23:50:43.497,SYSTEM
+17,Start,2011-06-23 05:35:43.458,2011-06-23 05:35:43.458,SYSTEM
+18,Start,2011-06-23 18:18:35.943,2011-06-23 18:18:35.943,SYSTEM
+19,Start,2011-06-23 20:24:24.533,2011-06-23 20:24:24.533,SYSTEM
+6,Create Request for Quotation,2011-06-22 03:57:24.529,2011-06-24 00:00:16.917,Role 2
+4,Send Request for Quotation to Supplier,2011-06-22 03:25:13.947,2011-06-24 00:04:02.859,Role 5
+0,Create Quotation comparison Map,2011-06-21 21:20:54.144,2011-06-24 00:04:45.757,Role 9
+5,Analyze Request for Quotation,2011-06-22 03:42:50.957,2011-06-24 00:13:53.825,Role 6
+7,Create Purchase Requisition,2011-06-22 03:51:20.248,2011-06-24 00:25:30.933,Role 8
+6,Analyze Request for Quotation,2011-06-24 00:13:53.825,2011-06-24 00:26:00.27,Role 6
+7,Analyze Purchase Requisition,2011-06-24 00:25:30.933,2011-06-24 00:31:40.204,Role 2
+7,Create Request for Quotation,2011-06-24 00:31:40.204,2011-06-24 00:33:39.401,Role 2
+5,Send Request for Quotation to Supplier,2011-06-24 00:13:53.825,2011-06-24 00:34:30.185,Role 5
+0,Analyze Quotation Comparison Map,2011-06-24 00:04:45.757,2011-06-24 00:36:20.303,Role 1
+7,Analyze Request for Quotation,2011-06-24 00:33:39.401,2011-06-24 00:46:17.113,Role 6
+8,Create Purchase Requisition,2011-06-24 00:25:30.933,2011-06-24 00:53:36.483,Role 8
+8,Analyze Purchase Requisition,2011-06-24 00:53:36.483,2011-06-24 00:55:04.518,Role 2
+8,Create Request for Quotation,2011-06-24 00:55:04.518,2011-06-24 00:57:40.261,Role 2
+20,Start,2011-06-24 05:47:20.904,2011-06-24 05:47:20.904,SYSTEM
+6,Send Request for Quotation to Supplier,2011-06-24 00:34:30.185,2011-06-24 13:05:34.847,Role 5
+8,Analyze Request for Quotation,2011-06-24 00:57:40.261,2011-06-24 13:16:17.087,Role 6
+7,Send Request for Quotation to Supplier,2011-06-24 13:05:34.847,2011-06-24 13:30:46.364,Role 5
+9,Create Purchase Requisition,2011-06-24 00:53:36.483,2011-06-24 13:37:23.367,Role 8
+9,Analyze Purchase Requisition,2011-06-24 13:37:23.367,2011-06-24 13:48:39.026,Role 2
+9,Create Request for Quotation,2011-06-24 13:48:39.026,2011-06-24 13:50:50.93,Role 2
+8,Send Request for Quotation to Supplier,2011-06-24 13:30:46.364,2011-06-24 13:58:57.573,Role 5
+21,Start,2011-06-25 02:32:03.092,2011-06-25 02:32:03.092,SYSTEM
+10,Create Purchase Requisition,2011-06-24 13:37:23.367,2011-06-25 04:12:55.693,Role 8
+10,Analyze Purchase Requisition,2011-06-25 04:12:55.693,2011-06-25 04:19:26.781,Role 2
+10,Create Request for Quotation,2011-06-25 04:19:26.781,2011-06-25 04:21:41.401,Role 2
+9,Analyze Request for Quotation,2011-06-24 13:50:50.93,2011-06-25 04:23:21.728,Role 6
+10,Analyze Request for Quotation,2011-06-25 04:23:21.728,2011-06-25 04:42:28.921,Role 6
+9,Send Request for Quotation to Supplier,2011-06-25 04:23:21.728,2011-06-25 04:44:21.599,Role 5
+11,Create Purchase Requisition,2011-06-25 04:12:55.693,2011-06-25 04:56:49.354,Role 8
+22,Start,2011-06-25 06:19:30.197,2011-06-25 06:19:30.197,SYSTEM
+23,Start,2011-06-25 06:54:01.554,2011-06-25 06:54:01.554,SYSTEM
+24,Start,2011-06-26 00:23:50.783,2011-06-26 00:23:50.783,SYSTEM
+11,Analyze Purchase Requisition,2011-06-25 04:56:49.354,2011-06-26 14:04:39.598,Role 2
+11,Create Request for Quotation,2011-06-26 14:04:39.598,2011-06-26 14:07:09.573,Role 2
+10,Send Request for Quotation to Supplier,2011-06-25 04:44:21.599,2011-06-26 14:10:53.51,Role 5
+12,Create Purchase Requisition,2011-06-25 04:56:49.354,2011-06-26 14:45:53.581,Role 8
+12,Analyze Purchase Requisition,2011-06-26 14:45:53.581,2011-06-26 14:50:02.507,Role 2
+12,Create Request for Quotation,2011-06-26 14:50:02.507,2011-06-26 14:51:26.488,Role 2
+11,Analyze Request for Quotation,2011-06-26 14:07:09.573,2011-06-26 14:54:07.448,Role 6
+25,Start,2011-06-26 16:34:58.381,2011-06-26 16:34:58.381,SYSTEM
+26,Start,2011-06-26 19:37:52.121,2011-06-26 19:37:52.121,SYSTEM
+13,Create Purchase Requisition,2011-06-26 14:45:53.581,2011-06-27 00:02:47.849,Role 8
+12,Analyze Request for Quotation,2011-06-26 14:54:07.448,2011-06-27 00:09:08.835,Role 6
+13,Analyze Purchase Requisition,2011-06-27 00:02:47.849,2011-06-27 00:11:05.616,Role 2
+13,Create Request for Quotation,2011-06-27 00:11:05.616,2011-06-27 00:13:08.127,Role 2
+11,Send Request for Quotation to Supplier,2011-06-26 14:54:07.448,2011-06-27 00:24:53.167,Role 5
+14,Create Purchase Requisition,2011-06-27 00:02:47.849,2011-06-27 00:35:53.169,Role 8
+12,Send Request for Quotation to Supplier,2011-06-27 00:24:53.167,2011-06-27 00:36:45.429,Role 5
+14,Analyze Purchase Requisition,2011-06-27 00:35:53.169,2011-06-27 00:47:15.516,Role 2
+14,Create Request for Quotation,2011-06-27 00:47:15.516,2011-06-27 00:49:30.276,Role 2
+13,Analyze Request for Quotation,2011-06-27 00:13:08.127,2011-06-27 00:56:33.218,Role 6
+1,Create Quotation comparison Map,2011-06-24 00:04:45.757,2011-06-27 00:57:53.386,Role 9
+1,Analyze Quotation Comparison Map,2011-06-27 00:57:53.386,2011-06-27 03:15:20.947,Role 1
+27,Start,2011-06-27 03:21:08.191,2011-06-27 03:21:08.191,SYSTEM
+13,Send Request for Quotation to Supplier,2011-06-27 00:56:33.218,2011-06-27 03:22:35.972,Role 5
+15,Create Purchase Requisition,2011-06-27 00:35:53.169,2011-06-27 03:29:29.536,Role 8
+14,Analyze Request for Quotation,2011-06-27 00:56:33.218,2011-06-27 03:33:48.51,Role 6
+15,Analyze Purchase Requisition,2011-06-27 03:29:29.536,2011-06-27 03:34:33.049,Role 2
+15,Create Request for Quotation,2011-06-27 03:34:33.049,2011-06-27 03:36:10.264,Role 2
+16,Create Purchase Requisition,2011-06-27 03:29:29.536,2011-06-27 03:51:25.143,Role 8
+28,Start,2011-06-27 13:21:52.21,2011-06-27 13:21:52.21,SYSTEM
+16,Analyze Purchase Requisition,2011-06-27 03:51:25.143,2011-06-27 15:07:40.069,Role 2
+16,Create Request for Quotation,2011-06-27 15:07:40.069,2011-06-27 15:09:31.738,Role 2
+15,Analyze Request for Quotation,2011-06-27 03:36:10.264,2011-06-27 15:16:17.049,Role 6
+14,Send Request for Quotation to Supplier,2011-06-27 03:33:48.51,2011-06-27 15:20:10.464,Role 5
+17,Create Purchase Requisition,2011-06-27 03:51:25.143,2011-06-27 15:29:39.995,Role 8
+17,Analyze Purchase Requisition,2011-06-27 15:29:39.995,2011-06-27 15:32:31.032,Role 2
+17,Create Request for Quotation,2011-06-27 15:32:31.032,2011-06-27 15:34:27.301,Role 2
+16,Analyze Request for Quotation,2011-06-27 15:16:17.049,2011-06-27 15:38:52.492,Role 6
+15,Send Request for Quotation to Supplier,2011-06-27 15:20:10.464,2011-06-27 15:44:33.158,Role 5
+17,Analyze Request for Quotation,2011-06-27 15:38:52.492,2011-06-27 15:54:09.682,Role 6
+29,Start,2011-06-27 16:20:04.313,2011-06-27 16:20:04.313,SYSTEM
+30,Start,2011-06-27 21:52:32.503,2011-06-27 21:52:32.503,SYSTEM
+31,Start,2011-06-28 01:22:59.397,2011-06-28 01:22:59.397,SYSTEM
+18,Create Purchase Requisition,2011-06-27 15:29:39.995,2011-06-28 04:09:39.126,Role 8
+18,Analyze Purchase Requisition,2011-06-28 04:09:39.126,2011-06-28 04:18:58.432,Role 2
+16,Send Request for Quotation to Supplier,2011-06-27 15:44:33.158,2011-06-28 04:19:05.178,Role 5
+18,Create Request for Quotation,2011-06-28 04:18:58.432,2011-06-28 04:20:45.424,Role 2
+18,Analyze Request for Quotation,2011-06-28 04:20:45.424,2011-06-28 04:36:59.468,Role 6
+17,Send Request for Quotation to Supplier,2011-06-28 04:19:05.178,2011-06-28 04:49:17.486,Role 5
+19,Create Purchase Requisition,2011-06-28 04:09:39.126,2011-06-28 04:58:33.317,Role 8
+19,Analyze Purchase Requisition,2011-06-28 04:58:33.317,2011-06-28 21:07:22.573,Role 2
+19,Create Request for Quotation,2011-06-28 21:07:22.573,2011-06-28 21:09:27.648,Role 2
+20,Create Purchase Requisition,2011-06-28 04:58:33.317,2011-06-28 21:20:26.124,Role 8
+18,Send Request for Quotation to Supplier,2011-06-28 04:49:17.486,2011-06-28 21:21:31.07,Role 5
+20,Analyze Purchase Requisition,2011-06-28 21:20:26.124,2011-06-28 21:32:30.642,Role 2
+20,Create Request for Quotation,2011-06-28 21:32:30.642,2011-06-28 21:34:30.729,Role 2
+19,Analyze Request for Quotation,2011-06-28 21:09:27.648,2011-06-28 21:37:32.451,Role 6
+21,Create Purchase Requisition,2011-06-28 21:20:26.124,2011-06-28 21:49:45.875,Role 8
+21,Analyze Purchase Requisition,2011-06-28 21:49:45.875,2011-06-28 21:52:52.94,Role 2
+21,Create Request for Quotation,2011-06-28 21:52:52.94,2011-06-28 21:54:51.917,Role 2
+20,Analyze Request for Quotation,2011-06-28 21:37:32.451,2011-06-28 21:58:22.745,Role 6
+19,Send Request for Quotation to Supplier,2011-06-28 21:37:32.451,2011-06-29 01:08:11.584,Role 5
+21,Analyze Request for Quotation,2011-06-28 21:58:22.745,2011-06-29 01:16:07.747,Role 6
+20,Send Request for Quotation to Supplier,2011-06-29 01:08:11.584,2011-06-29 01:41:43.928,Role 5
+22,Create Purchase Requisition,2011-06-28 21:49:45.875,2011-06-29 01:42:22.461,Role 8
+22,Analyze Purchase Requisition,2011-06-29 01:42:22.461,2011-06-29 01:49:19.172,Role 2
+22,Create Request for Quotation,2011-06-29 01:49:19.172,2011-06-29 01:51:19.829,Role 2
+21,Send Request for Quotation to Supplier,2011-06-29 01:41:43.928,2011-06-29 01:52:25.304,Role 5
+2,Create Quotation comparison Map,2011-06-27 00:57:53.386,2011-06-29 03:09:30.958,Role 9
+22,Analyze Request for Quotation,2011-06-29 01:51:19.829,2011-06-29 03:17:12.296,Role 6
+23,Create Purchase Requisition,2011-06-29 01:42:22.461,2011-06-29 03:31:18.648,Role 8
+23,Analyze Purchase Requisition,2011-06-29 03:31:18.648,2011-06-29 03:33:41.969,Role 2
+2,Analyze Quotation Comparison Map,2011-06-29 03:09:30.958,2011-06-29 03:35:21.567,Role 1
+23,Create Request for Quotation,2011-06-29 03:33:41.969,2011-06-29 03:35:28.006,Role 2
+22,Send Request for Quotation to Supplier,2011-06-29 03:17:12.296,2011-06-29 03:47:37.724,Role 5
+23,Analyze Request for Quotation,2011-06-29 03:35:28.006,2011-06-29 03:50:25.681,Role 6
+24,Create Purchase Requisition,2011-06-29 03:31:18.648,2011-06-29 03:57:20.803,Role 8
+24,Analyze Purchase Requisition,2011-06-29 03:57:20.803,2011-07-01 00:02:15.381,Role 2
+24,Create Request for Quotation,2011-07-01 00:02:15.381,2011-07-01 00:03:31.136,Role 2
+23,Send Request for Quotation to Supplier,2011-06-29 03:50:25.681,2011-07-01 00:20:31.336,Role 5
+24,Analyze Request for Quotation,2011-07-01 00:03:31.136,2011-07-01 00:20:34.758,Role 6
+25,Create Purchase Requisition,2011-06-29 03:57:20.803,2011-07-01 00:21:06.084,Role 8
+25,Analyze Purchase Requisition,2011-07-01 00:21:06.084,2011-07-01 00:33:02.311,Role 2
+25,Create Request for Quotation,2011-07-01 00:33:02.311,2011-07-01 00:35:06.542,Role 2
+24,Send Request for Quotation to Supplier,2011-07-01 00:20:34.758,2011-07-01 00:55:02.376,Role 5
+25,Analyze Request for Quotation,2011-07-01 00:35:06.542,2011-07-01 13:03:10.387,Role 6
+26,Create Purchase Requisition,2011-07-01 00:21:06.084,2011-07-01 13:08:41.575,Role 8
+26,Analyze Purchase Requisition,2011-07-01 13:08:41.575,2011-07-01 13:21:52.177,Role 2
+26,Create Request for Quotation,2011-07-01 13:21:52.177,2011-07-01 13:24:21.174,Role 2
+25,Send Request for Quotation to Supplier,2011-07-01 13:03:10.387,2011-07-01 13:31:35.793,Role 5
+26,Analyze Request for Quotation,2011-07-01 13:24:21.174,2011-07-01 13:46:53.042,Role 6
+27,Create Purchase Requisition,2011-07-01 13:08:41.575,2011-07-01 13:55:58.726,Role 8
+27,Analyze Purchase Requisition,2011-07-01 13:55:58.726,2011-07-02 04:06:25.899,Role 2
+27,Create Request for Quotation,2011-07-02 04:06:25.899,2011-07-02 04:07:46.415,Role 2
+26,Send Request for Quotation to Supplier,2011-07-01 13:46:53.042,2011-07-02 04:12:14.956,Role 5
+28,Create Purchase Requisition,2011-07-01 13:55:58.726,2011-07-02 04:32:52.232,Role 8
+27,Analyze Request for Quotation,2011-07-02 04:07:46.415,2011-07-02 04:34:43.517,Role 6
+28,Analyze Purchase Requisition,2011-07-02 04:32:52.232,2011-07-02 04:36:21.634,Role 2
+28,Amend Purchase Requisition,2011-07-02 04:36:21.634,2011-07-02 04:36:26.617,Role 1
+28,Analyze Purchase Requisition,2011-07-02 04:36:26.617,2011-07-02 04:41:25.363,Role 2
+28,Create Request for Quotation,2011-07-02 04:41:25.363,2011-07-02 04:43:10.044,Role 2
+27,Send Request for Quotation to Supplier,2011-07-02 04:34:43.517,2011-07-03 14:01:27.509,Role 5
+28,Analyze Request for Quotation,2011-07-02 04:43:10.044,2011-07-03 14:07:00.892,Role 6
+29,Create Purchase Requisition,2011-07-02 04:32:52.232,2011-07-03 14:28:18.86,Role 8
+28,Send Request for Quotation to Supplier,2011-07-03 14:07:00.892,2011-07-03 14:30:00.243,Role 5
+29,Analyze Purchase Requisition,2011-07-03 14:28:18.86,2011-07-03 14:37:09.212,Role 2
+29,Create Request for Quotation,2011-07-03 14:37:09.212,2011-07-03 14:38:40.408,Role 2
+30,Create Purchase Requisition,2011-07-03 14:28:18.86,2011-07-03 14:44:32.428,Role 8
+30,Analyze Purchase Requisition,2011-07-03 14:44:32.428,2011-07-03 14:47:37.045,Role 2
+30,Create Request for Quotation,2011-07-03 14:47:37.045,2011-07-03 14:49:45.205,Role 2
+31,Create Purchase Requisition,2011-07-03 14:44:32.428,2011-07-03 14:52:55.674,Role 8
+31,Analyze Purchase Requisition,2011-07-03 14:52:55.674,2011-07-04 00:00:11.386,Role 2
+31,Create Request for Quotation,2011-07-04 00:00:11.386,2011-07-04 00:02:01.873,Role 2
+29,Analyze Request for Quotation,2011-07-03 14:38:40.408,2011-07-04 00:04:57.766,Role 6
+29,Send Request for Quotation to Supplier,2011-07-04 00:04:57.766,2011-07-04 00:26:06.287,Role 5
+3,Create Quotation comparison Map,2011-06-29 03:09:30.958,2011-07-04 00:41:42.469,Role 9
+30,Analyze Request for Quotation,2011-07-04 00:04:57.766,2011-07-04 00:45:27.257,Role 6
+31,Analyze Request for Quotation,2011-07-04 00:45:27.257,2011-07-04 03:04:40.863,Role 6
+3,Analyze Quotation Comparison Map,2011-07-04 00:41:42.469,2011-07-04 03:13:10.543,Role 1
+30,Send Request for Quotation to Supplier,2011-07-04 00:45:27.257,2011-07-04 03:20:04.422,Role 5
+31,Send Request for Quotation to Supplier,2011-07-04 03:20:04.422,2011-07-04 03:53:01.772,Role 5
+4,Create Quotation comparison Map,2011-07-04 00:41:42.469,2011-07-05 04:56:17.567,Role 9
+4,Analyze Quotation Comparison Map,2011-07-05 04:56:17.567,2011-07-05 21:23:07.113,Role 1
+5,Create Quotation comparison Map,2011-07-05 04:56:17.567,2011-07-09 04:26:56.926,Role 9
+5,Analyze Quotation Comparison Map,2011-07-09 04:26:56.926,2011-07-09 04:42:11.134,Role 1
+0,Settle Conditions With Supplier,2011-07-09 04:26:56.926,2011-07-12 21:15:41.073,Role 9
+0,Choose best option,2011-07-12 21:15:41.073,2011-07-12 21:15:41.073,Role 1
+6,Create Quotation comparison Map,2011-07-12 21:15:41.073,2011-07-16 04:18:55.55,Role 9
+6,Analyze Quotation Comparison Map,2011-07-16 04:18:55.55,2011-07-16 04:27:57.395,Role 1
+7,Create Quotation comparison Map,2011-07-16 04:18:55.55,2011-07-19 04:40:38.258,Role 9
+7,Analyze Quotation Comparison Map,2011-07-19 04:40:38.258,2011-07-19 21:09:26.074,Role 1
+8,Create Quotation comparison Map,2011-07-19 04:40:38.258,2011-07-23 04:14:11.874,Role 9
+8,Analyze Quotation Comparison Map,2011-07-23 04:14:11.874,2011-07-23 04:41:20.973,Role 1
+9,Create Quotation comparison Map,2011-07-23 04:14:11.874,2011-07-26 04:38:55.882,Role 9
+9,Analyze Quotation Comparison Map,2011-07-26 04:38:55.882,2011-07-26 21:00:49.394,Role 1
+10,Create Quotation comparison Map,2011-07-26 04:38:55.882,2011-07-29 00:24:19.598,Role 9
+10,Analyze Quotation Comparison Map,2011-07-29 00:24:19.598,2011-07-29 00:41:11.45,Role 1
+11,Create Quotation comparison Map,2011-07-29 00:24:19.598,2011-08-01 03:06:26.629,Role 9
+11,Analyze Quotation Comparison Map,2011-08-01 03:06:26.629,2011-08-01 03:27:53.701,Role 1
+12,Create Quotation comparison Map,2011-08-01 03:06:26.629,2011-08-03 03:54:16.116,Role 9
+12,Analyze Quotation Comparison Map,2011-08-03 03:54:16.116,2011-08-05 00:14:15.498,Role 1
+1,Settle Conditions With Supplier,2011-08-03 03:54:16.116,2011-08-12 13:44:47.906,Role 9
+1,Choose best option,2011-08-12 13:44:47.906,2011-08-12 13:44:47.906,Role 1
+13,Create Quotation comparison Map,2011-08-12 13:44:47.906,2011-08-16 04:01:09.922,Role 9
+13,Analyze Quotation Comparison Map,2011-08-16 04:01:09.922,2011-08-16 04:22:57.959,Role 1
+14,Create Quotation comparison Map,2011-08-16 04:01:09.922,2011-08-17 01:48:15.881,Role 9
+14,Analyze Quotation Comparison Map,2011-08-17 01:48:15.881,2011-08-17 01:58:00.913,Role 1
+15,Create Quotation comparison Map,2011-08-17 01:48:15.881,2011-08-21 14:33:20.241,Role 9
+15,Analyze Quotation Comparison Map,2011-08-21 14:33:20.241,2011-08-21 14:47:14.224,Role 1
+16,Create Quotation comparison Map,2011-08-21 14:33:20.241,2011-08-23 21:05:26.254,Role 9
+16,Analyze Quotation Comparison Map,2011-08-23 21:05:26.254,2011-08-23 21:34:56.556,Role 1
+17,Create Quotation comparison Map,2011-08-23 21:05:26.254,2011-08-27 04:19:21.039,Role 9
+17,Analyze Quotation Comparison Map,2011-08-27 04:19:21.039,2011-08-27 04:30:31.826,Role 1
+18,Create Quotation comparison Map,2011-08-27 04:19:21.039,2011-08-29 15:31:36.004,Role 9
+18,Analyze Quotation Comparison Map,2011-08-29 15:31:36.004,2011-08-29 15:56:31.606,Role 1
+19,Create Quotation comparison Map,2011-08-29 15:31:36.004,2011-09-02 13:08:37.958,Role 9
+19,Analyze Quotation Comparison Map,2011-09-02 13:08:37.958,2011-09-02 13:37:27.598,Role 1
+20,Create Quotation comparison Map,2011-09-02 13:08:37.958,2011-09-05 15:37:16.309,Role 9
+20,Analyze Quotation Comparison Map,2011-09-05 15:37:16.309,2011-09-06 04:07:17.735,Role 1
+21,Create Quotation comparison Map,2011-09-05 15:37:16.309,2011-09-07 01:49:06.259,Role 9
+21,Analyze Quotation Comparison Map,2011-09-07 01:49:06.259,2011-09-07 03:17:14.476,Role 1
+2,Settle Conditions With Supplier,2011-09-07 01:49:06.259,2011-09-13 04:08:44.852,Role 9
+2,Choose best option,2011-09-13 04:08:44.852,2011-09-13 04:08:44.852,Role 1
+22,Create Quotation comparison Map,2011-09-13 04:08:44.852,2011-09-16 00:22:08.993,Role 9
+22,Analyze Quotation Comparison Map,2011-09-16 00:22:08.993,2011-09-16 00:50:28.961,Role 1
+23,Create Quotation comparison Map,2011-09-16 00:22:08.993,2011-09-18 14:41:06.496,Role 9
+23,Analyze Quotation Comparison Map,2011-09-18 14:41:06.496,2011-09-19 00:06:02.668,Role 1
+24,Create Quotation comparison Map,2011-09-18 14:41:06.496,2011-09-20 04:05:11.315,Role 9
+24,Analyze Quotation Comparison Map,2011-09-20 04:05:11.315,2011-09-20 04:20:23.069,Role 1
+25,Create Quotation comparison Map,2011-09-20 04:05:11.315,2011-09-21 01:41:59.615,Role 9
+25,Analyze Quotation Comparison Map,2011-09-21 01:41:59.615,2011-09-21 03:06:18.69,Role 1
+26,Create Quotation comparison Map,2011-09-21 01:41:59.615,2011-09-25 14:09:44.449,Role 9
+26,Analyze Quotation Comparison Map,2011-09-25 14:09:44.449,2011-09-25 14:34:46.428,Role 1
+27,Create Quotation comparison Map,2011-09-25 14:09:44.449,2011-09-27 21:11:07.315,Role 9
+27,Analyze Quotation Comparison Map,2011-09-27 21:11:07.315,2011-09-27 21:39:58.814,Role 1
+28,Create Quotation comparison Map,2011-09-27 21:11:07.315,2011-09-30 13:13:16.091,Role 9
+28,Analyze Quotation Comparison Map,2011-09-30 13:13:16.091,2011-09-30 13:35:26.607,Role 1
+29,Create Quotation comparison Map,2011-09-30 13:13:16.091,2011-10-03 00:58:11.161,Role 9
+29,Analyze Quotation Comparison Map,2011-10-03 00:58:11.161,2011-10-03 03:23:09.251,Role 1
+3,Settle Conditions With Supplier,2011-10-03 00:58:11.161,2011-10-05 01:12:16.874,Role 9
+3,Choose best option,2011-10-05 01:12:16.874,2011-10-05 01:12:16.874,Role 1
+30,Create Quotation comparison Map,2011-10-05 01:12:16.874,2011-10-09 14:07:13.548,Role 9
+30,Analyze Quotation Comparison Map,2011-10-09 14:07:13.548,2011-10-09 14:26:03.798,Role 1
+31,Create Quotation comparison Map,2011-10-09 14:07:13.548,2011-10-10 15:19:58.773,Role 9
+31,Analyze Quotation Comparison Map,2011-10-10 15:19:58.773,2011-10-10 15:52:50.952,Role 1
+4,Settle Conditions With Supplier,2011-10-10 15:19:58.773,2011-10-16 14:09:43.561,Role 9
+4,Choose best option,2011-10-16 14:09:43.561,2011-10-16 14:09:43.561,Role 1
+5,Settle Conditions With Supplier,2011-10-16 14:09:43.561,2011-10-19 03:25:48.105,Role 9
+5,Choose best option,2011-10-19 03:25:48.105,2011-10-19 03:25:48.105,Role 1
+0,Create Purchase Order,2011-10-19 03:25:48.105,2011-10-19 03:34:46.24,Role 9
+0,Confirm Purchase Order,2011-10-19 03:34:46.24,2011-10-19 03:56:38.14,Role 3
+6,Settle Conditions With Supplier,2011-10-19 03:34:46.24,2011-10-28 00:15:31.331,Role 9
+6,Choose best option,2011-10-28 00:15:31.331,2011-10-28 00:15:31.331,Role 1
+0,Deliver Goods Services,2011-10-19 03:56:38.14,2011-10-31 03:37:32.674,Role 10
+0,Release Purchase Order,2011-10-31 03:37:32.674,2011-10-31 03:38:32.674,Role 1
+7,Settle Conditions With Supplier,2011-10-28 00:15:31.331,2011-11-01 21:57:28.167,Role 9
+7,Choose best option,2011-11-01 21:57:28.167,2011-11-01 21:57:28.167,Role 1
+8,Settle Conditions With Supplier,2011-11-01 21:57:28.167,2011-11-07 15:24:03.698,Role 9
+8,Choose best option,2011-11-07 15:24:03.698,2011-11-07 15:24:03.698,Role 1
+9,Settle Conditions With Supplier,2011-11-07 15:24:03.698,2011-11-14 15:13:35.224,Role 9
+9,Choose best option,2011-11-14 15:13:35.224,2011-11-14 15:13:35.224,Role 1
+10,Settle Conditions With Supplier,2011-11-14 15:13:35.224,2011-11-22 04:08:20.892,Role 9
+10,Choose best option,2011-11-22 04:08:20.892,2011-11-22 04:08:20.892,Role 1
+11,Settle Conditions With Supplier,2011-11-22 04:08:20.892,2011-11-29 04:53:20.858,Role 9
+11,Choose best option,2011-11-29 04:53:20.858,2011-11-29 04:53:20.858,Role 1
+12,Settle Conditions With Supplier,2011-11-29 04:53:20.858,2011-12-06 04:55:20.819,Role 9
+12,Choose best option,2011-12-06 04:55:20.819,2011-12-06 04:55:20.819,Role 1
+1,Create Purchase Order,2011-12-06 04:55:20.819,2011-12-06 21:05:09.013,Role 9
+1,Confirm Purchase Order,2011-12-06 21:05:09.013,2011-12-06 21:32:32.948,Role 3
+13,Settle Conditions With Supplier,2011-12-06 21:05:09.013,2011-12-12 00:35:39.093,Role 9
+13,Choose best option,2011-12-12 00:35:39.093,2011-12-12 00:35:39.093,Role 1
+14,Settle Conditions With Supplier,2011-12-12 00:35:39.093,2011-12-18 14:20:57.885,Role 9
+14,Choose best option,2011-12-18 14:20:57.885,2011-12-18 14:20:57.885,Role 1
+1,Deliver Goods Services,2011-12-06 21:32:32.948,2011-12-21 03:49:04.368,Role 10
+1,Release Purchase Order,2011-12-21 03:49:04.368,2011-12-21 03:50:04.368,Role 1
+15,Settle Conditions With Supplier,2011-12-18 14:20:57.885,2011-12-21 03:58:40.101,Role 9
+15,Choose best option,2011-12-21 03:58:40.101,2011-12-21 03:58:40.101,Role 1
+16,Settle Conditions With Supplier,2011-12-21 03:58:40.101,2011-12-28 03:31:28.136,Role 9
+16,Choose best option,2011-12-28 03:31:28.136,2011-12-28 03:31:28.136,Role 1
+17,Settle Conditions With Supplier,2011-12-28 03:31:28.136,2012-01-03 04:58:48.322,Role 9
+17,Choose best option,2012-01-03 04:58:48.322,2012-01-03 04:58:48.322,Role 1
+18,Settle Conditions With Supplier,2012-01-03 04:58:48.322,2012-01-10 04:15:35.551,Role 9
+18,Choose best option,2012-01-10 04:15:35.551,2012-01-10 04:15:35.551,Role 1
+19,Settle Conditions With Supplier,2012-01-10 04:15:35.551,2012-01-16 15:43:55.817,Role 9
+19,Choose best option,2012-01-16 15:43:55.817,2012-01-16 15:43:55.817,Role 1
+20,Settle Conditions With Supplier,2012-01-16 15:43:55.817,2012-01-21 04:50:46.635,Role 9
+20,Choose best option,2012-01-21 04:50:46.635,2012-01-21 04:50:46.635,Role 1
+21,Settle Conditions With Supplier,2012-01-21 04:50:46.635,2012-01-25 01:27:40.915,Role 9
+21,Choose best option,2012-01-25 01:27:40.915,2012-01-25 01:27:40.915,Role 1
+2,Create Purchase Order,2012-01-25 01:27:40.915,2012-01-25 01:37:36.149,Role 9
+2,Confirm Purchase Order,2012-01-25 01:37:36.149,2012-01-25 01:51:36.421,Role 3
+22,Settle Conditions With Supplier,2012-01-25 01:37:36.149,2012-01-30 15:57:55.613,Role 9
+22,Choose best option,2012-01-30 15:57:55.613,2012-01-30 15:57:55.613,Role 1
+23,Settle Conditions With Supplier,2012-01-30 15:57:55.613,2012-02-06 03:16:38.323,Role 9
+23,Choose best option,2012-02-06 03:16:38.323,2012-02-06 03:16:38.323,Role 1
+24,Settle Conditions With Supplier,2012-02-06 03:16:38.323,2012-02-11 04:06:46.496,Role 9
+24,Choose best option,2012-02-11 04:06:46.496,2012-02-11 04:06:46.496,Role 1
+2,Deliver Goods Services,2012-01-25 01:51:36.421,2012-02-13 15:07:50.933,Role 10
+2,Release Purchase Order,2012-02-13 15:07:50.933,2012-02-13 15:08:50.933,Role 1
+25,Settle Conditions With Supplier,2012-02-11 04:06:46.496,2012-02-15 01:53:12.517,Role 9
+25,Choose best option,2012-02-15 01:53:12.517,2012-02-15 01:53:12.517,Role 1
+26,Settle Conditions With Supplier,2012-02-15 01:53:12.517,2012-02-21 04:10:16.958,Role 9
+26,Choose best option,2012-02-21 04:10:16.958,2012-02-21 04:10:16.958,Role 1
+27,Settle Conditions With Supplier,2012-02-21 04:10:16.958,2012-02-26 14:46:00.412,Role 9
+27,Choose best option,2012-02-26 14:46:00.412,2012-02-26 14:46:00.412,Role 1
+28,Settle Conditions With Supplier,2012-02-26 14:46:00.412,2012-03-04 14:34:33.953,Role 9
+28,Choose best option,2012-03-04 14:34:33.953,2012-03-04 14:34:33.953,Role 1
+29,Settle Conditions With Supplier,2012-03-04 14:34:33.953,2012-03-09 13:23:29.282,Role 9
+29,Choose best option,2012-03-09 13:23:29.282,2012-03-09 13:23:29.282,Role 1
+3,Create Purchase Order,2012-03-09 13:23:29.282,2012-03-09 13:29:18.607,Role 9
+3,Confirm Purchase Order,2012-03-09 13:29:18.607,2012-03-09 13:48:43.926,Role 3
+30,Settle Conditions With Supplier,2012-03-09 13:29:18.607,2012-03-14 01:17:33.359,Role 9
+30,Choose best option,2012-03-14 01:17:33.359,2012-03-14 01:17:33.359,Role 1
+31,Settle Conditions With Supplier,2012-03-14 01:17:33.359,2012-03-17 04:54:32.872,Role 9
+31,Choose best option,2012-03-17 04:54:32.872,2012-03-17 04:54:32.872,Role 1
+4,Create Purchase Order,2012-03-17 04:54:32.872,2012-03-18 14:04:34.141,Role 9
+5,Create Purchase Order,2012-03-18 14:04:34.141,2012-03-18 14:14:57.185,Role 9
+6,Create Purchase Order,2012-03-18 14:14:57.185,2012-03-18 14:23:43.708,Role 9
+0,Approve Purchase Order for payment,2012-03-18 14:23:43.708,2012-03-18 14:24:43.708,Role 9
+0,Send Invoice,2012-03-18 14:24:43.708,2012-03-18 14:24:43.708,Role 7
+4,Confirm Purchase Order,2012-03-18 14:04:34.141,2012-03-18 14:26:26.819,Role 3
+0,Release Supplier's Invoice,2012-03-18 14:24:43.708,2012-03-18 14:28:21.842,Role 4
+7,Create Purchase Order,2012-03-18 14:24:43.708,2012-03-18 14:33:46.278,Role 9
+5,Confirm Purchase Order,2012-03-18 14:14:57.185,2012-03-18 14:34:59.875,Role 3
+8,Create Purchase Order,2012-03-18 14:33:46.278,2012-03-18 14:43:25.487,Role 9
+7,Confirm Purchase Order,2012-03-18 14:33:46.278,2012-03-18 14:44:14.034,Role 3
+6,Confirm Purchase Order,2012-03-18 14:23:43.708,2012-03-18 14:45:42.886,Role 3
+8,Confirm Purchase Order,2012-03-18 14:43:25.487,2012-03-18 14:52:01.766,Role 3
+9,Create Purchase Order,2012-03-18 14:43:25.487,2012-03-18 14:52:15.957,Role 9
+0,Settle Dispute With Supplier,2012-03-18 14:28:21.842,2012-03-18 14:53:23.179,Role 4
+0,Authorize Supplier's Invoice payment,2012-03-18 14:53:23.179,2012-03-18 14:53:23.179,Role 4
+10,Create Purchase Order,2012-03-18 14:52:15.957,2012-03-19 00:04:33.316,Role 9
+0,Pay Invoice,2012-03-18 14:53:23.179,2012-03-19 00:04:52.792,Role 4
+0,End,2012-03-19 00:04:52.792,2012-03-19 00:04:52.792,SYSTEM
+9,Confirm Purchase Order,2012-03-18 14:52:15.957,2012-03-19 00:12:46.307,Role 3
+11,Create Purchase Order,2012-03-19 00:04:33.316,2012-03-19 00:14:27.419,Role 9
+12,Create Purchase Order,2012-03-19 00:14:27.419,2012-03-19 00:23:07.897,Role 9
+13,Create Purchase Order,2012-03-19 00:23:07.897,2012-03-19 00:31:37.801,Role 9
+10,Confirm Purchase Order,2012-03-19 00:04:33.316,2012-03-19 00:37:08.748,Role 3
+11,Confirm Purchase Order,2012-03-19 00:14:27.419,2012-03-19 00:37:26.233,Role 3
+14,Create Purchase Order,2012-03-19 00:31:37.801,2012-03-19 00:38:07.408,Role 9
+1,Approve Purchase Order for payment,2012-03-19 00:38:07.408,2012-03-19 00:39:07.408,Role 9
+1,Send Invoice,2012-03-19 00:39:07.408,2012-03-19 00:39:07.408,Role 7
+1,Release Supplier's Invoice,2012-03-19 00:39:07.408,2012-03-19 00:42:04.986,Role 4
+15,Create Purchase Order,2012-03-19 00:39:07.408,2012-03-19 00:48:07.635,Role 9
+12,Confirm Purchase Order,2012-03-19 00:23:07.897,2012-03-19 00:51:27.354,Role 3
+16,Create Purchase Order,2012-03-19 00:48:07.635,2012-03-19 00:56:30.931,Role 9
+13,Confirm Purchase Order,2012-03-19 00:37:08.748,2012-03-19 00:57:11.818,Role 3
+14,Confirm Purchase Order,2012-03-19 00:38:07.408,2012-03-19 00:57:12.643,Role 3
+17,Create Purchase Order,2012-03-19 00:56:30.931,2012-03-19 03:06:10.213,Role 9
+18,Create Purchase Order,2012-03-19 03:06:10.213,2012-03-19 03:14:49.211,Role 9
+15,Confirm Purchase Order,2012-03-19 00:51:27.354,2012-03-19 03:15:12.747,Role 3
+19,Create Purchase Order,2012-03-19 03:14:49.211,2012-03-19 03:22:53.967,Role 9
+16,Confirm Purchase Order,2012-03-19 00:57:11.818,2012-03-19 03:23:53.898,Role 3
+1,Settle Dispute With Supplier,2012-03-19 00:42:04.986,2012-03-19 03:31:24.303,Role 4
+1,Authorize Supplier's Invoice payment,2012-03-19 03:31:24.303,2012-03-19 03:31:24.303,Role 4
+17,Confirm Purchase Order,2012-03-19 03:06:10.213,2012-03-19 03:34:17.972,Role 3
+20,Create Purchase Order,2012-03-19 03:22:53.967,2012-03-19 03:35:45.506,Role 9
+1,Pay Invoice,2012-03-19 03:31:24.303,2012-03-19 03:36:48.494,Role 4
+1,End,2012-03-19 03:36:48.494,2012-03-19 03:36:48.494,SYSTEM
+19,Confirm Purchase Order,2012-03-19 03:23:53.898,2012-03-19 03:37:47.557,Role 3
+18,Confirm Purchase Order,2012-03-19 03:15:12.747,2012-03-19 03:38:26.92,Role 3
+21,Create Purchase Order,2012-03-19 03:35:45.506,2012-03-19 03:43:35.056,Role 9
+22,Create Purchase Order,2012-03-19 03:43:35.056,2012-03-19 03:50:54.014,Role 9
+23,Create Purchase Order,2012-03-19 03:50:54.014,2012-03-19 15:01:31.814,Role 9
+21,Confirm Purchase Order,2012-03-19 03:43:35.056,2012-03-19 15:02:02.855,Role 3
+20,Confirm Purchase Order,2012-03-19 03:35:45.506,2012-03-19 15:02:58.871,Role 3
+24,Create Purchase Order,2012-03-19 15:01:31.814,2012-03-19 15:11:10.986,Role 9
+2,Approve Purchase Order for payment,2012-03-19 15:11:10.986,2012-03-19 15:12:10.986,Role 9
+2,Send Invoice,2012-03-19 15:12:10.986,2012-03-19 15:12:10.986,Role 7
+2,Release Supplier's Invoice,2012-03-19 15:12:10.986,2012-03-19 15:15:28.643,Role 4
+25,Create Purchase Order,2012-03-19 15:12:10.986,2012-03-19 15:21:30.319,Role 9
+22,Confirm Purchase Order,2012-03-19 03:50:54.014,2012-03-19 15:21:43.885,Role 3
+23,Confirm Purchase Order,2012-03-19 15:02:02.855,2012-03-19 15:26:06.296,Role 3
+26,Create Purchase Order,2012-03-19 15:21:30.319,2012-03-19 15:34:21.72,Role 9
+24,Confirm Purchase Order,2012-03-19 15:11:10.986,2012-03-19 15:35:08.504,Role 3
+2,Settle Dispute With Supplier,2012-03-19 15:15:28.643,2012-03-19 15:41:45.842,Role 4
+2,Authorize Supplier's Invoice payment,2012-03-19 15:41:45.842,2012-03-19 15:41:45.842,Role 4
+27,Create Purchase Order,2012-03-19 15:34:21.72,2012-03-19 15:42:03.347,Role 9
+25,Confirm Purchase Order,2012-03-19 15:21:43.885,2012-03-19 15:42:29.205,Role 3
+26,Confirm Purchase Order,2012-03-19 15:34:21.72,2012-03-19 15:48:36.137,Role 3
+2,Pay Invoice,2012-03-19 15:41:45.842,2012-03-19 15:49:07.972,Role 4
+2,End,2012-03-19 15:49:07.972,2012-03-19 15:49:07.972,SYSTEM
+28,Create Purchase Order,2012-03-19 15:42:03.347,2012-03-19 15:51:34.944,Role 9
+29,Create Purchase Order,2012-03-19 15:51:34.944,2012-03-20 04:01:42.138,Role 9
+30,Create Purchase Order,2012-03-20 04:01:42.138,2012-03-20 04:10:33.621,Role 9
+27,Confirm Purchase Order,2012-03-19 15:42:03.347,2012-03-20 04:12:39.926,Role 3
+28,Confirm Purchase Order,2012-03-19 15:51:34.944,2012-03-20 04:15:05.045,Role 3
+31,Create Purchase Order,2012-03-20 04:10:33.621,2012-03-20 04:17:34.407,Role 9
+29,Confirm Purchase Order,2012-03-20 04:01:42.138,2012-03-20 04:18:18.047,Role 3
+30,Confirm Purchase Order,2012-03-20 04:12:39.926,2012-03-20 04:24:41.382,Role 3
+31,Confirm Purchase Order,2012-03-20 04:17:34.407,2012-03-20 04:34:43.098,Role 3
+3,Deliver Goods Services,2012-03-09 13:48:43.926,2012-03-21 01:43:38.546,Role 10
+3,Release Purchase Order,2012-03-21 01:43:38.546,2012-03-21 01:44:38.546,Role 1
+3,Approve Purchase Order for payment,2012-03-21 01:44:38.546,2012-03-21 01:45:38.546,Role 9
+3,Send Invoice,2012-03-21 01:45:38.546,2012-03-21 01:45:38.546,Role 7
+3,Release Supplier's Invoice,2012-03-21 01:45:38.546,2012-03-21 01:49:16.649,Role 4
+3,Settle Dispute With Supplier,2012-03-21 01:49:16.649,2012-03-21 01:49:21.68,Role 4
+3,Authorize Supplier's Invoice payment,2012-03-21 01:49:21.68,2012-03-21 01:49:21.68,Role 4
+3,Pay Invoice,2012-03-21 01:49:21.68,2012-03-21 01:55:43.183,Role 4
+3,End,2012-03-21 01:55:43.183,2012-03-21 01:55:43.183,SYSTEM
+4,Deliver Goods Services,2012-03-21 01:43:38.546,2012-04-09 00:52:24.092,Role 10
+4,Release Purchase Order,2012-04-09 00:52:24.092,2012-04-09 00:53:24.092,Role 1
+4,Approve Purchase Order for payment,2012-04-09 00:53:24.092,2012-04-09 00:54:24.092,Role 9
+4,Send Invoice,2012-04-09 00:54:24.092,2012-04-09 00:54:24.092,Role 7
+4,Release Supplier's Invoice,2012-04-09 00:54:24.092,2012-04-09 00:57:57.131,Role 4
+4,Settle Dispute With Supplier,2012-04-09 00:57:57.131,2012-04-09 03:10:02.142,Role 4
+4,Authorize Supplier's Invoice payment,2012-04-09 03:10:02.142,2012-04-09 03:10:02.142,Role 4
+4,Pay Invoice,2012-04-09 03:10:02.142,2012-04-09 03:16:26.824,Role 4
+4,End,2012-04-09 03:16:26.824,2012-04-09 03:16:26.824,SYSTEM
+5,Deliver Goods Services,2012-04-09 00:52:24.092,2012-04-24 21:11:23.252,Role 10
+5,Release Purchase Order,2012-04-24 21:11:23.252,2012-04-24 21:12:23.252,Role 1
+5,Approve Purchase Order for payment,2012-04-24 21:12:23.252,2012-04-24 21:13:23.252,Role 9
+5,Send Invoice,2012-04-24 21:13:23.252,2012-04-24 21:13:23.252,Role 7
+5,Release Supplier's Invoice,2012-04-24 21:13:23.252,2012-04-24 21:15:37.813,Role 4
+5,Settle Dispute With Supplier,2012-04-24 21:15:37.813,2012-04-24 21:35:37.791,Role 4
+5,Authorize Supplier's Invoice payment,2012-04-24 21:35:37.791,2012-04-24 21:35:37.791,Role 4
+5,Pay Invoice,2012-04-24 21:35:37.791,2012-04-24 21:42:28.186,Role 4
+5,End,2012-04-24 21:42:28.186,2012-04-24 21:42:28.186,SYSTEM
+7,Deliver Goods Services,2012-04-24 21:11:23.252,2012-05-21 00:32:28.024,Role 10
+7,Release Purchase Order,2012-05-21 00:32:28.024,2012-05-21 00:33:28.024,Role 1
+7,Approve Purchase Order for payment,2012-05-21 00:33:28.024,2012-05-21 00:34:28.024,Role 9
+7,Send Invoice,2012-05-21 00:34:28.024,2012-05-21 00:34:28.024,Role 7
+7,Release Supplier's Invoice,2012-05-21 00:34:28.024,2012-05-21 00:38:29.269,Role 4
+7,Settle Dispute With Supplier,2012-05-21 00:38:29.269,2012-05-21 00:45:16.477,Role 4
+7,Authorize Supplier's Invoice payment,2012-05-21 00:45:16.477,2012-05-21 00:45:16.477,Role 4
+7,Pay Invoice,2012-05-21 00:45:16.477,2012-05-21 00:57:58.718,Role 4
+7,End,2012-05-21 00:57:58.718,2012-05-21 00:57:58.718,SYSTEM
+6,Deliver Goods Services,2012-05-21 00:32:28.024,2012-06-06 03:46:40.766,Role 10
+6,Release Purchase Order,2012-06-06 03:46:40.766,2012-06-06 03:47:40.766,Role 1
+6,Approve Purchase Order for payment,2012-06-06 03:47:40.766,2012-06-06 03:48:40.766,Role 9
+6,Send Invoice,2012-06-06 03:48:40.766,2012-06-06 03:48:40.766,Role 7
+6,Release Supplier's Invoice,2012-06-06 03:48:40.766,2012-06-06 03:51:15.388,Role 4
+6,Settle Dispute With Supplier,2012-06-06 03:51:15.388,2012-06-08 00:01:36.602,Role 4
+6,Authorize Supplier's Invoice payment,2012-06-08 00:01:36.602,2012-06-08 00:01:36.602,Role 4
+6,Pay Invoice,2012-06-08 00:01:36.602,2012-06-08 00:08:29.094,Role 4
+6,End,2012-06-08 00:08:29.094,2012-06-08 00:08:29.094,SYSTEM
+8,Deliver Goods Services,2012-06-06 03:46:40.766,2012-06-18 00:14:29.575,Role 10
+8,Release Purchase Order,2012-06-18 00:14:29.575,2012-06-18 00:15:29.575,Role 1
+8,Approve Purchase Order for payment,2012-06-18 00:15:29.575,2012-06-18 00:16:29.575,Role 9
+8,Send Invoice,2012-06-18 00:16:29.575,2012-06-18 00:16:29.575,Role 7
+8,Release Supplier's Invoice,2012-06-18 00:16:29.575,2012-06-18 00:19:55.027,Role 4
+8,Settle Dispute With Supplier,2012-06-18 00:19:55.027,2012-06-18 03:13:34.372,Role 4
+8,Authorize Supplier's Invoice payment,2012-06-18 03:13:34.372,2012-06-18 03:13:34.372,Role 4
+8,Pay Invoice,2012-06-18 03:13:34.372,2012-06-18 03:22:14.335,Role 4
+8,End,2012-06-18 03:22:14.335,2012-06-18 03:22:14.335,SYSTEM
+9,Deliver Goods Services,2012-06-18 00:14:29.575,2012-07-01 14:30:25.675,Role 10
+9,Release Purchase Order,2012-07-01 14:30:25.675,2012-07-01 14:31:25.675,Role 1
+9,Approve Purchase Order for payment,2012-07-01 14:31:25.675,2012-07-01 14:32:25.675,Role 9
+9,Send Invoice,2012-07-01 14:32:25.675,2012-07-01 14:32:25.675,Role 7
+9,Release Supplier's Invoice,2012-07-01 14:32:25.675,2012-07-01 14:41:12.628,Role 4
+9,Settle Dispute With Supplier,2012-07-01 14:41:12.628,2012-07-01 14:43:51.494,Role 4
+9,Authorize Supplier's Invoice payment,2012-07-01 14:43:51.494,2012-07-01 14:43:51.494,Role 4
+9,Pay Invoice,2012-07-01 14:43:51.494,2012-07-01 14:56:33.959,Role 4
+9,End,2012-07-01 14:56:33.959,2012-07-01 14:56:33.959,SYSTEM
+10,Deliver Goods Services,2012-07-01 14:30:25.675,2012-07-23 15:39:56.924,Role 10
+10,Release Purchase Order,2012-07-23 15:39:56.924,2012-07-23 15:40:56.924,Role 1
+10,Approve Purchase Order for payment,2012-07-23 15:40:56.924,2012-07-23 15:41:56.924,Role 9
+10,Send Invoice,2012-07-23 15:41:56.924,2012-07-23 15:41:56.924,Role 7
+10,Release Supplier's Invoice,2012-07-23 15:41:56.924,2012-07-23 15:48:16.946,Role 4
+10,Settle Dispute With Supplier,2012-07-23 15:48:16.946,2012-07-24 04:28:52.386,Role 4
+10,Authorize Supplier's Invoice payment,2012-07-24 04:28:52.386,2012-07-24 04:28:52.386,Role 4
+10,Pay Invoice,2012-07-24 04:28:52.386,2012-07-24 04:34:40.663,Role 4
+10,End,2012-07-24 04:34:40.663,2012-07-24 04:34:40.663,SYSTEM
+11,Deliver Goods Services,2012-07-23 15:39:56.924,2012-08-06 03:37:49.266,Role 10
+11,Release Purchase Order,2012-08-06 03:37:49.266,2012-08-06 03:38:49.266,Role 1
+11,Approve Purchase Order for payment,2012-08-06 03:38:49.266,2012-08-06 03:39:49.266,Role 9
+11,Send Invoice,2012-08-06 03:39:49.266,2012-08-06 03:39:49.266,Role 7
+11,Release Supplier's Invoice,2012-08-06 03:39:49.266,2012-08-06 03:45:01.683,Role 4
+11,Settle Dispute With Supplier,2012-08-06 03:45:01.683,2012-08-06 15:12:55.14,Role 4
+11,Authorize Supplier's Invoice payment,2012-08-06 15:12:55.14,2012-08-06 15:12:55.14,Role 4
+11,Pay Invoice,2012-08-06 15:12:55.14,2012-08-06 15:21:28.094,Role 4
+11,End,2012-08-06 15:21:28.094,2012-08-06 15:21:28.094,SYSTEM
+12,Deliver Goods Services,2012-08-06 03:37:49.266,2012-08-21 04:39:04.167,Role 10
+12,Release Purchase Order,2012-08-21 04:39:04.167,2012-08-21 04:40:04.167,Role 1
+12,Approve Purchase Order for payment,2012-08-21 04:40:04.167,2012-08-21 04:41:04.167,Role 9
+12,Send Invoice,2012-08-21 04:41:04.167,2012-08-21 04:41:04.167,Role 7
+12,Release Supplier's Invoice,2012-08-21 04:41:04.167,2012-08-21 04:44:57.601,Role 4
+12,Settle Dispute With Supplier,2012-08-21 04:44:57.601,2012-08-21 21:09:47.287,Role 4
+12,Authorize Supplier's Invoice payment,2012-08-21 21:09:47.287,2012-08-21 21:09:47.287,Role 4
+12,Pay Invoice,2012-08-21 21:09:47.287,2012-08-21 21:16:57.744,Role 4
+12,End,2012-08-21 21:16:57.744,2012-08-21 21:16:57.744,SYSTEM
+13,Deliver Goods Services,2012-08-21 04:39:04.167,2012-09-03 00:03:44.065,Role 10
+13,Release Purchase Order,2012-09-03 00:03:44.065,2012-09-03 00:04:44.065,Role 1
+13,Approve Purchase Order for payment,2012-09-03 00:04:44.065,2012-09-03 00:05:44.065,Role 9
+13,Send Invoice,2012-09-03 00:05:44.065,2012-09-03 00:05:44.065,Role 7
+13,Release Supplier's Invoice,2012-09-03 00:05:44.065,2012-09-03 00:12:14.251,Role 4
+13,Settle Dispute With Supplier,2012-09-03 00:12:14.251,2012-09-03 00:15:42.044,Role 4
+13,Authorize Supplier's Invoice payment,2012-09-03 00:15:42.044,2012-09-03 00:15:42.044,Role 4
+13,Pay Invoice,2012-09-03 00:15:42.044,2012-09-03 00:26:56.025,Role 4
+13,End,2012-09-03 00:26:56.025,2012-09-03 00:26:56.025,SYSTEM
+14,Deliver Goods Services,2012-09-03 00:03:44.065,2012-09-24 15:10:09.464,Role 10
+14,Release Purchase Order,2012-09-24 15:10:09.464,2012-09-24 15:11:09.464,Role 1
+14,Approve Purchase Order for payment,2012-09-24 15:11:09.464,2012-09-24 15:12:09.464,Role 9
+14,Send Invoice,2012-09-24 15:12:09.464,2012-09-24 15:12:09.464,Role 7
+14,Release Supplier's Invoice,2012-09-24 15:12:09.464,2012-09-24 15:17:12.996,Role 4
+14,Settle Dispute With Supplier,2012-09-24 15:17:12.996,2012-09-24 15:43:48.156,Role 4
+14,Authorize Supplier's Invoice payment,2012-09-24 15:43:48.156,2012-09-24 15:43:48.156,Role 4
+14,Pay Invoice,2012-09-24 15:43:48.156,2012-09-24 15:52:52.973,Role 4
+14,End,2012-09-24 15:52:52.973,2012-09-24 15:52:52.973,SYSTEM
+15,Deliver Goods Services,2012-09-24 15:10:09.464,2012-10-16 21:48:14.783,Role 10
+15,Release Purchase Order,2012-10-16 21:48:14.783,2012-10-16 21:49:14.783,Role 1
+15,Approve Purchase Order for payment,2012-10-16 21:49:14.783,2012-10-16 21:50:14.783,Role 9
+15,Send Invoice,2012-10-16 21:50:14.783,2012-10-16 21:50:14.783,Role 7
+15,Release Supplier's Invoice,2012-10-16 21:50:14.783,2012-10-16 21:54:28.477,Role 4
+15,Settle Dispute With Supplier,2012-10-16 21:54:28.477,2012-10-17 01:13:54.223,Role 4
+15,Authorize Supplier's Invoice payment,2012-10-17 01:13:54.223,2012-10-17 01:13:54.223,Role 4
+15,Pay Invoice,2012-10-17 01:13:54.223,2012-10-17 01:25:04.735,Role 4
+15,End,2012-10-17 01:25:04.735,2012-10-17 01:25:04.735,SYSTEM
+16,Deliver Goods Services,2012-10-16 21:48:14.783,2012-11-13 21:45:45.653,Role 10
+16,Release Purchase Order,2012-11-13 21:45:45.653,2012-11-13 21:46:45.653,Role 1
+16,Approve Purchase Order for payment,2012-11-13 21:46:45.653,2012-11-13 21:47:45.653,Role 9
+16,Send Invoice,2012-11-13 21:47:45.653,2012-11-13 21:47:45.653,Role 7
+16,Release Supplier's Invoice,2012-11-13 21:47:45.653,2012-11-13 21:50:52.92,Role 4
+16,Settle Dispute With Supplier,2012-11-13 21:50:52.92,2012-11-13 21:51:20.952,Role 4
+16,Authorize Supplier's Invoice payment,2012-11-13 21:51:20.952,2012-11-13 21:51:20.952,Role 4
+16,Pay Invoice,2012-11-13 21:51:20.952,2012-11-13 21:58:13.588,Role 4
+16,End,2012-11-13 21:58:13.588,2012-11-13 21:58:13.588,SYSTEM
+17,Deliver Goods Services,2012-11-13 21:45:45.653,2012-11-27 04:16:52.972,Role 10
+17,Release Purchase Order,2012-11-27 04:16:52.972,2012-11-27 04:17:52.972,Role 1
+17,Approve Purchase Order for payment,2012-11-27 04:17:52.972,2012-11-27 04:18:52.972,Role 9
+17,Send Invoice,2012-11-27 04:18:52.972,2012-11-27 04:18:52.972,Role 7
+17,Release Supplier's Invoice,2012-11-27 04:18:52.972,2012-11-27 04:23:57.305,Role 4
+17,Settle Dispute With Supplier,2012-11-27 04:23:57.305,2012-11-27 04:38:52.473,Role 4
+17,Authorize Supplier's Invoice payment,2012-11-27 04:38:52.473,2012-11-27 04:38:52.473,Role 4
+17,Pay Invoice,2012-11-27 04:38:52.473,2012-11-27 04:44:09.019,Role 4
+17,End,2012-11-27 04:44:09.019,2012-11-27 04:44:09.019,SYSTEM
+19,Deliver Goods Services,2012-11-27 04:16:52.972,2012-12-10 03:21:08.112,Role 10
+19,Release Purchase Order,2012-12-10 03:21:08.112,2012-12-10 03:22:08.112,Role 1
+19,Approve Purchase Order for payment,2012-12-10 03:22:08.112,2012-12-10 03:23:08.112,Role 9
+19,Send Invoice,2012-12-10 03:23:08.112,2012-12-10 03:23:08.112,Role 7
+19,Release Supplier's Invoice,2012-12-10 03:23:08.112,2012-12-10 03:27:57.236,Role 4
+19,Settle Dispute With Supplier,2012-12-10 03:27:57.236,2012-12-10 03:48:32.141,Role 4
+19,Authorize Supplier's Invoice payment,2012-12-10 03:48:32.141,2012-12-10 03:48:32.141,Role 4
+19,Pay Invoice,2012-12-10 03:48:32.141,2012-12-10 03:55:19.168,Role 4
+19,End,2012-12-10 03:55:19.168,2012-12-10 03:55:19.168,SYSTEM
+18,Deliver Goods Services,2012-12-10 03:21:08.112,2012-12-28 13:10:57.346,Role 10
+18,Release Purchase Order,2012-12-28 13:10:57.346,2012-12-28 13:11:57.346,Role 1
+18,Approve Purchase Order for payment,2012-12-28 13:11:57.346,2012-12-28 13:12:57.346,Role 9
+18,Send Invoice,2012-12-28 13:12:57.346,2012-12-28 13:12:57.346,Role 7
+18,Release Supplier's Invoice,2012-12-28 13:12:57.346,2012-12-28 13:16:54.555,Role 4
+18,Settle Dispute With Supplier,2012-12-28 13:16:54.555,2012-12-28 13:18:22.881,Role 4
+18,Authorize Supplier's Invoice payment,2012-12-28 13:18:22.881,2012-12-28 13:18:22.881,Role 4
+18,Pay Invoice,2012-12-28 13:18:22.881,2012-12-28 13:27:26.282,Role 4
+18,End,2012-12-28 13:27:26.282,2012-12-28 13:27:26.282,SYSTEM
+21,Deliver Goods Services,2012-12-28 13:10:57.346,2013-01-16 01:28:52.062,Role 10
+21,Release Purchase Order,2013-01-16 01:28:52.062,2013-01-16 01:29:52.062,Role 1
+21,Approve Purchase Order for payment,2013-01-16 01:29:52.062,2013-01-16 01:30:52.062,Role 9
+21,Send Invoice,2013-01-16 01:30:52.062,2013-01-16 01:30:52.062,Role 7
+21,Release Supplier's Invoice,2013-01-16 01:30:52.062,2013-01-16 01:33:41.714,Role 4
+21,Settle Dispute With Supplier,2013-01-16 01:33:41.714,2013-01-16 01:49:51.081,Role 4
+21,Authorize Supplier's Invoice payment,2013-01-16 01:49:51.081,2013-01-16 01:49:51.081,Role 4
+21,Pay Invoice,2013-01-16 01:49:51.081,2013-01-16 03:01:32.478,Role 4
+21,End,2013-01-16 03:01:32.478,2013-01-16 03:01:32.478,SYSTEM
+20,Deliver Goods Services,2013-01-16 01:28:52.062,2013-02-11 03:32:10.389,Role 10
+20,Release Purchase Order,2013-02-11 03:32:10.389,2013-02-11 03:33:10.389,Role 1
+20,Approve Purchase Order for payment,2013-02-11 03:33:10.389,2013-02-11 03:34:10.389,Role 9
+20,Send Invoice,2013-02-11 03:34:10.389,2013-02-11 03:34:10.389,Role 7
+20,Release Supplier's Invoice,2013-02-11 03:34:10.389,2013-02-11 03:35:19.428,Role 4
+20,Settle Dispute With Supplier,2013-02-11 03:35:19.428,2013-02-11 03:50:31.889,Role 4
+20,Authorize Supplier's Invoice payment,2013-02-11 03:50:31.889,2013-02-11 03:50:31.889,Role 4
+20,Pay Invoice,2013-02-11 03:50:31.889,2013-02-11 15:00:00.426,Role 4
+20,End,2013-02-11 15:00:00.426,2013-02-11 15:00:00.426,SYSTEM
+22,Deliver Goods Services,2013-02-11 03:32:10.389,2013-02-16 04:06:35.742,Role 10
+22,Release Purchase Order,2013-02-16 04:06:35.742,2013-02-16 04:07:35.742,Role 1
+22,Approve Purchase Order for payment,2013-02-16 04:07:35.742,2013-02-16 04:08:35.742,Role 9
+22,Send Invoice,2013-02-16 04:08:35.742,2013-02-16 04:08:35.742,Role 7
+22,Release Supplier's Invoice,2013-02-16 04:08:35.742,2013-02-16 04:12:11.971,Role 4
+22,Settle Dispute With Supplier,2013-02-16 04:12:11.971,2013-02-16 04:45:04.179,Role 4
+22,Authorize Supplier's Invoice payment,2013-02-16 04:45:04.179,2013-02-16 04:45:04.179,Role 4
+22,Pay Invoice,2013-02-16 04:45:04.179,2013-02-16 04:54:30.633,Role 4
+22,End,2013-02-16 04:54:30.633,2013-02-16 04:54:30.633,SYSTEM
+23,Deliver Goods Services,2013-02-16 04:06:35.742,2013-03-01 13:20:55.779,Role 10
+23,Release Purchase Order,2013-03-01 13:20:55.779,2013-03-01 13:21:55.779,Role 1
+23,Approve Purchase Order for payment,2013-03-01 13:21:55.779,2013-03-01 13:22:55.779,Role 9
+23,Send Invoice,2013-03-01 13:22:55.779,2013-03-01 13:22:55.779,Role 7
+23,Release Supplier's Invoice,2013-03-01 13:22:55.779,2013-03-01 13:25:35.289,Role 4
+23,Settle Dispute With Supplier,2013-03-01 13:25:35.289,2013-03-01 13:39:41.982,Role 4
+23,Authorize Supplier's Invoice payment,2013-03-01 13:39:41.982,2013-03-01 13:39:41.982,Role 4
+23,Pay Invoice,2013-03-01 13:39:41.982,2013-03-01 13:45:43.793,Role 4
+23,End,2013-03-01 13:45:43.793,2013-03-01 13:45:43.793,SYSTEM
+24,Deliver Goods Services,2013-03-01 13:20:55.779,2013-03-09 04:14:17.404,Role 10
+24,Release Purchase Order,2013-03-09 04:14:17.404,2013-03-09 04:15:17.404,Role 1
+24,Approve Purchase Order for payment,2013-03-09 04:15:17.404,2013-03-09 04:16:17.404,Role 9
+24,Send Invoice,2013-03-09 04:16:17.404,2013-03-09 04:16:17.404,Role 7
+24,Release Supplier's Invoice,2013-03-09 04:16:17.404,2013-03-09 04:22:19.129,Role 4
+24,Settle Dispute With Supplier,2013-03-09 04:22:19.129,2013-03-09 04:45:48.256,Role 4
+24,Authorize Supplier's Invoice payment,2013-03-09 04:45:48.256,2013-03-09 04:45:48.256,Role 4
+24,Pay Invoice,2013-03-09 04:45:48.256,2013-03-09 04:52:50.716,Role 4
+24,End,2013-03-09 04:52:50.716,2013-03-09 04:52:50.716,SYSTEM
+25,Deliver Goods Services,2013-03-09 04:14:17.404,2013-04-05 00:18:39.657,Role 10
+25,Release Purchase Order,2013-04-05 00:18:39.657,2013-04-05 00:19:39.657,Role 1
+25,Approve Purchase Order for payment,2013-04-05 00:19:39.657,2013-04-05 00:20:39.657,Role 9
+25,Send Invoice,2013-04-05 00:20:39.657,2013-04-05 00:20:39.657,Role 7
+25,Release Supplier's Invoice,2013-04-05 00:20:39.657,2013-04-05 00:26:24.401,Role 4
+25,Settle Dispute With Supplier,2013-04-05 00:26:24.401,2013-04-05 00:29:01.159,Role 4
+25,Authorize Supplier's Invoice payment,2013-04-05 00:29:01.159,2013-04-05 00:29:01.159,Role 4
+25,Pay Invoice,2013-04-05 00:29:01.159,2013-04-05 00:41:18.846,Role 4
+25,End,2013-04-05 00:41:18.846,2013-04-05 00:41:18.846,SYSTEM
+26,Deliver Goods Services,2013-04-05 00:18:39.657,2013-04-27 04:58:16.665,Role 10
+26,Release Purchase Order,2013-04-27 04:58:16.665,2013-04-28 14:00:16.665,Role 1
+26,Approve Purchase Order for payment,2013-04-28 14:00:16.665,2013-04-28 14:01:16.665,Role 9
+26,Send Invoice,2013-04-28 14:01:16.665,2013-04-28 14:01:16.665,Role 7
+26,Release Supplier's Invoice,2013-04-28 14:01:16.665,2013-04-28 14:05:47.563,Role 4
+26,Settle Dispute With Supplier,2013-04-28 14:05:47.563,2013-04-28 14:08:45.699,Role 4
+26,Authorize Supplier's Invoice payment,2013-04-28 14:08:45.699,2013-04-28 14:08:45.699,Role 4
+26,Pay Invoice,2013-04-28 14:08:45.699,2013-04-28 14:18:06.244,Role 4
+26,End,2013-04-28 14:18:06.244,2013-04-28 14:18:06.244,SYSTEM
+27,Deliver Goods Services,2013-04-27 04:58:16.665,2013-05-20 15:40:05.644,Role 10
+27,Release Purchase Order,2013-05-20 15:40:05.644,2013-05-20 15:41:05.644,Role 1
+27,Approve Purchase Order for payment,2013-05-20 15:41:05.644,2013-05-20 15:42:05.644,Role 9
+27,Send Invoice,2013-05-20 15:42:05.644,2013-05-20 15:42:05.644,Role 7
+27,Release Supplier's Invoice,2013-05-20 15:42:05.644,2013-05-20 15:45:53.619,Role 4
+27,Settle Dispute With Supplier,2013-05-20 15:45:53.619,2013-05-20 15:54:40.272,Role 4
+27,Authorize Supplier's Invoice payment,2013-05-20 15:54:40.272,2013-05-20 15:54:40.272,Role 4
+27,Pay Invoice,2013-05-20 15:54:40.272,2013-05-21 04:03:37.026,Role 4
+27,End,2013-05-21 04:03:37.026,2013-05-21 04:03:37.026,SYSTEM
+28,Deliver Goods Services,2013-05-20 15:40:05.644,2013-05-28 21:24:34.691,Role 10
+28,Release Purchase Order,2013-05-28 21:24:34.691,2013-05-28 21:25:34.691,Role 1
+28,Approve Purchase Order for payment,2013-05-28 21:25:34.691,2013-05-28 21:26:34.691,Role 9
+28,Send Invoice,2013-05-28 21:26:34.691,2013-05-28 21:26:34.691,Role 7
+28,Release Supplier's Invoice,2013-05-28 21:26:34.691,2013-05-28 21:31:09.274,Role 4
+28,Settle Dispute With Supplier,2013-05-28 21:31:09.274,2013-05-29 01:02:06.25,Role 4
+28,Authorize Supplier's Invoice payment,2013-05-29 01:02:06.25,2013-05-29 01:02:06.25,Role 4
+28,Pay Invoice,2013-05-29 01:02:06.25,2013-05-29 01:13:07.236,Role 4
+28,End,2013-05-29 01:13:07.236,2013-05-29 01:13:07.236,SYSTEM
+29,Deliver Goods Services,2013-05-28 21:24:34.691,2013-06-16 14:56:51.299,Role 10
+29,Release Purchase Order,2013-06-16 14:56:51.299,2013-06-16 14:57:51.299,Role 1
+29,Approve Purchase Order for payment,2013-06-16 14:57:51.299,2013-06-16 14:58:51.299,Role 9
+29,Send Invoice,2013-06-16 14:58:51.299,2013-06-16 14:58:51.299,Role 7
+29,Release Supplier's Invoice,2013-06-16 14:58:51.299,2013-06-17 00:03:07.653,Role 4
+29,Settle Dispute With Supplier,2013-06-17 00:03:07.653,2013-06-17 00:10:20.861,Role 4
+29,Authorize Supplier's Invoice payment,2013-06-17 00:10:20.861,2013-06-17 00:10:20.861,Role 4
+29,Pay Invoice,2013-06-17 00:10:20.861,2013-06-17 00:16:40.275,Role 4
+29,End,2013-06-17 00:16:40.275,2013-06-17 00:16:40.275,SYSTEM
+30,Deliver Goods Services,2013-06-16 14:56:51.299,2013-06-26 01:48:24.773,Role 10
+30,Release Purchase Order,2013-06-26 01:48:24.773,2013-06-26 01:49:24.773,Role 1
+30,Approve Purchase Order for payment,2013-06-26 01:49:24.773,2013-06-26 01:50:24.773,Role 9
+30,Send Invoice,2013-06-26 01:50:24.773,2013-06-26 01:50:24.773,Role 7
+30,Release Supplier's Invoice,2013-06-26 01:50:24.773,2013-06-26 01:54:22.377,Role 4
+30,Settle Dispute With Supplier,2013-06-26 01:54:22.377,2013-06-26 03:13:38.848,Role 4
+30,Authorize Supplier's Invoice payment,2013-06-26 03:13:38.848,2013-06-26 03:13:38.848,Role 4
+30,Pay Invoice,2013-06-26 03:13:38.848,2013-06-26 03:19:55.028,Role 4
+30,End,2013-06-26 03:19:55.028,2013-06-26 03:19:55.028,SYSTEM
+31,Deliver Goods Services,2013-06-26 01:48:24.773,2013-07-05 13:36:22.202,Role 10
+31,Release Purchase Order,2013-07-05 13:36:22.202,2013-07-05 13:37:22.202,Role 1
+31,Approve Purchase Order for payment,2013-07-05 13:37:22.202,2013-07-05 13:38:22.202,Role 9
+31,Send Invoice,2013-07-05 13:38:22.202,2013-07-05 13:38:22.202,Role 7
+31,Release Supplier's Invoice,2013-07-05 13:38:22.202,2013-07-05 13:44:06.158,Role 4
+31,Settle Dispute With Supplier,2013-07-05 13:44:06.158,2013-07-06 04:00:37.323,Role 4
+31,Authorize Supplier's Invoice payment,2013-07-06 04:00:37.323,2013-07-06 04:00:37.323,Role 4
+31,Pay Invoice,2013-07-06 04:00:37.323,2013-07-06 04:08:20.254,Role 4
+31,End,2013-07-06 04:08:20.254,2013-07-06 04:08:20.254,SYSTEM
