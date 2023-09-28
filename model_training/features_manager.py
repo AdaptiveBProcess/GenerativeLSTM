@@ -10,13 +10,13 @@ import numpy as np
 import itertools
 from operator import itemgetter
 try:
-    from support_modules import role_discovery as rl
+    from GenerativeLSTM.support_modules import role_discovery as rl
 except:
     import os
     from importlib import util
     spec = util.spec_from_file_location(
         'role_discovery', 
-        os.path.join(os.getcwd(), 'support_modules', 'role_discovery.py'))
+        os.path.join(os.getcwd(),'GenerativeLSTM', 'support_modules', 'role_discovery.py'))
     rl = util.module_from_spec(spec)
     spec.loader.exec_module(rl)
 

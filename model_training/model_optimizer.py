@@ -17,9 +17,9 @@ import utils.support as sup
 import readers.log_splitter as ls
 
 import tensorflow as tf
-from model_training import samples_creator as sc
-from model_training import model_loader as mload
-from model_training import features_manager as feat
+from GenerativeLSTM.model_training import samples_creator as sc
+from GenerativeLSTM.model_training import model_loader as mload
+from GenerativeLSTM.model_training import features_manager as feat
 
 
 class ModelOptimizer():
@@ -256,7 +256,7 @@ class ModelOptimizer():
     def read_model_definition(model_type):
         model_def = dict()
         config = cp.ConfigParser(interpolation=None)
-        config.read('models_spec.ini')
+        config.read('GenerativeLSTM/models_spec.ini')
         #  File name with extension
         model_def['additional_columns'] = sup.reduce_list(config.get(model_type, 'additional_columns'), dtype='str')
         model_def['scaler'] = config.get(model_type, 'scaler')

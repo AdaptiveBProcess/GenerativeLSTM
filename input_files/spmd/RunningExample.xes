@@ -1,0 +1,184 @@
+<?xml version="1.0" ?>
+<!--This file has been generated with the OpenXES library. It conforms-->
+<!--to the XML serialization of the XES standard for log storage and-->
+<!--management.-->
+<!--XES standard version: 1.0-->
+<!--OpenXES library version: 1.0RC7-->
+<!--OpenXES is available from http://www.openxes.org/-->
+<log xes.version="1.0" xes.features="nested-attributes" openxes.version="1.0RC7">
+	<trace>
+		<string key="concept:name" value="gen-Case000"/>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task B"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task B"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task D"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task D"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="gen-Case007"/>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task B"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task B"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task D"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task D"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="gen-Case021"/>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task B"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task B"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task D"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task D"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="gen-Case028"/>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task B"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task B"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task D"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task D"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="gen-Case042"/>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task B"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task B"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task D"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task D"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Task A"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+	</trace>
+</log>

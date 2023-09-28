@@ -6,19 +6,19 @@ Created on Mon Mar 16 09:53:54 2020
 """
 import tensorflow as tf
 
-from model_training.models import model_specialized as mspec
-from model_training.models import model_concatenated as mcat
-from model_training.models import model_shared_cat as mshcat
+from GenerativeLSTM.model_training.models import model_specialized as mspec
+from GenerativeLSTM.model_training.models import model_concatenated as mcat
+from GenerativeLSTM.model_training.models import model_shared_cat as mshcat
 
-from model_training.models import model_gru_specialized as mspecg
-from model_training.models import model_gru_concatenated as mcatg
-from model_training.models import model_gru_shared_cat as mshcatg
+from GenerativeLSTM.model_training.models import model_gru_specialized as mspecg
+from GenerativeLSTM.model_training.models import model_gru_concatenated as mcatg
+from GenerativeLSTM.model_training.models import model_gru_shared_cat as mshcatg
 
 
-from model_training.models import model_shared_cat_cx as mshcati
-from model_training.models import model_concatenated_cx as mcati
-from model_training.models import model_gru_concatenated_cx as mcatgi
-from model_training.models import model_gru_shared_cat_cx as mshcatgi
+from GenerativeLSTM.model_training.models import model_shared_cat_cx as mshcati
+from GenerativeLSTM.model_training.models import model_concatenated_cx as mcati
+from GenerativeLSTM.model_training.models import model_gru_concatenated_cx as mcatgi
+from GenerativeLSTM.model_training.models import model_gru_shared_cat_cx as mshcatgi
 
 # from model_training.models import model_shared_cat_intercase as mshcati
 # from model_training.models import model_concatenated_inter as mcati

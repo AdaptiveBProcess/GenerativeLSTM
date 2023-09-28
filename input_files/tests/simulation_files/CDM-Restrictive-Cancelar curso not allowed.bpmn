@@ -1,0 +1,485 @@
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.omg.org/bpmn20" exporter="ProM. http://www.promtools.org/prom6" exporterVersion="6.3" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" xmlns:qbp="http://www.qbp-simulator.com/Schema201212"><process id="proc_29815118">
+<startEvent id="node_2194a0a5-e008-4796-a77f-f5d1c5a66d9d" name=""/>
+<endEvent id="node_042d9c86-50b4-4073-8642-5a8bf12afbe1" name=""/>
+<task id="node_751fe22c-0286-418e-bd0a-a87a1dedaf8c" name="Radicar Solicitud Homologacion">
+<standardLoopCharacteristics testBefore="false"/>
+</task>
+<task id="node_ec17d1d8-1956-4039-b37e-7a4746d5ed7c" name="Homologacion por grupo de cursos"/>
+<task id="node_44f1a250-3f78-4a4e-a8c5-dc7183108dac" name="Validar solicitud"/>
+<task id="node_76ac4795-4788-45b0-a0d2-e2e30a469bcf" name="Traer informacion estudiante - banner"/>
+<task id="node_8dc6ae41-31af-46a7-bdb8-06d5affd218c" name="Validacion final">
+<standardLoopCharacteristics testBefore="false"/>
+</task>
+<task id="node_5f52085d-e2dd-416c-8c0c-4a3fed15a9b7" name="Evaluacion curso">
+<standardLoopCharacteristics testBefore="false"/>
+</task>
+<task id="node_91c32c0e-114a-4eda-a947-976e4ebf4ad9" name="Revisar curso">
+<standardLoopCharacteristics testBefore="false"/>
+</task>
+<task id="node_c1585c52-9e6c-4bd0-b6ea-bc6f8768bdef" name="Notificacion estudiante cancelacion soli"/>
+<task id="node_9be842e7-2d35-45a4-a8fb-e1b043517a87" name="Transferir creditos homologables">
+<standardLoopCharacteristics testBefore="false"/>
+</task>
+<task id="node_99839ff7-2e3b-4f37-838b-b84f9983762e" name="Avanzar recepcion documentos"/>
+<task id="node_3dbc6179-a57b-4cf5-b686-a9c0eb03dd32" name="Transferir Creditos"/>
+<task id="node_75c67780-99aa-456e-a217-bb65f821563d" name="End"/>
+<task id="node_02130f6c-b41f-4eae-9689-2c62337fe8c4" name="Cancelar Solicitud"/>
+<task id="node_f9660c7c-f99c-43ca-86d8-f5cf9a9f0362" name="Visto Bueno Cierre Proceso">
+<standardLoopCharacteristics testBefore="false"/>
+</task>
+<task id="node_68a0223f-852d-4e9f-bdda-01f3d7d8c53a" name="Start"/>
+<task id="node_ac5c373d-ad64-4d11-a445-83ec5a8fce80" name="Recepcion de documentos"/>
+<task id="node_9022b5c4-a73e-48dd-b5ec-d6f01fba604b" name="Validar solicitud / pre-homologacion"/>
+<exclusiveGateway id="node_37ad4f97-b9fa-4f60-97a8-33828c1a1aaa" name="" gatewayDirection="Diverging">
+<incoming>
+node_a54e1e24-a7a6-42de-8831-c8b9f251a6c9</incoming>
+<outgoing>
+node_29a4ae8d-3121-4d61-a141-421db124d6d5</outgoing>
+<outgoing>
+node_955e4676-306b-4b68-b8ef-cb0131d8852f</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node_2090d07e-2d50-44a0-b6b0-1bff4c3a884f" name="" gatewayDirection="Converging">
+<incoming>
+node_0d15312f-48a7-4f18-b952-7b8771ddeb17</incoming>
+<incoming>
+node_420dc1ec-d3f5-419d-8b4a-03ddc5e8a977</incoming>
+<outgoing>
+node_08f265c2-0c67-4e64-a960-5895ceaa59ee</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node_cab00a05-2488-48cb-92b0-8b6fdd80271b" name="" gatewayDirection="Diverging">
+<incoming>
+node_1e6d32dc-6215-4055-92f4-9745710bf376</incoming>
+<outgoing>
+node_c1480dbd-22ac-4810-a521-8b8e41bf5e6c</outgoing>
+<outgoing>
+node_f8d2dc8f-599e-46ce-98a7-837c35285674</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node_1b610171-84c9-4da1-9330-6eec93c0e730" name="" gatewayDirection="Diverging">
+<incoming>
+node_c6ff90e4-460b-4b36-88bd-eac707cfd5e2</incoming>
+<outgoing>
+node_29a70f30-8dc0-4fb2-afc1-c150c46b96fb</outgoing>
+<outgoing>
+node_d7c8d7ca-02d9-4d13-a6c8-466377d5f546</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node_d5d94298-7846-430b-8ef5-b9309161ba5b" name="" gatewayDirection="Diverging">
+<incoming>
+node_72d1254f-7323-4bb2-bd50-8a211e7560ff</incoming>
+<outgoing>
+node_8b47d276-22e4-438f-a890-50e868d888ef</outgoing>
+<outgoing>
+node_8b670242-77a7-4356-904a-fae65faa5cf6</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node_3f6282d7-b290-49ac-b6d6-972cff006872" name="" gatewayDirection="Diverging">
+<incoming>
+node_89066a10-3306-4798-8bf0-152df71f4910</incoming>
+<outgoing>
+node_23ce45fc-29f6-46d7-9e33-dd6c1be66929</outgoing>
+<outgoing>
+node_6aa49fe6-6c8d-4ff0-8c2b-6d1c56501c23</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node_b7526a8c-ce8d-4164-ac7e-e59eec554cf1" name="" gatewayDirection="Converging">
+<incoming>
+node_c1480dbd-22ac-4810-a521-8b8e41bf5e6c</incoming>
+<incoming>
+node_d129888a-a5ee-4278-8901-afb904545289</incoming>
+<outgoing>
+node_c2ffd434-88f1-4ffd-88a0-6c4b0a800c65</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node_2b0134c0-d9da-4bb5-b7dc-38cb13b3573d" name="" gatewayDirection="Converging">
+<incoming>
+node_d7c8d7ca-02d9-4d13-a6c8-466377d5f546</incoming>
+<incoming>
+node_0b92726d-5dcb-4008-a323-58978f84df44</incoming>
+<outgoing>
+node_dc30cae0-a230-457a-a3f5-aac12bb9eae0</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node_6b30a85d-f8a2-415e-aa39-f34054791b40" name="" gatewayDirection="Converging">
+<incoming>
+node_c2ffd434-88f1-4ffd-88a0-6c4b0a800c65</incoming>
+<incoming>
+node_918634b5-0b59-4ff7-90a5-93a203046e13</incoming>
+<outgoing>
+node_c64d6783-de6b-4013-8e4d-c33c5a5bbc42</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node_95f736ea-98ab-4f24-8de0-e534b029f88f" name="" gatewayDirection="Converging">
+<incoming>
+node_9c803840-629f-4195-b693-d6820d3057d8</incoming>
+<incoming>
+node_23ce45fc-29f6-46d7-9e33-dd6c1be66929</incoming>
+<outgoing>
+node_3e7ec203-c2f4-41d3-88db-20a21c8d2a6a</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node_ca8d40fa-8940-46a3-9954-7fe7a0a861c3" name="" gatewayDirection="Diverging">
+<incoming>
+node_d622033a-b269-4992-8040-156e55ada3e7</incoming>
+<outgoing>
+node_c453adca-67b5-4a0e-93f3-ca84ba8839d3</outgoing>
+<outgoing>
+node_0d15312f-48a7-4f18-b952-7b8771ddeb17</outgoing>
+</exclusiveGateway>
+<exclusiveGateway id="node_b5056a4a-e15a-4883-9cbe-f343993d3679" name="" gatewayDirection="Converging">
+<incoming>
+node_8b47d276-22e4-438f-a890-50e868d888ef</incoming>
+<incoming>
+node_3e7ec203-c2f4-41d3-88db-20a21c8d2a6a</incoming>
+<outgoing>
+node_d129888a-a5ee-4278-8901-afb904545289</outgoing>
+</exclusiveGateway>
+<sequenceFlow id="node_d9c004bb-865a-4e8a-8df0-11c82996ca74" name="" sourceRef="node_75c67780-99aa-456e-a217-bb65f821563d" targetRef="node_042d9c86-50b4-4073-8642-5a8bf12afbe1"/>
+<sequenceFlow id="node_6f97d726-a3b2-401a-82e7-b4e9084c6877" name="" sourceRef="node_76ac4795-4788-45b0-a0d2-e2e30a469bcf" targetRef="node_751fe22c-0286-418e-bd0a-a87a1dedaf8c"/>
+<sequenceFlow id="node_f66f3cf9-cdbd-41aa-bf0a-2ad137c8aa6a" name="" sourceRef="node_02130f6c-b41f-4eae-9689-2c62337fe8c4" targetRef="node_c1585c52-9e6c-4bd0-b6ea-bc6f8768bdef"/>
+<sequenceFlow id="node_ed378250-b883-421c-8184-2492c07773a2" name="" sourceRef="node_91c32c0e-114a-4eda-a947-976e4ebf4ad9" targetRef="node_5f52085d-e2dd-416c-8c0c-4a3fed15a9b7"/>
+<sequenceFlow id="node_6b83204e-01cb-460b-b012-4c08b3c3450b" name="" sourceRef="node_68a0223f-852d-4e9f-bdda-01f3d7d8c53a" targetRef="node_76ac4795-4788-45b0-a0d2-e2e30a469bcf"/>
+<sequenceFlow id="node_3825ff57-d151-4c7e-bb1e-e106efd96194" name="" sourceRef="node_8dc6ae41-31af-46a7-bdb8-06d5affd218c" targetRef="node_f9660c7c-f99c-43ca-86d8-f5cf9a9f0362"/>
+<sequenceFlow id="node_d587f96e-f17d-404a-9413-a78fe44b32f4" name="" sourceRef="node_3dbc6179-a57b-4cf5-b686-a9c0eb03dd32" targetRef="node_9be842e7-2d35-45a4-a8fb-e1b043517a87"/>
+<sequenceFlow id="node_00d5da37-e65f-45aa-8856-a546db558bf3" name="" sourceRef="node_2194a0a5-e008-4796-a77f-f5d1c5a66d9d" targetRef="node_68a0223f-852d-4e9f-bdda-01f3d7d8c53a"/>
+<sequenceFlow id="node_a54e1e24-a7a6-42de-8831-c8b9f251a6c9" name="" sourceRef="node_751fe22c-0286-418e-bd0a-a87a1dedaf8c" targetRef="node_37ad4f97-b9fa-4f60-97a8-33828c1a1aaa"/>
+<sequenceFlow id="node_955e4676-306b-4b68-b8ef-cb0131d8852f" name="" sourceRef="node_37ad4f97-b9fa-4f60-97a8-33828c1a1aaa" targetRef="node_44f1a250-3f78-4a4e-a8c5-dc7183108dac"/>
+<sequenceFlow id="node_29a4ae8d-3121-4d61-a141-421db124d6d5" name="" sourceRef="node_37ad4f97-b9fa-4f60-97a8-33828c1a1aaa" targetRef="node_02130f6c-b41f-4eae-9689-2c62337fe8c4"/>
+<sequenceFlow id="node_d622033a-b269-4992-8040-156e55ada3e7" name="" sourceRef="node_44f1a250-3f78-4a4e-a8c5-dc7183108dac" targetRef="node_ca8d40fa-8940-46a3-9954-7fe7a0a861c3"/>
+<sequenceFlow id="node_c453adca-67b5-4a0e-93f3-ca84ba8839d3" name="" sourceRef="node_ca8d40fa-8940-46a3-9954-7fe7a0a861c3" targetRef="node_ac5c373d-ad64-4d11-a445-83ec5a8fce80"/>
+<sequenceFlow id="node_1e6d32dc-6215-4055-92f4-9745710bf376" name="" sourceRef="node_ec17d1d8-1956-4039-b37e-7a4746d5ed7c" targetRef="node_cab00a05-2488-48cb-92b0-8b6fdd80271b"/>
+<sequenceFlow id="node_f8d2dc8f-599e-46ce-98a7-837c35285674" name="" sourceRef="node_cab00a05-2488-48cb-92b0-8b6fdd80271b" targetRef="node_91c32c0e-114a-4eda-a947-976e4ebf4ad9"/>
+<sequenceFlow id="node_c6ff90e4-460b-4b36-88bd-eac707cfd5e2" name="" sourceRef="node_5f52085d-e2dd-416c-8c0c-4a3fed15a9b7" targetRef="node_1b610171-84c9-4da1-9330-6eec93c0e730"/>
+<sequenceFlow id="node_29a70f30-8dc0-4fb2-afc1-c150c46b96fb" name="" sourceRef="node_1b610171-84c9-4da1-9330-6eec93c0e730" targetRef="node_9022b5c4-a73e-48dd-b5ec-d6f01fba604b"/>
+<sequenceFlow id="node_72d1254f-7323-4bb2-bd50-8a211e7560ff" name="" sourceRef="node_9022b5c4-a73e-48dd-b5ec-d6f01fba604b" targetRef="node_d5d94298-7846-430b-8ef5-b9309161ba5b"/>
+<sequenceFlow id="node_8b670242-77a7-4356-904a-fae65faa5cf6" name="" sourceRef="node_d5d94298-7846-430b-8ef5-b9309161ba5b" targetRef="node_99839ff7-2e3b-4f37-838b-b84f9983762e"/>
+<sequenceFlow id="node_89066a10-3306-4798-8bf0-152df71f4910" name="" sourceRef="node_f9660c7c-f99c-43ca-86d8-f5cf9a9f0362" targetRef="node_3f6282d7-b290-49ac-b6d6-972cff006872"/>
+<sequenceFlow id="node_6aa49fe6-6c8d-4ff0-8c2b-6d1c56501c23" name="" sourceRef="node_3f6282d7-b290-49ac-b6d6-972cff006872" targetRef="node_3dbc6179-a57b-4cf5-b686-a9c0eb03dd32"/>
+<sequenceFlow id="node_23ce45fc-29f6-46d7-9e33-dd6c1be66929" name="" sourceRef="node_3f6282d7-b290-49ac-b6d6-972cff006872" targetRef="node_95f736ea-98ab-4f24-8de0-e534b029f88f"/>
+<sequenceFlow id="node_9c803840-629f-4195-b693-d6820d3057d8" name="" sourceRef="node_9be842e7-2d35-45a4-a8fb-e1b043517a87" targetRef="node_95f736ea-98ab-4f24-8de0-e534b029f88f"/>
+<sequenceFlow id="node_08f265c2-0c67-4e64-a960-5895ceaa59ee" name="" sourceRef="node_2090d07e-2d50-44a0-b6b0-1bff4c3a884f" targetRef="node_ec17d1d8-1956-4039-b37e-7a4746d5ed7c"/>
+<sequenceFlow id="node_0d15312f-48a7-4f18-b952-7b8771ddeb17" name="" sourceRef="node_ca8d40fa-8940-46a3-9954-7fe7a0a861c3" targetRef="node_2090d07e-2d50-44a0-b6b0-1bff4c3a884f"/>
+<sequenceFlow id="node_420dc1ec-d3f5-419d-8b4a-03ddc5e8a977" name="" sourceRef="node_ac5c373d-ad64-4d11-a445-83ec5a8fce80" targetRef="node_2090d07e-2d50-44a0-b6b0-1bff4c3a884f"/>
+<sequenceFlow id="node_c1480dbd-22ac-4810-a521-8b8e41bf5e6c" name="" sourceRef="node_cab00a05-2488-48cb-92b0-8b6fdd80271b" targetRef="node_b7526a8c-ce8d-4164-ac7e-e59eec554cf1"/>
+<sequenceFlow id="node_d129888a-a5ee-4278-8901-afb904545289" name="" sourceRef="node_b5056a4a-e15a-4883-9cbe-f343993d3679" targetRef="node_b7526a8c-ce8d-4164-ac7e-e59eec554cf1"/>
+<sequenceFlow id="node_c64d6783-de6b-4013-8e4d-c33c5a5bbc42" name="" sourceRef="node_6b30a85d-f8a2-415e-aa39-f34054791b40" targetRef="node_75c67780-99aa-456e-a217-bb65f821563d"/>
+<sequenceFlow id="node_918634b5-0b59-4ff7-90a5-93a203046e13" name="" sourceRef="node_c1585c52-9e6c-4bd0-b6ea-bc6f8768bdef" targetRef="node_6b30a85d-f8a2-415e-aa39-f34054791b40"/>
+<sequenceFlow id="node_c2ffd434-88f1-4ffd-88a0-6c4b0a800c65" name="" sourceRef="node_b7526a8c-ce8d-4164-ac7e-e59eec554cf1" targetRef="node_6b30a85d-f8a2-415e-aa39-f34054791b40"/>
+<sequenceFlow id="node_dc30cae0-a230-457a-a3f5-aac12bb9eae0" name="" sourceRef="node_2b0134c0-d9da-4bb5-b7dc-38cb13b3573d" targetRef="node_8dc6ae41-31af-46a7-bdb8-06d5affd218c"/>
+<sequenceFlow id="node_0b92726d-5dcb-4008-a323-58978f84df44" name="" sourceRef="node_99839ff7-2e3b-4f37-838b-b84f9983762e" targetRef="node_2b0134c0-d9da-4bb5-b7dc-38cb13b3573d"/>
+<sequenceFlow id="node_8b47d276-22e4-438f-a890-50e868d888ef" name="" sourceRef="node_d5d94298-7846-430b-8ef5-b9309161ba5b" targetRef="node_b5056a4a-e15a-4883-9cbe-f343993d3679"/>
+<sequenceFlow id="node_d7c8d7ca-02d9-4d13-a6c8-466377d5f546" name="" sourceRef="node_1b610171-84c9-4da1-9330-6eec93c0e730" targetRef="node_2b0134c0-d9da-4bb5-b7dc-38cb13b3573d"/>
+<sequenceFlow id="node_3e7ec203-c2f4-41d3-88db-20a21c8d2a6a" name="" sourceRef="node_95f736ea-98ab-4f24-8de0-e534b029f88f" targetRef="node_b5056a4a-e15a-4883-9cbe-f343993d3679"/>
+</process>
+<bpmndi:BPMNDiagram id="id_1074708466">
+<bpmndi:BPMNPlane bpmnElement="proc_29815118">
+<bpmndi:BPMNShape bpmnElement="node_5f52085d-e2dd-416c-8c0c-4a3fed15a9b7">
+<dc:Bounds x="1341.0" y="173.0" width="80.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_2090d07e-2d50-44a0-b6b0-1bff4c3a884f">
+<dc:Bounds x="931.0" y="190.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_95f736ea-98ab-4f24-8de0-e534b029f88f">
+<dc:Bounds x="2551.0" y="154.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_ac5c373d-ad64-4d11-a445-83ec5a8fce80">
+<dc:Bounds x="801.0" y="206.0" width="80.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_99839ff7-2e3b-4f37-838b-b84f9983762e">
+<dc:Bounds x="1751.0" y="131.0" width="80.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_68a0223f-852d-4e9f-bdda-01f3d7d8c53a">
+<dc:Bounds x="76.0" y="161.0" width="80.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_9022b5c4-a73e-48dd-b5ec-d6f01fba604b">
+<dc:Bounds x="1546.0" y="149.0" width="80.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_751fe22c-0286-418e-bd0a-a87a1dedaf8c">
+<dc:Bounds x="336.0" y="163.0" width="80.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_2194a0a5-e008-4796-a77f-f5d1c5a66d9d">
+<dc:Bounds x="1.0" y="168.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_ca8d40fa-8940-46a3-9954-7fe7a0a861c3">
+<dc:Bounds x="698.5" y="195.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_6b30a85d-f8a2-415e-aa39-f34054791b40">
+<dc:Bounds x="2776.0" y="161.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_3f6282d7-b290-49ac-b6d6-972cff006872">
+<dc:Bounds x="2216.0" y="145.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_cab00a05-2488-48cb-92b0-8b6fdd80271b">
+<dc:Bounds x="1136.0" y="204.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_d5d94298-7846-430b-8ef5-b9309161ba5b">
+<dc:Bounds x="1676.0" y="160.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_75c67780-99aa-456e-a217-bb65f821563d">
+<dc:Bounds x="2851.0" y="156.0" width="80.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_042d9c86-50b4-4073-8642-5a8bf12afbe1">
+<dc:Bounds x="2981.0" y="163.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_2b0134c0-d9da-4bb5-b7dc-38cb13b3573d">
+<dc:Bounds x="1881.0" y="158.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_b7526a8c-ce8d-4164-ac7e-e59eec554cf1">
+<dc:Bounds x="2701.0" y="186.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_1b610171-84c9-4da1-9330-6eec93c0e730">
+<dc:Bounds x="1471.0" y="180.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_37ad4f97-b9fa-4f60-97a8-33828c1a1aaa">
+<dc:Bounds x="466.0" y="173.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_91c32c0e-114a-4eda-a947-976e4ebf4ad9">
+<dc:Bounds x="1211.0" y="176.0" width="80.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_44f1a250-3f78-4a4e-a8c5-dc7183108dac">
+<dc:Bounds x="541.0" y="204.0" width="80.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_ec17d1d8-1956-4039-b37e-7a4746d5ed7c">
+<dc:Bounds x="1006.0" y="189.0" width="80.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_f9660c7c-f99c-43ca-86d8-f5cf9a9f0362">
+<dc:Bounds x="2086.0" y="140.0" width="80.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_76ac4795-4788-45b0-a0d2-e2e30a469bcf">
+<dc:Bounds x="206.0" y="161.0" width="80.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_8dc6ae41-31af-46a7-bdb8-06d5affd218c">
+<dc:Bounds x="1956.0" y="145.0" width="80.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_02130f6c-b41f-4eae-9689-2c62337fe8c4">
+<dc:Bounds x="541.0" y="134.0" width="80.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_b5056a4a-e15a-4883-9cbe-f343993d3679">
+<dc:Bounds x="2626.0" y="178.5" width="25.0" height="25.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_c1585c52-9e6c-4bd0-b6ea-bc6f8768bdef">
+<dc:Bounds x="671.0" y="123.0" width="80.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_9be842e7-2d35-45a4-a8fb-e1b043517a87">
+<dc:Bounds x="2421.0" y="161.0" width="80.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape bpmnElement="node_3dbc6179-a57b-4cf5-b686-a9c0eb03dd32">
+<dc:Bounds x="2291.0" y="161.0" width="80.0" height="40.0"/>
+<bpmndi:BPMNLabel/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNEdge bpmnElement="node_955e4676-306b-4b68-b8ef-cb0131d8852f">
+<di:waypoint x="478.5" y="186.0"/>
+<di:waypoint x="581.0" y="224.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_f66f3cf9-cdbd-41aa-bf0a-2ad137c8aa6a">
+<di:waypoint x="581.0" y="154.0"/>
+<di:waypoint x="711.0" y="143.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_f8d2dc8f-599e-46ce-98a7-837c35285674">
+<di:waypoint x="1148.5" y="217.0"/>
+<di:waypoint x="1251.0" y="196.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_0d15312f-48a7-4f18-b952-7b8771ddeb17">
+<di:waypoint x="711.0" y="208.0"/>
+<di:waypoint x="841.0" y="176.0"/>
+<di:waypoint x="943.5" y="203.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_c1480dbd-22ac-4810-a521-8b8e41bf5e6c">
+<di:waypoint x="1148.5" y="217.0"/>
+<di:waypoint x="1251.0" y="261.0"/>
+<di:waypoint x="1381.0" y="261.0"/>
+<di:waypoint x="1483.5" y="261.0"/>
+<di:waypoint x="1586.0" y="261.0"/>
+<di:waypoint x="1688.5" y="261.0"/>
+<di:waypoint x="1791.0" y="261.0"/>
+<di:waypoint x="1893.5" y="261.0"/>
+<di:waypoint x="1996.0" y="261.0"/>
+<di:waypoint x="2126.0" y="261.0"/>
+<di:waypoint x="2228.5" y="261.0"/>
+<di:waypoint x="2331.0" y="261.0"/>
+<di:waypoint x="2461.0" y="261.0"/>
+<di:waypoint x="2563.5" y="261.0"/>
+<di:waypoint x="2638.5" y="261.0"/>
+<di:waypoint x="2713.5" y="199.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_c453adca-67b5-4a0e-93f3-ca84ba8839d3">
+<di:waypoint x="711.0" y="208.0"/>
+<di:waypoint x="841.0" y="226.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_72d1254f-7323-4bb2-bd50-8a211e7560ff">
+<di:waypoint x="1586.0" y="169.0"/>
+<di:waypoint x="1688.5" y="173.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_3825ff57-d151-4c7e-bb1e-e106efd96194">
+<di:waypoint x="1996.0" y="165.0"/>
+<di:waypoint x="2126.0" y="160.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_89066a10-3306-4798-8bf0-152df71f4910">
+<di:waypoint x="2126.0" y="160.0"/>
+<di:waypoint x="2228.5" y="158.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_8b670242-77a7-4356-904a-fae65faa5cf6">
+<di:waypoint x="1688.5" y="173.0"/>
+<di:waypoint x="1791.0" y="151.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_a54e1e24-a7a6-42de-8831-c8b9f251a6c9">
+<di:waypoint x="376.0" y="183.0"/>
+<di:waypoint x="478.5" y="186.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_8b47d276-22e4-438f-a890-50e868d888ef">
+<di:waypoint x="1688.5" y="173.0"/>
+<di:waypoint x="1791.0" y="201.0"/>
+<di:waypoint x="1893.5" y="231.0"/>
+<di:waypoint x="1996.0" y="231.0"/>
+<di:waypoint x="2126.0" y="231.0"/>
+<di:waypoint x="2228.5" y="231.0"/>
+<di:waypoint x="2331.0" y="231.0"/>
+<di:waypoint x="2461.0" y="231.0"/>
+<di:waypoint x="2563.5" y="231.0"/>
+<di:waypoint x="2638.5" y="191.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_0b92726d-5dcb-4008-a323-58978f84df44">
+<di:waypoint x="1791.0" y="151.0"/>
+<di:waypoint x="1893.5" y="171.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_d7c8d7ca-02d9-4d13-a6c8-466377d5f546">
+<di:waypoint x="1483.5" y="193.0"/>
+<di:waypoint x="1586.0" y="231.0"/>
+<di:waypoint x="1688.5" y="231.0"/>
+<di:waypoint x="1791.0" y="231.0"/>
+<di:waypoint x="1893.5" y="171.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_6aa49fe6-6c8d-4ff0-8c2b-6d1c56501c23">
+<di:waypoint x="2228.5" y="158.0"/>
+<di:waypoint x="2331.0" y="181.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_d129888a-a5ee-4278-8901-afb904545289">
+<di:waypoint x="2638.5" y="191.0"/>
+<di:waypoint x="2713.5" y="199.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_29a4ae8d-3121-4d61-a141-421db124d6d5">
+<di:waypoint x="478.5" y="186.0"/>
+<di:waypoint x="581.0" y="154.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_d9c004bb-865a-4e8a-8df0-11c82996ca74">
+<di:waypoint x="2891.0" y="176.0"/>
+<di:waypoint x="2993.5" y="176.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_08f265c2-0c67-4e64-a960-5895ceaa59ee">
+<di:waypoint x="943.5" y="203.0"/>
+<di:waypoint x="1046.0" y="209.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_c64d6783-de6b-4013-8e4d-c33c5a5bbc42">
+<di:waypoint x="2788.5" y="174.0"/>
+<di:waypoint x="2891.0" y="176.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_c6ff90e4-460b-4b36-88bd-eac707cfd5e2">
+<di:waypoint x="1381.0" y="193.0"/>
+<di:waypoint x="1483.5" y="193.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_918634b5-0b59-4ff7-90a5-93a203046e13">
+<di:waypoint x="711.0" y="143.0"/>
+<di:waypoint x="841.0" y="101.0"/>
+<di:waypoint x="943.5" y="101.0"/>
+<di:waypoint x="1046.0" y="101.0"/>
+<di:waypoint x="1148.5" y="101.0"/>
+<di:waypoint x="1251.0" y="101.0"/>
+<di:waypoint x="1381.0" y="101.0"/>
+<di:waypoint x="1483.5" y="101.0"/>
+<di:waypoint x="1586.0" y="101.0"/>
+<di:waypoint x="1688.5" y="101.0"/>
+<di:waypoint x="1791.0" y="101.0"/>
+<di:waypoint x="1893.5" y="101.0"/>
+<di:waypoint x="1996.0" y="101.0"/>
+<di:waypoint x="2126.0" y="101.0"/>
+<di:waypoint x="2228.5" y="101.0"/>
+<di:waypoint x="2331.0" y="101.0"/>
+<di:waypoint x="2461.0" y="101.0"/>
+<di:waypoint x="2563.5" y="101.0"/>
+<di:waypoint x="2638.5" y="101.0"/>
+<di:waypoint x="2713.5" y="101.0"/>
+<di:waypoint x="2788.5" y="174.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_00d5da37-e65f-45aa-8856-a546db558bf3">
+<di:waypoint x="13.5" y="181.0"/>
+<di:waypoint x="116.0" y="181.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_420dc1ec-d3f5-419d-8b4a-03ddc5e8a977">
+<di:waypoint x="841.0" y="226.0"/>
+<di:waypoint x="943.5" y="203.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_d587f96e-f17d-404a-9413-a78fe44b32f4">
+<di:waypoint x="2331.0" y="181.0"/>
+<di:waypoint x="2461.0" y="181.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_6b83204e-01cb-460b-b012-4c08b3c3450b">
+<di:waypoint x="116.0" y="181.0"/>
+<di:waypoint x="246.0" y="181.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_23ce45fc-29f6-46d7-9e33-dd6c1be66929">
+<di:waypoint x="2228.5" y="158.0"/>
+<di:waypoint x="2331.0" y="131.0"/>
+<di:waypoint x="2461.0" y="131.0"/>
+<di:waypoint x="2563.5" y="167.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_3e7ec203-c2f4-41d3-88db-20a21c8d2a6a">
+<di:waypoint x="2563.5" y="167.0"/>
+<di:waypoint x="2638.5" y="191.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_d622033a-b269-4992-8040-156e55ada3e7">
+<di:waypoint x="581.0" y="224.0"/>
+<di:waypoint x="711.0" y="208.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_29a70f30-8dc0-4fb2-afc1-c150c46b96fb">
+<di:waypoint x="1483.5" y="193.0"/>
+<di:waypoint x="1586.0" y="169.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_1e6d32dc-6215-4055-92f4-9745710bf376">
+<di:waypoint x="1046.0" y="209.0"/>
+<di:waypoint x="1148.5" y="217.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_c2ffd434-88f1-4ffd-88a0-6c4b0a800c65">
+<di:waypoint x="2713.5" y="199.0"/>
+<di:waypoint x="2788.5" y="174.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_6f97d726-a3b2-401a-82e7-b4e9084c6877">
+<di:waypoint x="246.0" y="181.0"/>
+<di:waypoint x="376.0" y="183.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_9c803840-629f-4195-b693-d6820d3057d8">
+<di:waypoint x="2461.0" y="181.0"/>
+<di:waypoint x="2563.5" y="167.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_dc30cae0-a230-457a-a3f5-aac12bb9eae0">
+<di:waypoint x="1893.5" y="171.0"/>
+<di:waypoint x="1996.0" y="165.0"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge bpmnElement="node_ed378250-b883-421c-8184-2492c07773a2">
+<di:waypoint x="1251.0" y="196.0"/>
+<di:waypoint x="1381.0" y="193.0"/>
+</bpmndi:BPMNEdge>
+</bpmndi:BPMNPlane>
+</bpmndi:BPMNDiagram>
+<qbp:processSimulationInfo xmlns:qbp="http://www.qbp-simulator.com/Schema201212" id="qbp_1cad6957-e21f-4838-901c-874811c53ff7" processInstances="57" startDateTime="2016-05-18T21:56:01.999Z" currency="EUR"><qbp:arrivalRateDistribution type="EXPONENTIAL" mean="0" arg1="5994.6" arg2="0"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:arrivalRateDistribution><qbp:timetables><qbp:timetable id="Discovered_CASES_ARRIVAL_CALENDAR" default="true" name="Discovered_CASES_ARRIVAL_CALENDAR"><qbp:rules><qbp:rule fromTime="00:00:00.000000+00:00" toTime="00:59:00.000000+00:00" fromWeekDay="MONDAY" toWeekDay="MONDAY"/><qbp:rule fromTime="15:00:00.000000+00:00" toTime="15:59:00.000000+00:00" fromWeekDay="MONDAY" toWeekDay="MONDAY"/><qbp:rule fromTime="17:00:00.000000+00:00" toTime="20:59:00.000000+00:00" fromWeekDay="MONDAY" toWeekDay="MONDAY"/><qbp:rule fromTime="22:00:00.000000+00:00" toTime="23:59:00.000000+00:00" fromWeekDay="MONDAY" toWeekDay="MONDAY"/><qbp:rule fromTime="00:00:00.000000+00:00" toTime="00:59:00.000000+00:00" fromWeekDay="TUESDAY" toWeekDay="TUESDAY"/><qbp:rule fromTime="02:00:00.000000+00:00" toTime="02:59:00.000000+00:00" fromWeekDay="TUESDAY" toWeekDay="TUESDAY"/><qbp:rule fromTime="04:00:00.000000+00:00" toTime="04:59:00.000000+00:00" fromWeekDay="TUESDAY" toWeekDay="TUESDAY"/><qbp:rule fromTime="13:00:00.000000+00:00" toTime="23:59:00.000000+00:00" fromWeekDay="TUESDAY" toWeekDay="TUESDAY"/><qbp:rule fromTime="00:00:00.000000+00:00" toTime="04:59:00.000000+00:00" fromWeekDay="WEDNESDAY" toWeekDay="WEDNESDAY"/><qbp:rule fromTime="12:00:00.000000+00:00" toTime="23:59:00.000000+00:00" fromWeekDay="WEDNESDAY" toWeekDay="WEDNESDAY"/><qbp:rule fromTime="00:00:00.000000+00:00" toTime="03:59:00.000000+00:00" fromWeekDay="THURSDAY" toWeekDay="THURSDAY"/><qbp:rule fromTime="12:00:00.000000+00:00" toTime="23:59:00.000000+00:00" fromWeekDay="THURSDAY" toWeekDay="THURSDAY"/><qbp:rule fromTime="00:00:00.000000+00:00" toTime="03:59:00.000000+00:00" fromWeekDay="FRIDAY" toWeekDay="FRIDAY"/><qbp:rule fromTime="12:00:00.000000+00:00" toTime="12:59:00.000000+00:00" fromWeekDay="FRIDAY" toWeekDay="FRIDAY"/><qbp:rule fromTime="14:00:00.000000+00:00" toTime="23:59:00.000000+00:00" fromWeekDay="FRIDAY" toWeekDay="FRIDAY"/><qbp:rule fromTime="00:00:00.000000+00:00" toTime="02:59:00.000000+00:00" fromWeekDay="SATURDAY" toWeekDay="SATURDAY"/><qbp:rule fromTime="04:00:00.000000+00:00" toTime="04:59:00.000000+00:00" fromWeekDay="SATURDAY" toWeekDay="SATURDAY"/><qbp:rule fromTime="12:00:00.000000+00:00" toTime="12:59:00.000000+00:00" fromWeekDay="SATURDAY" toWeekDay="SATURDAY"/><qbp:rule fromTime="14:00:00.000000+00:00" toTime="23:59:00.000000+00:00" fromWeekDay="SATURDAY" toWeekDay="SATURDAY"/><qbp:rule fromTime="00:00:00.000000+00:00" toTime="01:59:00.000000+00:00" fromWeekDay="SUNDAY" toWeekDay="SUNDAY"/><qbp:rule fromTime="03:00:00.000000+00:00" toTime="03:59:00.000000+00:00" fromWeekDay="SUNDAY" toWeekDay="SUNDAY"/><qbp:rule fromTime="16:00:00.000000+00:00" toTime="17:59:00.000000+00:00" fromWeekDay="SUNDAY" toWeekDay="SUNDAY"/><qbp:rule fromTime="20:00:00.000000+00:00" toTime="20:59:00.000000+00:00" fromWeekDay="SUNDAY" toWeekDay="SUNDAY"/><qbp:rule fromTime="23:00:00.000000+00:00" toTime="23:59:00.000000+00:00" fromWeekDay="SUNDAY" toWeekDay="SUNDAY"/></qbp:rules></qbp:timetable><qbp:timetable id="Discovered_DEFAULT_CALENDAR" default="false" name="Discovered_DEFAULT_CALENDAR"><qbp:rules><qbp:rule fromTime="14:00:00.000000+00:00" toTime="23:59:00.000000+00:00" fromWeekDay="TUESDAY" toWeekDay="TUESDAY"/><qbp:rule fromTime="00:00:00.000000+00:00" toTime="02:59:00.000000+00:00" fromWeekDay="WEDNESDAY" toWeekDay="WEDNESDAY"/><qbp:rule fromTime="14:00:00.000000+00:00" toTime="23:59:00.000000+00:00" fromWeekDay="WEDNESDAY" toWeekDay="WEDNESDAY"/><qbp:rule fromTime="00:00:00.000000+00:00" toTime="03:59:00.000000+00:00" fromWeekDay="THURSDAY" toWeekDay="THURSDAY"/><qbp:rule fromTime="14:00:00.000000+00:00" toTime="23:59:00.000000+00:00" fromWeekDay="THURSDAY" toWeekDay="THURSDAY"/><qbp:rule fromTime="00:00:00.000000+00:00" toTime="02:59:00.000000+00:00" fromWeekDay="FRIDAY" toWeekDay="FRIDAY"/><qbp:rule fromTime="15:00:00.000000+00:00" toTime="23:59:00.000000+00:00" fromWeekDay="FRIDAY" toWeekDay="FRIDAY"/><qbp:rule fromTime="00:00:00.000000+00:00" toTime="01:59:00.000000+00:00" fromWeekDay="SATURDAY" toWeekDay="SATURDAY"/><qbp:rule fromTime="14:00:00.000000+00:00" toTime="23:59:00.000000+00:00" fromWeekDay="SATURDAY" toWeekDay="SATURDAY"/><qbp:rule fromTime="00:00:00.000000+00:00" toTime="00:59:00.000000+00:00" fromWeekDay="SUNDAY" toWeekDay="SUNDAY"/></qbp:rules></qbp:timetable><qbp:timetable id="QBP_247_TIMETABLE" default="false" name="24/7"><qbp:rules><qbp:rule fromTime="00:00:00.000+00:00" toTime="23:59:59.999+00:00" fromWeekDay="MONDAY" toWeekDay="SUNDAY"/></qbp:rules></qbp:timetable></qbp:timetables><qbp:resources><qbp:resource id="QBP_DEFAULT_RESOURCE" name="SYSTEM" totalAmount="20" costPerHour="20" timetableId="Discovered_CASES_ARRIVAL_CALENDAR"/><qbp:resource id="qbp_129d8726-d828-47f1-969e-52848b763c99" name="Role 1" totalAmount="247" costPerHour="20" timetableId="Discovered_DEFAULT_CALENDAR"/><qbp:resource id="qbp_bc4411de-a05e-4524-b054-edf35dd65f79" name="Role 2" totalAmount="29" costPerHour="20" timetableId="Discovered_DEFAULT_CALENDAR"/><qbp:resource id="qbp_6d630106-732b-441a-b166-45a2155cc632" name="Role 3" totalAmount="27" costPerHour="20" timetableId="Discovered_DEFAULT_CALENDAR"/><qbp:resource id="qbp_e025f24b-0835-4a16-84a3-fbb9ecaa9966" name="Role 4" totalAmount="17" costPerHour="20" timetableId="Discovered_DEFAULT_CALENDAR"/><qbp:resource id="qbp_52abf793-b1ee-445e-8376-a49040a1fbd5" name="Role 5" totalAmount="3" costPerHour="20" timetableId="Discovered_DEFAULT_CALENDAR"/><qbp:resource id="qbp_4ae81a52-5c64-4c54-8a5b-4ebaf617507f" name="Role 6" totalAmount="1" costPerHour="20" timetableId="Discovered_DEFAULT_CALENDAR"/><qbp:resource id="qbp_a5142d14-534f-41d0-b484-7fc7f38f1d81" name="Role 7" totalAmount="1" costPerHour="20" timetableId="Discovered_DEFAULT_CALENDAR"/><qbp:resource id="qbp_3284adca-8c1c-4117-845c-00ad3bbf52e2" name="Role 8" totalAmount="1" costPerHour="20" timetableId="Discovered_DEFAULT_CALENDAR"/><qbp:resource id="qbp_a04277fb-9471-4f77-9972-619a1ebba3d1" name="Role 9" totalAmount="1" costPerHour="20" timetableId="Discovered_DEFAULT_CALENDAR"/></qbp:resources><qbp:elements><qbp:element id="qbp_dc0178d0-a645-4067-939b-1e29fbfe6e50" elementId="node_751fe22c-0286-418e-bd0a-a87a1dedaf8c"><qbp:durationDistribution type="GAMMA" mean="212.8" arg1="385019.1" arg2="NaN"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:durationDistribution><qbp:resourceIds><qbp:resourceId>qbp_129d8726-d828-47f1-969e-52848b763c99</qbp:resourceId></qbp:resourceIds></qbp:element><qbp:element id="qbp_9d284c4c-f66d-45a6-a7e3-497662046b5b" elementId="node_ec17d1d8-1956-4039-b37e-7a4746d5ed7c"><qbp:durationDistribution type="LOGNORMAL" mean="3670.2" arg1="30838862.2" arg2="NaN"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:durationDistribution><qbp:resourceIds><qbp:resourceId>qbp_6d630106-732b-441a-b166-45a2155cc632</qbp:resourceId></qbp:resourceIds></qbp:element><qbp:element id="qbp_40494278-b0f1-4184-9ee9-851c5c60d43f" elementId="node_44f1a250-3f78-4a4e-a8c5-dc7183108dac"><qbp:durationDistribution type="LOGNORMAL" mean="1775.4" arg1="6670119.9" arg2="NaN"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:durationDistribution><qbp:resourceIds><qbp:resourceId>qbp_bc4411de-a05e-4524-b054-edf35dd65f79</qbp:resourceId></qbp:resourceIds></qbp:element><qbp:element id="qbp_98387b69-59f4-433c-a595-453bf1ef4bbf" elementId="node_76ac4795-4788-45b0-a0d2-e2e30a469bcf"><qbp:durationDistribution type="FIXED" mean="0" arg1="0" arg2="0"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:durationDistribution><qbp:resourceIds><qbp:resourceId>qbp_129d8726-d828-47f1-969e-52848b763c99</qbp:resourceId></qbp:resourceIds></qbp:element><qbp:element id="qbp_fd317f30-e597-4d23-9f39-b0f9120de59a" elementId="node_8dc6ae41-31af-46a7-bdb8-06d5affd218c"><qbp:durationDistribution type="EXPONENTIAL" mean="NaN" arg1="197.8" arg2="NaN"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:durationDistribution><qbp:resourceIds><qbp:resourceId>qbp_bc4411de-a05e-4524-b054-edf35dd65f79</qbp:resourceId></qbp:resourceIds></qbp:element><qbp:element id="qbp_c78c4725-3475-45b5-a4d4-6fdb42b683c1" elementId="node_5f52085d-e2dd-416c-8c0c-4a3fed15a9b7"><qbp:durationDistribution type="LOGNORMAL" mean="1150.7" arg1="5795984.9" arg2="NaN"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:durationDistribution><qbp:resourceIds><qbp:resourceId>qbp_e025f24b-0835-4a16-84a3-fbb9ecaa9966</qbp:resourceId></qbp:resourceIds></qbp:element><qbp:element id="qbp_e72317a9-accc-4f2b-9260-3a0d0a852735" elementId="node_91c32c0e-114a-4eda-a947-976e4ebf4ad9"><qbp:durationDistribution type="LOGNORMAL" mean="523.7" arg1="2286421.9" arg2="NaN"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:durationDistribution><qbp:resourceIds><qbp:resourceId>qbp_bc4411de-a05e-4524-b054-edf35dd65f79</qbp:resourceId></qbp:resourceIds></qbp:element><qbp:element id="qbp_7f90c50c-7e84-430b-9655-945c9c4609b6" elementId="node_c1585c52-9e6c-4bd0-b6ea-bc6f8768bdef"><qbp:durationDistribution type="FIXED" mean="0" arg1="0" arg2="0"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:durationDistribution><qbp:resourceIds><qbp:resourceId>qbp_bc4411de-a05e-4524-b054-edf35dd65f79</qbp:resourceId></qbp:resourceIds></qbp:element><qbp:element id="qbp_4ccaf84c-2007-4495-9539-1382cc4892a0" elementId="node_9be842e7-2d35-45a4-a8fb-e1b043517a87"><qbp:durationDistribution type="EXPONENTIAL" mean="0" arg1="0" arg2="0"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:durationDistribution><qbp:resourceIds><qbp:resourceId>qbp_6d630106-732b-441a-b166-45a2155cc632</qbp:resourceId></qbp:resourceIds></qbp:element><qbp:element id="qbp_32788afd-86dd-43c5-b9e5-53954774d368" elementId="node_99839ff7-2e3b-4f37-838b-b84f9983762e"><qbp:durationDistribution type="FIXED" mean="3016" arg1="0" arg2="0"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:durationDistribution><qbp:resourceIds><qbp:resourceId>qbp_a5142d14-534f-41d0-b484-7fc7f38f1d81</qbp:resourceId></qbp:resourceIds></qbp:element><qbp:element id="qbp_54aeebce-6d0f-4477-ba9c-c8ae3a8d3ae9" elementId="node_3dbc6179-a57b-4cf5-b686-a9c0eb03dd32"><qbp:durationDistribution type="EXPONENTIAL" mean="NaN" arg1="189.3" arg2="NaN"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:durationDistribution><qbp:resourceIds><qbp:resourceId>qbp_6d630106-732b-441a-b166-45a2155cc632</qbp:resourceId></qbp:resourceIds></qbp:element><qbp:element id="qbp_9a20fc31-4f36-4259-b8d9-05f3db9ebe6d" elementId="node_02130f6c-b41f-4eae-9689-2c62337fe8c4"><qbp:durationDistribution type="EXPONENTIAL" mean="NaN" arg1="1985.2" arg2="NaN"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:durationDistribution><qbp:resourceIds><qbp:resourceId>qbp_bc4411de-a05e-4524-b054-edf35dd65f79</qbp:resourceId></qbp:resourceIds></qbp:element><qbp:element id="qbp_a94b8b4f-9cf5-4acf-9a02-42b880725da1" elementId="node_f9660c7c-f99c-43ca-86d8-f5cf9a9f0362"><qbp:durationDistribution type="EXPONENTIAL" mean="NaN" arg1="938.6" arg2="NaN"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:durationDistribution><qbp:resourceIds><qbp:resourceId>qbp_6d630106-732b-441a-b166-45a2155cc632</qbp:resourceId></qbp:resourceIds></qbp:element><qbp:element id="qbp_0c8ba104-5283-45d3-849b-746ad7a631fe" elementId="node_ac5c373d-ad64-4d11-a445-83ec5a8fce80"><qbp:durationDistribution type="EXPONENTIAL" mean="NaN" arg1="7565" arg2="NaN"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:durationDistribution><qbp:resourceIds><qbp:resourceId>qbp_a5142d14-534f-41d0-b484-7fc7f38f1d81</qbp:resourceId></qbp:resourceIds></qbp:element><qbp:element id="qbp_00c87db1-2a9d-453c-9341-a60f154958a0" elementId="node_9022b5c4-a73e-48dd-b5ec-d6f01fba604b"><qbp:durationDistribution type="EXPONENTIAL" mean="NaN" arg1="136.9" arg2="NaN"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:durationDistribution><qbp:resourceIds><qbp:resourceId>qbp_bc4411de-a05e-4524-b054-edf35dd65f79</qbp:resourceId></qbp:resourceIds></qbp:element><qbp:element id="qbp_5863982f-1ef9-4e19-a701-1f8b9e3076c5" elementId="node_75c67780-99aa-456e-a217-bb65f821563d"><qbp:durationDistribution type="FIXED" mean="0" arg1="0" arg2="0"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:durationDistribution><qbp:resourceIds><qbp:resourceId>QBP_DEFAULT_RESOURCE</qbp:resourceId></qbp:resourceIds></qbp:element><qbp:element id="qbp_988a5376-85fa-4ad7-ae74-94a19ff19396" elementId="node_68a0223f-852d-4e9f-bdda-01f3d7d8c53a"><qbp:durationDistribution type="FIXED" mean="0" arg1="0" arg2="0"><qbp:timeUnit>seconds</qbp:timeUnit></qbp:durationDistribution><qbp:resourceIds><qbp:resourceId>QBP_DEFAULT_RESOURCE</qbp:resourceId></qbp:resourceIds></qbp:element></qbp:elements><qbp:sequenceFlows><qbp:sequenceFlow elementId="node_955e4676-306b-4b68-b8ef-cb0131d8852f" executionProbability="0.99"/><qbp:sequenceFlow elementId="node_29a4ae8d-3121-4d61-a141-421db124d6d5" executionProbability="0.01"/><qbp:sequenceFlow elementId="node_f8d2dc8f-599e-46ce-98a7-837c35285674" executionProbability="0.99"/><qbp:sequenceFlow elementId="node_c1480dbd-22ac-4810-a521-8b8e41bf5e6c" executionProbability="0.01"/><qbp:sequenceFlow elementId="node_29a70f30-8dc0-4fb2-afc1-c150c46b96fb" executionProbability="0.99"/><qbp:sequenceFlow elementId="node_d7c8d7ca-02d9-4d13-a6c8-466377d5f546" executionProbability="0.01"/><qbp:sequenceFlow elementId="node_8b670242-77a7-4356-904a-fae65faa5cf6" executionProbability="0.99"/><qbp:sequenceFlow elementId="node_8b47d276-22e4-438f-a890-50e868d888ef" executionProbability="0.01"/><qbp:sequenceFlow elementId="node_6aa49fe6-6c8d-4ff0-8c2b-6d1c56501c23" executionProbability="0.99"/><qbp:sequenceFlow elementId="node_23ce45fc-29f6-46d7-9e33-dd6c1be66929" executionProbability="0.01"/><qbp:sequenceFlow elementId="node_c453adca-67b5-4a0e-93f3-ca84ba8839d3" executionProbability="0.99"/><qbp:sequenceFlow elementId="node_0d15312f-48a7-4f18-b952-7b8771ddeb17" executionProbability="0.01"/></qbp:sequenceFlows><qbp:statsOptions/></qbp:processSimulationInfo></definitions>

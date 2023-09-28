@@ -10,15 +10,17 @@ import copy
 
 import pandas as pd
 import numpy as np
+from dateutil import parser
 import configparser as cp
 
 import readers.log_reader as lr
 import utils.support as sup
 
-from model_training import features_manager as feat
-from model_prediction import interfaces as it
+from GenerativeLSTM.model_training import features_manager as feat
+from GenerativeLSTM.model_prediction import interfaces as it
 import analyzers.sim_evaluator as ev
-
+from support_modules import traces_evaluation as te
+from support_modules import xes_writer as xw
 
 class ModelPredictor():
     """
@@ -26,7 +28,7 @@ class ModelPredictor():
     """
 
     def __init__(self, parms):
-        self.output_route = os.path.join('output_files', parms['folder'])
+        self.output_route = os.path.join('GenerativeLSTM','output_files', parms['folder'])
         self.parms = parms
         # load parameters
         self.load_parameters()
@@ -40,11 +42,17 @@ class ModelPredictor():
         self.model_def = dict()
         self.read_model_definition(self.parms['model_type'])
         self.parms['additional_columns'] = self.model_def['additional_columns']
-        self.acc = self.execute_predictive_task()
+        try:
+            self.acc = self.execute_predictive_task()
+        except TypeError as e:
+            print("Rule definition is incorrect, please check rules.ini")
+            exit(1)
 
     def execute_predictive_task(self):
         # create examples for next event and suffix
         if self.parms['activity'] == 'pred_log':
+            #self.parms['num_cases'] = len(self.log.caseid.unique())
+            self.parms['len_log'] = len(self.log.caseid.unique())
             self.parms['num_cases'] = len(self.log.caseid.unique())
             self.parms['start_time'] = self.log.start_timestamp.min()
         else:
@@ -57,8 +65,35 @@ class ModelPredictor():
             sampler.create(self, self.parms['activity'])
         # predict
         self.imp = self.parms['variant']
+
+        org_log_path = os.path.join('GenerativeLSTM','output_files', self.parms['folder'], 'parameters', '{}_ASIS.csv'.format(self.parms['log_name']))
+        df_org = pd.read_csv(org_log_path)
+        
+        df_org['start_timestamp'] = pd.to_datetime(df_org['start_timestamp'])
+        df_org['end_timestamp'] = pd.to_datetime(df_org['end_timestamp'])
+
+        self.parms['ac_index'] = self.index_ac = {self.parms['index_ac'][key]:key for key in self.parms['index_ac'].keys()}
+        self.parms['rules'] = te.extract_rules()
+
+        self.parms['traces_gen_path'] = os.path.join('GenerativeLSTM','output_files', self.parms['folder'], 'parameters', 'traces_generated')
+        if not os.path.exists(self.parms['traces_gen_path']):
+            os.mkdir(self.parms['traces_gen_path'])
+
+        gs = te.GenerateStats(df_org, self.parms['ac_index'], self.parms['rules']['path'], self.parms['rules']['rule'])        
+        self.parms['pos_cases_org'], self.parms['total_cases_org'] = gs.get_stats()
+
+        if self.parms['rules']['variation'] == '+':
+            self.parms['new_prop_cases'] = (self.parms['pos_cases_org']/self.parms['total_cases_org']) + self.parms['rules']['prop_variation']
+        elif self.parms['rules']['variation'] == '-':
+            self.parms['new_prop_cases'] = (self.parms['pos_cases_org']/self.parms['total_cases_org']) - self.parms['rules']['prop_variation']
+        elif self.parms['rules']['variation'] == '=':
+            self.parms['new_prop_cases'] = self.parms['rules']['prop_variation']
+
         for run_num in range(0, self.parms['rep']):
+
+            #Modificar
             self.predict_values(run_num)
+    
             # export predictions
             self.export_predictions(run_num)
             # assesment
@@ -92,29 +127,33 @@ class ModelPredictor():
         path = os.path.join(self.output_route,
                             'parameters',
                             'model_parameters.json')
-        with open(path) as file:
-            data = json.load(file)
-            if 'activity' in data:
-                del data['activity']
-            parms = {k: v for k, v in data.items()}
-            parms.pop('rep', None)
-            self.parms = {**self.parms, **parms}
-            if 'dim' in data.keys():
-                self.parms['dim'] = {k: int(v) for k, v in data['dim'].items()}
-            if self.parms['one_timestamp']:
-                self.parms['scale_args'] = {
-                    k: float(v) for k, v in data['scale_args'].items()}
-            else:
-                for key in data['scale_args'].keys():
-                    self.parms['scale_args'][key] = {
-                        k: float(v) for k, v in data['scale_args'][key].items()}
-            self.parms['index_ac'] = {int(k): v
-                                      for k, v in data['index_ac'].items()}
-            self.parms['index_rl'] = {int(k): v
-                                      for k, v in data['index_rl'].items()}
-            file.close()
-            self.ac_index = {v: k for k, v in self.parms['index_ac'].items()}
-            self.rl_index = {v: k for k, v in self.parms['index_rl'].items()}
+        try: 
+            with open(path) as file:
+                data = json.load(file)
+                if 'activity' in data:
+                    del data['activity']
+                parms = {k: v for k, v in data.items()}
+                parms.pop('rep', None)
+                self.parms = {**self.parms, **parms}
+                if 'dim' in data.keys():
+                    self.parms['dim'] = {k: int(v) for k, v in data['dim'].items()}
+                if self.parms['one_timestamp']:
+                    self.parms['scale_args'] = {
+                        k: float(v) for k, v in data['scale_args'].items()}
+                else:
+                    for key in data['scale_args'].keys():
+                        self.parms['scale_args'][key] = {
+                            k: float(v) for k, v in data['scale_args'][key].items()}
+                self.parms['index_ac'] = {int(k): v
+                                        for k, v in data['index_ac'].items()}
+                self.parms['index_rl'] = {int(k): v
+                                        for k, v in data['index_rl'].items()}
+                file.close()
+                self.ac_index = {v: k for k, v in self.parms['index_ac'].items()}
+                self.rl_index = {v: k for k, v in self.parms['index_rl'].items()}
+        except FileNotFoundError as e:
+            print("File not found, please verify ID of the trained model", e)
+            exit(1)
 
     def sampling(self, sampler):
         sampler.register_sampler(self.parms['model_type'],
@@ -138,6 +177,43 @@ class ModelPredictor():
         # output_folder = os.path.join(self.output_route, 'results')
         if not os.path.exists(self.output_route):
             os.makedirs(self.output_route)
+
+        df_traces_generated, files_gen = te.get_stats_log_traces(self.parms['traces_gen_path'])
+        cols = ['caseid', 'task', 'role', 'start_timestamp','end_timestamp']
+
+        if self.parms['include_org_log']:
+            log_filtered = pd.DataFrame(data=[], columns=cols)
+            for caseid in self.log['caseid'].drop_duplicates():
+                log_tmp = self.log[self.log['caseid']==caseid]
+                if te.evaluate_condition(log_tmp, self.ac_index, self.parms['rules']['path'], self.parms['rules']['rule']):
+                    log_filtered = pd.concat([log_filtered, log_tmp])
+
+            final_log = pd.concat([log_filtered, df_traces_generated[cols]])
+        else:
+            final_log = df_traces_generated[cols]
+
+        final_log['start_timestamp'] = pd.to_datetime(final_log['start_timestamp']).dt.strftime(self.parms['read_options']['timeformat'])
+        final_log['end_timestamp'] = pd.to_datetime(final_log['end_timestamp']).dt.strftime(self.parms['read_options']['timeformat'])
+        final_log = final_log.rename({'role':'user'}, axis=1)
+
+        column_names = {'Case ID': 'caseid',
+                        'Activity': 'task',
+                        'lifecycle:transition': 'event_type',
+                        'Resource': 'user'}
+        self.parms['read_options'] = {
+            'timeformat': self.parms['read_options']['timeformat'],
+            'column_names': column_names,
+            'one_timestamp': self.parms['read_options']['one_timestamp'],
+            'filter_d_attrib': self.parms['read_options']['filter_d_attrib']
+        }
+        self.parms['output_file'] = os.path.join('GenerativeLSTM','input_files', 'spmd', self.parms['log_name'] + '.xes')
+
+        xw.XesWriter(final_log, self.parms)
+
+        if len(files_gen)>0:
+            for file_gen in files_gen:
+                os.remove(file_gen)
+
         self.predictions.to_csv(
             os.path.join(
                 self.output_route, 'gen_'+ 
@@ -188,7 +264,7 @@ class ModelPredictor():
 
     def read_model_definition(self, model_type):
         Config = cp.ConfigParser(interpolation=None)
-        Config.read('models_spec.ini')
+        Config.read('GenerativeLSTM/models_spec.ini')
         #File name with extension
         self.model_def['additional_columns'] = sup.reduce_list(
             Config.get(model_type,'additional_columns'), dtype='str')
@@ -281,15 +357,20 @@ class EvaluateTask():
         """
         sim_values = list()
         log = copy.deepcopy(log)
-        log = log[~log.task.isin(['Start', 'End', 'start', 'end'])]
+        log = log[~log['task'].isin(['Start', 'End', 'start', 'end'])]
         log['caseid'] = log['caseid'].astype(str)
         log['caseid'] = 'Case' + log['caseid']
-        sim_log = sim_log[~sim_log.task.isin(['Start', 'End', 'start', 'end'])]
-        evaluator = ev.SimilarityEvaluator(log, sim_log, parms)
-        metrics = ['tsd', 'day_hour_emd', 'log_mae', 'dl', 'mae']
-        for metric in metrics:
-            evaluator.measure_distance(metric)
-            sim_values.append({**{'run_num': rep_num}, **evaluator.similarity})
+
+        print(sim_log.columns)
+        try:
+            sim_log = sim_log[~sim_log['task'].isin(['Start', 'End', 'start', 'end'])]
+            evaluator = ev.SimilarityEvaluator(log, sim_log, parms)
+            metrics = ['tsd', 'day_hour_emd', 'log_mae', 'dl', 'mae']
+            for metric in metrics:
+                evaluator.measure_distance(metric)
+                sim_values.append({**{'run_num': rep_num}, **evaluator.similarity})
+        except:
+            pass
         return sim_values
 
     @staticmethod

@@ -10,15 +10,16 @@ import csv
 import pandas as pd
 import numpy as np
 import shutil
+import pm4py
 
 import readers.log_reader as lr
 import utils.support as sup
 import readers.log_splitter as ls
 
-from model_training.features_manager import FeaturesMannager as feat
-from model_training import embedding_training as em
-from model_training import model_optimizer as op
-from model_training import model_hpc_optimizer as hpc_op
+from GenerativeLSTM.model_training.features_manager import FeaturesMannager as feat
+from GenerativeLSTM.model_training import embedding_training as em
+from GenerativeLSTM.model_training import model_optimizer as op
+from GenerativeLSTM.model_training import model_hpc_optimizer as hpc_op
 
 
 class ModelTrainer():
@@ -29,6 +30,7 @@ class ModelTrainer():
     def __init__(self, params):
         """constructor"""
         self.log = self.load_log(params)
+        self.params = params
         # Split validation partitions
         self.log_train = pd.DataFrame()
         self.log_test = pd.DataFrame()
@@ -46,7 +48,7 @@ class ModelTrainer():
         # Preprocess the event-log
         self.preprocess(params)
         # Train model
-        params['output'] = os.path.join('output_files', sup.folder_id())
+        params['output'] = os.path.join('GenerativeLSTM/output_files', sup.folder_id())
         if params['opt_method'] == 'rand_hpc':
             optimizer = hpc_op.ModelHPCOptimizer(params, 
                                                  self.log, 
@@ -62,7 +64,7 @@ class ModelTrainer():
                                           self.rl_weights)
             optimizer.execute_trials()
         # Export results
-        output_path = os.path.join('output_files', sup.folder_id())
+        output_path = os.path.join('GenerativeLSTM','output_files', sup.folder_id())
         shutil.copytree(optimizer.best_output, output_path)
         shutil.copy(optimizer.file_name, output_path)
         self.export_parms(output_path, optimizer.best_params)
@@ -78,7 +80,7 @@ class ModelTrainer():
         # Load embedded matrix
         ac_emb_name = 'ac_' + params['file_name'].split('.')[0]+'.emb'
         rl_emb_name = 'rl_' + params['file_name'].split('.')[0]+'.emb'
-        if os.path.exists(os.path.join('input_files',
+        if os.path.exists(os.path.join('GenerativeLSTM/input_files',
                                        'embedded_matix',
                                        ac_emb_name)):
             self.ac_weights = self.load_embedded(self.index_ac, ac_emb_name)
@@ -94,9 +96,12 @@ class ModelTrainer():
     @staticmethod
     def load_log(params):
         params['read_options']['filter_d_attrib'] = False
-        log = lr.LogReader(os.path.join('input_files', params['file_name']),
-                           params['read_options'])
+
+        log = lr.LogReader(os.path.join('GenerativeLSTM/input_files', params['file_name']),
+                    params['read_options'])
         log_df = pd.DataFrame(log.data)
+
+        
         if set(['Unnamed: 0', 'role']).issubset(set(log_df.columns)):
             log_df.drop(columns=['Unnamed: 0', 'role'], inplace=True)
         log_df = log_df[~log_df.task.isin(['Start', 'End'])]
@@ -178,7 +183,7 @@ class ModelTrainer():
             numpy array: array of weights.
         """
         weights = list()
-        input_folder = os.path.join('input_files', 'embedded_matix')
+        input_folder = os.path.join('GenerativeLSTM/input_files', 'embedded_matix')
         with open(os.path.join(input_folder, filename), 'r') as csvfile:
             filereader = csv.reader(csvfile, delimiter=',', quotechar='"')
             for row in filereader:
@@ -201,6 +206,16 @@ class ModelTrainer():
         sup.create_json(parms, os.path.join(output_folder,
                                             'parameters',
                                             'model_parameters.json'))
+        
+        cols = ['caseid', 'task', 'user', 'start_timestamp','end_timestamp']
+        
+        self.log.to_csv(os.path.join(output_folder,
+                                     'parameters',
+                                     '{}_ASIS.csv'.format(self.params['file_name'].split('.')[0])),
+                             index=False,
+                             encoding='utf-8')
+
+        
         self.log_test.to_csv(os.path.join(output_folder,
                                           'parameters',
                                           'test_log.csv'),

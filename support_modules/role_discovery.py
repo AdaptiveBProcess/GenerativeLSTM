@@ -13,6 +13,7 @@ class ResourcePoolAnalyser():
      """
 
     def __init__(self, log, drawing=False, sim_threshold=0.7):
+        "role_discovery"
         """constructor"""
         self.data = self.read_resource_pool(log)
         self.drawing = drawing

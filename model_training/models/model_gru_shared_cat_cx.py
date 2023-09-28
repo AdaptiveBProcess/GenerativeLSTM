@@ -14,7 +14,7 @@ from tensorflow.keras.optimizers import Nadam, Adam, SGD, Adagrad
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
 try:
-    from support_modules.callbacks import time_callback as tc
+    from GenerativeLSTM.support_modules.callbacks import time_callback as tc
 except:
     from importlib import util
     spec = util.spec_from_file_location(

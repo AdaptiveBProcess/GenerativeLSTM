@@ -4,13 +4,13 @@ Created on Tue Mar 17 16:24:38 2020
 
 @author: Manuel Camargo
 """
-from model_prediction import next_event_samples_creator as nesc
-from model_prediction import suffix_samples_creator as ssc
+from GenerativeLSTM.model_prediction import next_event_samples_creator as nesc
+from GenerativeLSTM.model_prediction import suffix_samples_creator as ssc
 
 
-from model_prediction import next_event_predictor as nep
-from model_prediction import suffix_predictor as sp
-from model_prediction import event_log_predictor as elp
+from GenerativeLSTM.model_prediction import next_event_predictor as nep
+from GenerativeLSTM.model_prediction import suffix_predictor as sp
+from GenerativeLSTM.model_prediction import event_log_predictor as elp
 
 
 class SamplesCreator:

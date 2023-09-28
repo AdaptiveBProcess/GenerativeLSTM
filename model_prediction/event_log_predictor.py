@@ -15,8 +15,15 @@ import multiprocessing
 from multiprocessing import Pool
 from tensorflow.keras.models import load_model
 import keras.utils as ku
+import os
+from glob import glob
+import pandas as pd
+from support_modules import traces_evaluation as te
 
 from datetime import timedelta
+import warnings
+
+warnings.filterwarnings("ignore")
 
 class EventLogPredictor():
 
@@ -32,8 +39,9 @@ class EventLogPredictor():
         self.params = params
         self.vectorizer = vectorizer
         predictor = self._get_predictor(params['model_type'])
-        return predictor(params, vectorizer)
 
+        return predictor(params, vectorizer)
+    
     def _get_predictor(self, model_type):
         if model_type in ['shared_cat_cx', 'concatenated_cx',
                           'shared_cat_gru_cx', 'concatenated_gru_cx']:
@@ -194,7 +202,10 @@ class EventLogPredictor():
         pbar_async(p, 'generating traces:')
         pool.close()
         # Save results
-        event_log = list(itertools.chain(*p.get()))
+        try:
+            event_log = list(itertools.chain(*p.get()))
+        except:
+            event_log = []
         return event_log
 
 
@@ -260,11 +271,21 @@ class EventLogPredictor():
                 settings (dict): Path to jar and file names
                 rep (int): repetition number
             """
+            generated_event_log = list()
             try:
                 model = load_model(model_path)
                 generated_event_log = list()
+                flag = True
+                
                 for case in cases:
+                    
+                    df_traces_generated, files_gen = te.get_stats_log_traces(parms['traces_gen_path'])
+                    
+                    if len(files_gen) >= parms['len_log'] and flag == False:
+                        break
+
                     x_trace = list()
+                    seq_tasks = []
                     x_ac_ngram = np.zeros(
                         (1, parms['n_size']), dtype=np.float32)
                     x_rl_ngram = np.zeros(
@@ -284,9 +305,18 @@ class EventLogPredictor():
                             dtype=np.float32)
                         inputs = [x_ac_ngram, x_rl_ngram, 
                                   x_t_ngram, x_inter_ngram]
+
+                    """df_traces_generated, files_gen = te.get_stats_log_traces(parms['traces_gen_path'])
+                    n_files_gen = len(files_gen)
+                    current_prop = (parms['pos_cases_org'] + n_files_gen)/(parms['total_cases_org'] + n_files_gen)
+                    if current_prop > parms['new_prop_cases']:
+                        break"""
+
                     i = 1
+                    
                     while i < parms['max_trace_size']:
                         predictions = model.predict(inputs)
+
                         if parms['variant'] == 'Random Choice':
                             # Use this to get a random choice following as PDF
                             pos = np.random.choice(
@@ -299,6 +329,27 @@ class EventLogPredictor():
                             # Use this to get the max prediction
                             pos = np.argmax(predictions[0][0])
                             pos1 = np.argmax(predictions[1][0])
+
+                        elif parms['variant'] == 'Rules Based Random Choice':
+                            # Use this to get the max prediction
+                            possible_tasks = [x for x in parms['index_ac'].keys() if te.evaluate_condition_list(seq_tasks + [x], parms['ac_index'], parms['rules']['path'], parms['rules']['rule'])]
+                            if len(possible_tasks)>0:
+                                pos = possible_tasks[0]
+                            else:
+                                pos = np.random.choice(np.arange(0, len(predictions[0][0])), p=predictions[0][0])
+                            pos1 = np.random.choice(np.arange(0, len(predictions[1][0])), p=predictions[1][0])
+
+                        elif parms['variant'] == 'Rules Based Arg Max':
+
+                            possible_tasks = [x for x in parms['index_ac'].keys() if te.evaluate_condition_list(seq_tasks + [x], parms['ac_index'], parms['rules']['path'], parms['rules']['rule'])]
+                            if len(possible_tasks)>0:
+                                pos = possible_tasks[0]
+                            else:
+                                pos = np.argmax(predictions[0][0])
+                            pos1 = np.argmax(predictions[1][0])
+                            
+                        seq_tasks.append(pos)
+
                         # Check that the first prediction wont be the end of the trace
                         if (not x_trace) and (parms['index_ac'][pos] == 'end'):
                             continue
@@ -314,6 +365,7 @@ class EventLogPredictor():
                                                 pred_dur,
                                                 pred_wait])
                                 pre_times = np.array([[pred_dur, pred_wait]])
+
                             # Add prediction to n_gram
                             x_ac_ngram = np.append(x_ac_ngram, [[pos]], axis=1)
                             x_ac_ngram = np.delete(x_ac_ngram, 0, 1)
@@ -337,7 +389,39 @@ class EventLogPredictor():
                             if parms['index_ac'][pos] == 'end':
                                 break
                             i += 1
-                    generated_event_log.extend(decode_trace(parms, x_trace, case))
+
+                    trace = decode_trace(parms, x_trace, case)
+                    df_trace = pd.DataFrame.from_records(trace, index=list(trace[0].keys())).reset_index()
+                    cond = te.evaluate_condition(df_trace, parms['ac_index'], parms['rules']['path'], parms['rules']['rule'])
+
+                    n_files_gen = len(files_gen)
+
+                    if parms['include_org_log']:
+                        current_prop = (parms['pos_cases_org'] + n_files_gen)/(parms['total_cases_org'] + n_files_gen)
+                    else:
+                        if len(df_traces_generated)>0:
+                            gs = te.GenerateStats(df_traces_generated, parms['ac_index'], parms['rules']['path'], parms['rules']['rule'])
+                            parms['pos_cases_org'], parms['total_cases_org'] = gs.get_stats()
+                            current_prop = (parms['pos_cases_org'] + n_files_gen)/(parms['total_cases_org'] + n_files_gen)
+                        else:
+                            parms['pos_cases_org'], parms['total_cases_org'] = 0, 0
+                            current_prop = 0                            
+                    
+                    if abs((current_prop-parms['new_prop_cases'])/(parms['new_prop_cases'])) <= 0.05 and len(files_gen) >= parms['len_log']:
+                        flag = False
+                        break
+                    elif cond and current_prop < parms['new_prop_cases']:
+                        generated_event_log.extend(trace)
+                        trace_gen_path = os.path.join(parms['traces_gen_path'],'gen-{}.csv'.format(case))
+                        df_trace['caseid'] = 'gen-' + df_trace['caseid']
+                        df_trace.to_csv(trace_gen_path)
+                    
+                    elif cond == False and current_prop > parms['new_prop_cases']:
+                        generated_event_log.extend(trace)
+                        trace_gen_path = os.path.join(parms['traces_gen_path'],'gen-{}.csv'.format(case))
+                        df_trace['caseid'] = 'gen-' + df_trace['caseid']
+                        df_trace.to_csv(trace_gen_path)
+
                 return generated_event_log
             except Exception:
                 traceback.print_exc()

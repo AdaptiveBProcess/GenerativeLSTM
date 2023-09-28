@@ -14,7 +14,7 @@ import utils.support as sup
 
 class TimingCallback(Callback):
     def __init__(self, output_folder, log_path=os.path.join(
-            'output_files', 'training_times.csv')):
+            'GenerativeLSTM','output_files', 'training_times.csv')):
         self.logs=[]
         self.output_folder=output_folder
         self.log_path=log_path
