@@ -1,0 +1,3 @@
+cd C:\DanielBaron\GenerativeLSTM
+conda activate deep_generator
+python dg_prediction.py

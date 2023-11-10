@@ -10,6 +10,7 @@ import csv
 import pandas as pd
 import numpy as np
 import shutil
+import pm4py
 
 import readers.log_reader as lr
 import utils.support as sup
@@ -29,6 +30,7 @@ class ModelTrainer():
     def __init__(self, params):
         """constructor"""
         self.log = self.load_log(params)
+        self.params = params
         # Split validation partitions
         self.log_train = pd.DataFrame()
         self.log_test = pd.DataFrame()
@@ -201,6 +203,16 @@ class ModelTrainer():
         sup.create_json(parms, os.path.join(output_folder,
                                             'parameters',
                                             'model_parameters.json'))
+        
+        cols = ['caseid', 'task', 'user', 'start_timestamp','end_timestamp']
+        
+        self.log.to_csv(os.path.join(output_folder,
+                                     'parameters',
+                                     '{}_ASIS.csv'.format(self.params['file_name'].split('.')[0])),
+                             index=False,
+                             encoding='utf-8')
+
+        
         self.log_test.to_csv(os.path.join(output_folder,
                                           'parameters',
                                           'test_log.csv'),
