@@ -1,0 +1,45 @@
+,caseid,task,user,start_timestamp,end_timestamp
+0,gen-Case000,Traer informacion estudiante - banner,Role 1,2016-05-13 20:05:54UTC,2016-05-13 20:05:54UTC
+1,gen-Case000,Radicar Solicitud Homologacion,Role 1,2016-05-13 21:30:26UTC,2016-05-13 21:30:26UTC
+2,gen-Case000,Validar solicitud,Role 3,2016-05-14 06:40:54UTC,2016-05-14 06:44:03UTC
+3,gen-Case000,Cancelar curso,Role 3,2016-05-14 17:35:53UTC,2016-05-14 17:45:56UTC
+4,gen-Case000,Transferir creditos homologables,Role 3,2016-05-14 17:45:56UTC,2016-05-14 17:46:40UTC
+5,gen-Case000,Cancelar Solicitud,Role 2,2016-05-14 17:46:40UTC,2016-05-14 17:47:10UTC
+6,gen-Case000,Notificacion estudiante cancelacion soli,Role 2,2016-05-14 17:47:10UTC,2016-05-14 17:47:31UTC
+7,gen-Case000,Transferir creditos homologables,end,2016-05-14 20:14:07UTC,2016-05-14 20:14:37UTC
+8,gen-Case000,Notificacion estudiante cancelacion soli,end,2016-05-15 01:46:06UTC,2016-05-15 01:46:15UTC
+9,gen-Case000,Notificacion estudiante cancelacion soli,end,2016-05-15 10:00:14UTC,2016-05-15 10:00:17UTC
+10,gen-Case000,Evaluacion curso,end,2016-05-15 21:34:26UTC,2016-05-15 21:34:42UTC
+11,gen-Case000,start,Role 2,2016-05-16 12:42:05UTC,2016-05-16 12:42:07UTC
+12,gen-Case000,Radicar Solicitud Homologacion,Role 2,2016-05-16 18:56:46UTC,2016-05-16 18:56:46UTC
+13,gen-Case000,Validar solicitud,Role 2,2016-05-16 20:33:11UTC,2016-05-16 20:33:27UTC
+14,gen-Case000,Validacion final,Role 2,2016-05-17 07:46:58UTC,2016-05-17 07:48:18UTC
+15,gen-Case000,Validar solicitud / pre-homologacion,Role 2,2016-05-17 17:31:18UTC,2016-05-17 17:32:36UTC
+16,gen-Case000,Cancelar Solicitud,Role 2,2016-05-18 01:21:56UTC,2016-05-18 01:23:05UTC
+17,gen-Case000,Homologacion por grupo de cursos,end,2016-05-18 05:00:20UTC,2016-05-18 05:00:38UTC
+18,gen-Case000,Traer informacion estudiante - banner,Role 3,2016-05-18 14:12:02UTC,2016-05-18 14:12:21UTC
+0,gen-Case023,Traer informacion estudiante - banner,Role 1,2016-05-13 20:05:54UTC,2016-05-13 20:05:54UTC
+1,gen-Case023,Radicar Solicitud Homologacion,Role 1,2016-05-13 21:30:26UTC,2016-05-13 21:30:26UTC
+2,gen-Case023,Validar solicitud,Role 3,2016-05-14 06:40:54UTC,2016-05-14 06:44:03UTC
+3,gen-Case023,Recepcion de documentos,Role 3,2016-05-14 17:35:53UTC,2016-05-14 17:45:56UTC
+4,gen-Case023,Traer informacion estudiante - banner,end,2016-05-14 17:45:56UTC,2016-05-14 17:46:25UTC
+5,gen-Case023,Cancelar curso,end,2016-05-15 01:13:40UTC,2016-05-15 01:15:46UTC
+6,gen-Case023,Notificacion estudiante cancelacion soli,Role 2,2016-05-15 14:00:15UTC,2016-05-15 14:02:07UTC
+7,gen-Case023,Homologacion por grupo de cursos,end,2016-05-15 15:21:15UTC,2016-05-15 15:21:15UTC
+8,gen-Case023,Recepcion de documentos,Role 3,2016-05-15 23:34:38UTC,2016-05-15 23:34:38UTC
+9,gen-Case023,Visto Bueno Cierre Proceso,end,2016-05-15 23:49:26UTC,2016-05-15 23:49:53UTC
+10,gen-Case023,Notificacion estudiante cancelacion soli,Role 10,2016-05-16 07:06:06UTC,2016-05-16 07:06:27UTC
+0,gen-Case069,Traer informacion estudiante - banner,Role 1,2016-05-13 20:05:54UTC,2016-05-13 20:05:54UTC
+1,gen-Case069,Radicar Solicitud Homologacion,Role 1,2016-05-13 21:30:26UTC,2016-05-13 21:30:26UTC
+2,gen-Case069,Validar solicitud,Role 3,2016-05-14 06:40:54UTC,2016-05-14 06:44:03UTC
+3,gen-Case069,Recepcion de documentos,Role 2,2016-05-14 17:35:53UTC,2016-05-14 17:45:56UTC
+4,gen-Case069,Validar solicitud,Role 3,2016-05-14 17:45:56UTC,2016-05-14 17:46:20UTC
+5,gen-Case069,Avanzar recepcion documentos,end,2016-05-14 20:47:03UTC,2016-05-14 20:48:52UTC
+6,gen-Case069,Notificacion estudiante cancelacion soli,Role 2,2016-05-14 21:22:35UTC,2016-05-14 21:23:15UTC
+7,gen-Case069,Validar solicitud / pre-homologacion,end,2016-05-15 06:27:45UTC,2016-05-15 06:28:05UTC
+8,gen-Case069,Evaluacion curso,Role 3,2016-05-15 17:57:45UTC,2016-05-15 17:59:36UTC
+9,gen-Case069,Evaluacion curso,Role 3,2016-05-15 19:00:16UTC,2016-05-15 19:00:16UTC
+10,gen-Case069,Validacion final,Role 3,2016-05-15 19:00:16UTC,2016-05-15 19:00:36UTC
+11,gen-Case069,Radicar Solicitud Homologacion,Role 2,2016-05-15 19:00:36UTC,2016-05-15 19:02:03UTC
+12,gen-Case069,Notificacion estudiante cancelacion soli,end,2016-05-15 19:02:03UTC,2016-05-15 19:02:35UTC
+13,gen-Case069,Transferir Creditos,Role 2,2016-05-16 01:28:47UTC,2016-05-16 01:30:28UTC

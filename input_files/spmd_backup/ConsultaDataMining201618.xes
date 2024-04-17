@@ -1,0 +1,1249 @@
+<?xml version="1.0" ?>
+<!--This file has been generated with the OpenXES library. It conforms-->
+<!--to the XML serialization of the XES standard for log storage and-->
+<!--management.-->
+<!--XES standard version: 1.0-->
+<!--OpenXES library version: 1.0RC7-->
+<!--OpenXES is available from http://www.openxes.org/-->
+<log xes.version="1.0" xes.features="nested-attributes" openxes.version="1.0RC7">
+	<trace>
+		<string key="concept:name" value="gen-Case000"/>
+		<event>
+			<string key="concept:name" value="Validar solicitud"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Validar solicitud"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 7"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 7"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="gen-Case012"/>
+		<event>
+			<string key="concept:name" value="Validar solicitud"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Validar solicitud"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 8"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 8"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="gen-Case024"/>
+		<event>
+			<string key="concept:name" value="Validar solicitud"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Validar solicitud"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="gen-Case036"/>
+		<event>
+			<string key="concept:name" value="Validar solicitud"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Validar solicitud"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="gen-Case048"/>
+		<event>
+			<string key="concept:name" value="Validar solicitud"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Validar solicitud"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="gen-Case060"/>
+		<event>
+			<string key="concept:name" value="Validar solicitud"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Validar solicitud"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 11"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 11"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 5"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 5"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 2"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="gen-Case072"/>
+		<event>
+			<string key="concept:name" value="Validar solicitud"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Validar solicitud"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 5"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 5"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="end"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 7"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 7"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="gen-Case084"/>
+		<event>
+			<string key="concept:name" value="Validar solicitud"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Validar solicitud"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 1"/>
+		</event>
+	</trace>
+</log>

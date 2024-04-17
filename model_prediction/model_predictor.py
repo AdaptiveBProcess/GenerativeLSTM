@@ -69,11 +69,12 @@ class ModelPredictor():
         org_log_path = os.path.join('GenerativeLSTM','output_files', self.parms['folder'], 'parameters', '{}_ASIS.csv'.format(self.parms['log_name']))
         df_org = pd.read_csv(org_log_path)
         
-        df_org['start_timestamp'] = pd.to_datetime(df_org['start_timestamp'])
-        df_org['end_timestamp'] = pd.to_datetime(df_org['end_timestamp'])
+        df_org['start_timestamp'] = pd.to_datetime(df_org['start_timestamp'].str.replace('UTC', ''))
+        df_org['end_timestamp'] = pd.to_datetime(df_org['end_timestamp'].str.replace('UTC', ''))
 
         self.parms['ac_index'] = self.index_ac = {self.parms['index_ac'][key]:key for key in self.parms['index_ac'].keys()}
         self.parms['rules'] = te.extract_rules()
+        print ( "\n", ">>> Rules applied: ", self.parms['rules'] , "<<<" , "\n")
 
         self.parms['traces_gen_path'] = os.path.join('GenerativeLSTM','output_files', self.parms['folder'], 'parameters', 'traces_generated')
         if not os.path.exists(self.parms['traces_gen_path']):
@@ -179,6 +180,7 @@ class ModelPredictor():
             os.makedirs(self.output_route)
 
         df_traces_generated, files_gen = te.get_stats_log_traces(self.parms['traces_gen_path'])
+        print(df_traces_generated.columns)
         cols = ['caseid', 'task', 'role', 'start_timestamp','end_timestamp']
 
         if self.parms['include_org_log']:
@@ -192,8 +194,8 @@ class ModelPredictor():
         else:
             final_log = df_traces_generated[cols]
 
-        final_log['start_timestamp'] = pd.to_datetime(final_log['start_timestamp']).dt.strftime(self.parms['read_options']['timeformat'])
-        final_log['end_timestamp'] = pd.to_datetime(final_log['end_timestamp']).dt.strftime(self.parms['read_options']['timeformat'])
+        final_log['start_timestamp'] = pd.to_datetime(final_log['start_timestamp'].str.replace('UTC', '')).dt.strftime(self.parms['read_options']['timeformat'])
+        final_log['end_timestamp'] = pd.to_datetime(final_log['end_timestamp'].str.replace('UTC', '')).dt.strftime(self.parms['read_options']['timeformat'])
         final_log = final_log.rename({'role':'user'}, axis=1)
 
         column_names = {'Case ID': 'caseid',
@@ -206,14 +208,23 @@ class ModelPredictor():
             'one_timestamp': self.parms['read_options']['one_timestamp'],
             'filter_d_attrib': self.parms['read_options']['filter_d_attrib']
         }
+        
+        self.parms['timeformat'] = self.parms['read_options']['timeformat']
+        self.parms['column_names'] = column_names
+        self.parms['one_timestamp'] = self.parms['read_options']['one_timestamp']
+        self.parms['filter_d_attrib'] = self.parms['read_options']['filter_d_attrib']
+        
         self.parms['output_file'] = os.path.join('GenerativeLSTM','input_files', 'spmd', self.parms['log_name'] + '.xes')
+        self.parms['gen_log_file'] = os.path.join('GenerativeLSTM','input_files', 'spmd', self.parms['log_name'] + '.csv')
+        final_log.to_csv(self.parms['gen_log_file'])
 
-        xw.XesWriter(final_log, self.parms)
+        log = lr.LogReader(self.parms['gen_log_file'], self.parms)
+        xw.XesWriter(log, self.parms)
 
         if len(files_gen)>0:
             for file_gen in files_gen:
                 os.remove(file_gen)
-
+        
         self.predictions.to_csv(
             os.path.join(
                 self.output_route, 'gen_'+ 
