@@ -191,6 +191,7 @@ class ModelPredictor():
 
         df_traces_generated, files_gen = te.get_stats_log_traces(self.parms['traces_gen_path'])
         print(df_traces_generated.columns)
+        print(df_traces_generated.columns)
 
         cols = ['caseid', 'task', 'role', 'start_timestamp','end_timestamp']
 
@@ -205,6 +206,8 @@ class ModelPredictor():
         else:
             final_log = df_traces_generated[cols]
 
+        final_log['start_timestamp'] = pd.to_datetime(final_log['start_timestamp'].str.replace('UTC', '')).dt.strftime(self.parms['read_options']['timeformat'])
+        final_log['end_timestamp'] = pd.to_datetime(final_log['end_timestamp'].str.replace('UTC', '')).dt.strftime(self.parms['read_options']['timeformat'])
         final_log['start_timestamp'] = pd.to_datetime(final_log['start_timestamp'].str.replace('UTC', '')).dt.strftime(self.parms['read_options']['timeformat'])
         final_log['end_timestamp'] = pd.to_datetime(final_log['end_timestamp'].str.replace('UTC', '')).dt.strftime(self.parms['read_options']['timeformat'])
         final_log = final_log.rename({'role':'user'}, axis=1)
@@ -231,10 +234,13 @@ class ModelPredictor():
 
         log = lr.LogReader(self.parms['gen_log_file'], self.parms)
         xw.XesWriter(log, self.parms)
+        log = lr.LogReader(self.parms['gen_log_file'], self.parms)
+        xw.XesWriter(log, self.parms)
 
         if len(files_gen)>0:
             for file_gen in files_gen:
                 os.remove(file_gen)
+        
         
         self.predictions.to_csv(
             os.path.join(

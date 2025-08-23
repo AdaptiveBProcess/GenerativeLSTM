@@ -1,0 +1,630 @@
+<?xml version="1.0" ?>
+<!--This file has been generated with the OpenXES library. It conforms-->
+<!--to the XML serialization of the XES standard for log storage and-->
+<!--management.-->
+<!--XES standard version: 1.0-->
+<!--OpenXES library version: 1.0RC7-->
+<!--OpenXES is available from http://www.openxes.org/-->
+<log xes.version="1.0" xes.features="nested-attributes" openxes.version="1.0RC7">
+	<trace>
+		<string key="concept:name" value="gen-Case001"/>
+		<event>
+			<string key="concept:name" value="Start"/>
+			<string key="org:resource" value="Start"/>
+			<date key="time:timestamp" value="2011-06-20T02:32:59.999Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Start"/>
+			<string key="org:resource" value="Start"/>
+			<date key="time:timestamp" value="2011-06-20T02:32:59.999Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Purchase Requisition"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T02:33:00.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Purchase Requisition"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T02:44:13.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Request for Quotation"/>
+			<string key="org:resource" value="Role 4"/>
+			<date key="time:timestamp" value="2011-06-20T02:44:13.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Request for Quotation"/>
+			<string key="org:resource" value="Role 4"/>
+			<date key="time:timestamp" value="2011-06-20T02:55:05.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Request for Quotation"/>
+			<string key="org:resource" value="Role 4"/>
+			<date key="time:timestamp" value="2011-06-20T02:55:05.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Request for Quotation"/>
+			<string key="org:resource" value="Role 4"/>
+			<date key="time:timestamp" value="2011-06-20T03:06:54.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Request for Quotation"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T03:06:54.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Request for Quotation"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T03:20:25.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Request for Quotation to Supplier"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T03:20:25.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Request for Quotation to Supplier"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T03:34:10.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Request for Quotation"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T03:34:10.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Request for Quotation"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T03:47:22.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Deliver Goods Services"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T03:47:22.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Deliver Goods Services"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T04:00:55.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Quotation comparison Map"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T04:00:55.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Quotation comparison Map"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T04:14:25.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T04:14:25.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="start"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T04:27:44.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Quotation Comparison Map"/>
+			<string key="org:resource" value="Role 2"/>
+			<date key="time:timestamp" value="2011-06-20T04:27:44.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Quotation Comparison Map"/>
+			<string key="org:resource" value="Role 2"/>
+			<date key="time:timestamp" value="2011-06-20T04:41:05.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Settle Dispute With Supplier"/>
+			<string key="org:resource" value="Role 5"/>
+			<date key="time:timestamp" value="2011-06-20T04:41:05.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Settle Dispute With Supplier"/>
+			<string key="org:resource" value="Role 5"/>
+			<date key="time:timestamp" value="2011-06-20T04:54:27.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Purchase Order"/>
+			<string key="org:resource" value="Role 5"/>
+			<date key="time:timestamp" value="2011-06-20T04:54:27.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Purchase Order"/>
+			<string key="org:resource" value="Role 5"/>
+			<date key="time:timestamp" value="2011-06-20T05:07:46.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Quotation Comparison Map"/>
+			<string key="org:resource" value="Role 5"/>
+			<date key="time:timestamp" value="2011-06-20T05:07:46.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Quotation Comparison Map"/>
+			<string key="org:resource" value="Role 5"/>
+			<date key="time:timestamp" value="2011-06-20T05:21:06.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="End"/>
+			<string key="org:resource" value="End"/>
+			<date key="time:timestamp" value="2011-06-20T05:21:06.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="End"/>
+			<string key="org:resource" value="End"/>
+			<date key="time:timestamp" value="2011-06-20T05:21:06.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="gen-Case014"/>
+		<event>
+			<string key="concept:name" value="Start"/>
+			<string key="org:resource" value="Start"/>
+			<date key="time:timestamp" value="2011-06-20T02:32:59.999Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Start"/>
+			<string key="org:resource" value="Start"/>
+			<date key="time:timestamp" value="2011-06-20T02:32:59.999Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Purchase Requisition"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T02:33:00.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Purchase Requisition"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T02:44:13.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Purchase Requisition"/>
+			<string key="org:resource" value="Role 4"/>
+			<date key="time:timestamp" value="2011-06-20T02:44:13.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Purchase Requisition"/>
+			<string key="org:resource" value="Role 4"/>
+			<date key="time:timestamp" value="2011-06-20T02:55:05.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Request for Quotation"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T02:55:05.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Request for Quotation"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T03:06:54.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Request for Quotation"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T03:06:54.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Request for Quotation"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T03:20:25.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Request for Quotation to Supplier"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T03:20:25.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Request for Quotation to Supplier"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T03:34:10.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Request for Quotation"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T03:34:10.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Request for Quotation"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T03:47:22.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Purchase Requisition"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T03:47:22.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Purchase Requisition"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T04:00:55.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Release Supplier's Invoice"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T04:00:55.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Release Supplier's Invoice"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T04:14:25.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Pay Invoice"/>
+			<string key="org:resource" value="Role 5"/>
+			<date key="time:timestamp" value="2011-06-20T04:14:25.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Pay Invoice"/>
+			<string key="org:resource" value="Role 5"/>
+			<date key="time:timestamp" value="2011-06-20T04:27:44.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Invoice"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T04:27:44.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Invoice"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T04:41:05.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Release Supplier's Invoice"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T04:41:05.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Release Supplier's Invoice"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T04:54:27.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Approve Purchase Order for payment"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T04:54:27.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Approve Purchase Order for payment"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T05:07:46.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Invoice"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T05:07:46.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Invoice"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T05:21:06.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Purchase Order"/>
+			<string key="org:resource" value="Role 5"/>
+			<date key="time:timestamp" value="2011-06-20T05:21:06.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Purchase Order"/>
+			<string key="org:resource" value="Role 5"/>
+			<date key="time:timestamp" value="2011-06-20T05:34:26.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Purchase Requisition"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T05:34:26.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Purchase Requisition"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T05:47:46.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Purchase Requisition"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T05:47:46.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Purchase Requisition"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T06:01:06.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Request for Quotation to Supplier"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T06:01:06.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Request for Quotation to Supplier"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T06:14:26.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Request for Quotation to Supplier"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T06:14:26.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Request for Quotation to Supplier"/>
+			<string key="org:resource" value="end"/>
+			<date key="time:timestamp" value="2011-06-20T06:27:46.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Request for Quotation"/>
+			<string key="org:resource" value="Role 5"/>
+			<date key="time:timestamp" value="2011-06-20T06:27:46.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Request for Quotation"/>
+			<string key="org:resource" value="Role 5"/>
+			<date key="time:timestamp" value="2011-06-20T06:41:06.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Purchase Order"/>
+			<string key="org:resource" value="Role 5"/>
+			<date key="time:timestamp" value="2011-06-20T06:41:06.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Purchase Order"/>
+			<string key="org:resource" value="Role 5"/>
+			<date key="time:timestamp" value="2011-06-20T06:54:26.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Invoice"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T06:54:26.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Invoice"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T07:07:46.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Deliver Goods Services"/>
+			<string key="org:resource" value="Role 5"/>
+			<date key="time:timestamp" value="2011-06-20T07:07:46.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Deliver Goods Services"/>
+			<string key="org:resource" value="Role 5"/>
+			<date key="time:timestamp" value="2011-06-20T07:21:06.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="End"/>
+			<string key="org:resource" value="End"/>
+			<date key="time:timestamp" value="2011-06-20T07:21:06.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="End"/>
+			<string key="org:resource" value="End"/>
+			<date key="time:timestamp" value="2011-06-20T07:21:06.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="gen-Case026"/>
+		<event>
+			<string key="concept:name" value="Start"/>
+			<string key="org:resource" value="Start"/>
+			<date key="time:timestamp" value="2011-06-20T02:32:59.999Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Start"/>
+			<string key="org:resource" value="Start"/>
+			<date key="time:timestamp" value="2011-06-20T02:32:59.999Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Purchase Requisition"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T02:33:00.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Purchase Requisition"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T02:44:13.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Purchase Requisition"/>
+			<string key="org:resource" value="Role 4"/>
+			<date key="time:timestamp" value="2011-06-20T02:44:13.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Purchase Requisition"/>
+			<string key="org:resource" value="Role 4"/>
+			<date key="time:timestamp" value="2011-06-20T02:55:05.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Request for Quotation"/>
+			<string key="org:resource" value="Role 4"/>
+			<date key="time:timestamp" value="2011-06-20T02:55:05.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Request for Quotation"/>
+			<string key="org:resource" value="Role 4"/>
+			<date key="time:timestamp" value="2011-06-20T03:06:54.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Request for Quotation"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T03:06:54.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Request for Quotation"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T03:20:25.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Request for Quotation to Supplier"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T03:20:25.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Request for Quotation to Supplier"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T03:34:10.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Request for Quotation"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T03:34:10.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Analyze Request for Quotation"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T03:47:22.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Invoice"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T03:47:22.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Send Invoice"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T04:00:55.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Settle Dispute With Supplier"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T04:00:55.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Settle Dispute With Supplier"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T04:14:25.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Choose best option"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T04:14:25.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Choose best option"/>
+			<string key="org:resource" value="Role 1"/>
+			<date key="time:timestamp" value="2011-06-20T04:27:44.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Quotation comparison Map"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T04:27:44.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="Create Quotation comparison Map"/>
+			<string key="org:resource" value="Role 3"/>
+			<date key="time:timestamp" value="2011-06-20T04:41:05.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="concept:name" value="End"/>
+			<string key="org:resource" value="End"/>
+			<date key="time:timestamp" value="2011-06-20T04:41:05.000Z"/>
+			<string key="lifecycle:transition" value="start"/>
+		</event>
+		<event>
+			<string key="concept:name" value="End"/>
+			<string key="org:resource" value="End"/>
+			<date key="time:timestamp" value="2011-06-20T04:41:05.000Z"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+	</trace>
+</log>

@@ -269,6 +269,7 @@ class EventLogPredictor():
             return log_trace
         
         #creates a trace depending if the rule is fullfilled
+        #creates a trace depending if the rule is fullfilled
         def gen(cases, parms, model_path, vectorizer):
             """Reads the simulation results stats
             Args:
@@ -413,6 +414,7 @@ class EventLogPredictor():
                     if abs((current_prop-parms['new_prop_cases'])/(parms['new_prop_cases'])) <= 0.05 and len(files_gen) >= parms['len_log']:
                         flag = False
                         break
+                    #The trace that fulfill the rule is combined with all traces 
                     #The trace that fulfill the rule is combined with all traces 
                     elif cond and current_prop < parms['new_prop_cases']:
                         generated_event_log.extend(trace)
