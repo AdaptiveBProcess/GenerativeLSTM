@@ -87,7 +87,7 @@ class ModelOptimizer():
                  'optim': hp.choice('optim', parms['optim']),
                  'imp': parms['imp'], 'file': parms['file_name'],
                  'batch_size': parms['batch_size'], 'epochs': parms['epochs'],
-                 'one_timestamp': parms['one_timestamp']}
+                 'one_timestamp': parms['read_options']['one_timestamp']}
         return space
 
     def execute_trials(self):

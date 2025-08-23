@@ -67,14 +67,16 @@ def _training_model(train_vec, valdn_vec, ac_weights, rl_weights, output_folder,
                      activation=args['lstm_act'],
                      kernel_initializer='glorot_uniform',
                      return_sequences=True,
-                     dropout=0.2,
-                     implementation=args['imp'])(concatenate)
+                     dropout=0.2
+                    #  implementation=args['imp']
+                     )(concatenate)
     else:
         l1_c1 = LSTM(args['l_size'],
                      kernel_initializer='glorot_uniform',
                      return_sequences=True,
-                     dropout=0.2,
-                     implementation=args['imp'])(concatenate)
+                     dropout=0.2
+                    #  implementation=args['imp']
+                     )(concatenate)
 
 # =============================================================================
 #    Batch Normalization Layer
@@ -87,23 +89,26 @@ def _training_model(train_vec, valdn_vec, ac_weights, rl_weights, output_folder,
     l2_c1 = LSTM(args['l_size'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=False,
-                 dropout=0.2,
-                 implementation=args['imp'])(batch1)
+                 dropout=0.2
+                #  implementation=args['imp']
+                 )(batch1)
 
 #   The layer specialized in role prediction
     l2_c2 = LSTM(args['l_size'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=False,
-                 dropout=0.2,
-                 implementation=args['imp'])(batch1)
+                 dropout=0.2
+                #  implementation=args['imp']
+                 )(batch1)
 
 #   The layer specialized in role prediction
     l2_3 = LSTM(args['l_size'],
                 activation=args['lstm_act'],
                 kernel_initializer='glorot_uniform',
                 return_sequences=False,
-                dropout=0.2,
-                implementation=args['imp'])(batch1)
+                dropout=0.2
+                # implementation=args['imp']
+                )(batch1)
 
 # =============================================================================
 # Output Layer

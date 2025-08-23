@@ -16,7 +16,7 @@ from keras.layers import Input, Embedding, Dot, Reshape
 import utils.support as sup
 
 
-def training_model(parameters, log, ac_index, index_ac, rl_index, index_rl):
+def training_model(parameters, log, ac_index, index_ac, rl_index, index_rl, intput_folder='GenerativeLSTM/input_files'):
     """Main method of the embedding training module.
     Args:
         parameters (dict): parameters for training the embeddeding network.
@@ -31,16 +31,16 @@ def training_model(parameters, log, ac_index, index_ac, rl_index, index_rl):
     ac_weights, rl_weights = train_embedded(log,
                                             ac_index, rl_index, dim_number)
 
-    if not os.path.exists(os.path.join('input_files', 'embedded_matix')):
-        os.makedirs(os.path.join('input_files', 'embedded_matix'))
+    if not os.path.exists(os.path.join(intput_folder, 'embedded_matix')):
+        os.makedirs(os.path.join(intput_folder, 'embedded_matix'))
 
     sup.create_file_from_list(
         reformat_matrix(index_ac, ac_weights),
-        os.path.join(os.path.join('input_files', 'embedded_matix'),
+        os.path.join(os.path.join(intput_folder, 'embedded_matix'),
                      'ac_' + parameters['file_name'].split('.')[0]+'.emb'))
     sup.create_file_from_list(
         reformat_matrix(index_rl, rl_weights),
-        os.path.join(os.path.join('input_files', 'embedded_matix'),
+        os.path.join(os.path.join(intput_folder, 'embedded_matix'),
                      'rl_' + parameters['file_name'].split('.')[0]+'.emb'))
 
 
@@ -64,7 +64,7 @@ def train_embedded(log_df, ac_index, rl_index, dim_number):
     gen = generate_batch(pairs, ac_index, rl_index,
                          n_positive, negative_ratio=2)
     # Train
-    model.fit_generator(gen, epochs=100,
+    model.fit(gen, epochs=100,
                         steps_per_epoch=len(pairs) // n_positive,
                         verbose=2)
 

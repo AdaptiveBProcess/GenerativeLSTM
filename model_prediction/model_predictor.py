@@ -27,13 +27,23 @@ class ModelPredictor():
     This is the man class encharged of the model evaluation
     """
 
-    def __init__(self, parms):
-        self.output_route = os.path.join('GenerativeLSTM','output_files', parms['folder'])
+    def __init__(self, parms, input_folder=os.path.join('GenerativeLSTM','input_files') , output_folder=os.path.join('GenerativeLSTM','output_files'), rules_path=os.path.join('GenerativeLSTM','rules.ini')):
+        """Constructor for the ModelPredictor class.
+
+        Args:
+            parms (dict): Parameters for the model.
+            input_folder (str): Path to the input folder.
+            output_folder (str): Path to the output folder.
+            rules_path (str): Path to the rules file.
+        """
+        self.input_folder,self.output_folder = input_folder, output_folder
+        self.rules_path = rules_path
+        self.input_route = os.path.join(self.input_folder, parms['folder'])
         self.parms = parms
         # load parameters
         self.load_parameters()
-        self.model_name = os.path.join(self.output_route, parms['model_file'])
-        self.log = self.load_log_test(self.output_route, self.parms)
+        self.model_name = os.path.join(self.input_route, parms['model_file'])
+        self.log = self.load_log_test(self.input_route, self.parms)
 
         self.samples = dict()
         self.predictions = None
@@ -66,16 +76,17 @@ class ModelPredictor():
         # predict
         self.imp = self.parms['variant']
 
-        org_log_path = os.path.join('GenerativeLSTM','output_files', self.parms['folder'], 'parameters', '{}_ASIS.csv'.format(self.parms['log_name']))
+        org_log_path = os.path.join(self.input_route, 'parameters', '{}_ASIS.csv'.format(self.parms['log_name']))
         df_org = pd.read_csv(org_log_path)
         
         df_org['start_timestamp'] = pd.to_datetime(df_org['start_timestamp'])
-        df_org['end_timestamp'] = pd.to_datetime(df_org['end_timestamp'])
+        df_org['end_timestamp'] = pd.to_datetime(df_org['end_timestamp']) 
 
         self.parms['ac_index'] = self.index_ac = {self.parms['index_ac'][key]:key for key in self.parms['index_ac'].keys()}
-        self.parms['rules'] = te.extract_rules()
+        self.parms['rules'] = te.extract_rules(path=self.rules_path)
+        print ( "\n", ">>> Rules applied: ", self.parms['rules'] , "<<<" , "\n")
 
-        self.parms['traces_gen_path'] = os.path.join('GenerativeLSTM','output_files', self.parms['folder'], 'parameters', 'traces_generated')
+        self.parms['traces_gen_path'] = os.path.join(self.input_route, 'parameters', 'traces_generated')
         if not os.path.exists(self.parms['traces_gen_path']):
             os.mkdir(self.parms['traces_gen_path'])
 
@@ -106,7 +117,7 @@ class ModelPredictor():
                                     run_num))
             else:
                 evaluator.evaluate(self.predictions, self.parms)
-        self._export_results(self.output_route)
+        self._export_results(self.input_route)
 
     def predict_values(self, run_num):
         # Predict values
@@ -114,9 +125,9 @@ class ModelPredictor():
         executioner.predict(self, self.parms['activity'], run_num)
 
     @staticmethod
-    def load_log_test(output_route, parms):
+    def load_log_test(input_route, parms):
         df_test = lr.LogReader(
-            os.path.join(output_route, 'parameters', 'test_log.csv'),
+            os.path.join(input_route, 'parameters', 'test_log.csv'),
             parms['read_options'])
         df_test = pd.DataFrame(df_test.data)
         df_test = df_test[~df_test.task.isin(['Start', 'End'])]
@@ -124,7 +135,7 @@ class ModelPredictor():
 
     def load_parameters(self):
         # Loading of parameters from training
-        path = os.path.join(self.output_route,
+        path = os.path.join(self.input_route,
                             'parameters',
                             'model_parameters.json')
         try: 
@@ -174,11 +185,13 @@ class ModelPredictor():
         self.predictions = results
 
     def export_predictions(self, r_num):
-        # output_folder = os.path.join(self.output_route, 'results')
-        if not os.path.exists(self.output_route):
-            os.makedirs(self.output_route)
+        # output_folder = os.path.join(self.input_route, 'results')
+        if not os.path.exists(self.input_route):
+            os.makedirs(self.input_route)
 
         df_traces_generated, files_gen = te.get_stats_log_traces(self.parms['traces_gen_path'])
+        print(df_traces_generated.columns)
+
         cols = ['caseid', 'task', 'role', 'start_timestamp','end_timestamp']
 
         if self.parms['include_org_log']:
@@ -192,8 +205,8 @@ class ModelPredictor():
         else:
             final_log = df_traces_generated[cols]
 
-        final_log['start_timestamp'] = pd.to_datetime(final_log['start_timestamp']).dt.strftime(self.parms['read_options']['timeformat'])
-        final_log['end_timestamp'] = pd.to_datetime(final_log['end_timestamp']).dt.strftime(self.parms['read_options']['timeformat'])
+        final_log['start_timestamp'] = pd.to_datetime(final_log['start_timestamp'].str.replace('UTC', '')).dt.strftime(self.parms['read_options']['timeformat'])
+        final_log['end_timestamp'] = pd.to_datetime(final_log['end_timestamp'].str.replace('UTC', '')).dt.strftime(self.parms['read_options']['timeformat'])
         final_log = final_log.rename({'role':'user'}, axis=1)
 
         column_names = {'Case ID': 'caseid',
@@ -206,17 +219,26 @@ class ModelPredictor():
             'one_timestamp': self.parms['read_options']['one_timestamp'],
             'filter_d_attrib': self.parms['read_options']['filter_d_attrib']
         }
-        self.parms['output_file'] = os.path.join('GenerativeLSTM','input_files', 'spmd', self.parms['log_name'] + '.xes')
+        
+        self.parms['timeformat'] = self.parms['read_options']['timeformat']
+        self.parms['column_names'] = column_names
+        self.parms['one_timestamp'] = self.parms['read_options']['one_timestamp']
+        self.parms['filter_d_attrib'] = self.parms['read_options']['filter_d_attrib']
+        
+        self.parms['output_file'] = os.path.join(self.output_folder, self.parms['log_name'] + '.xes')
+        self.parms['gen_log_file'] = os.path.join(self.output_folder, self.parms['log_name'] + '.csv')
+        final_log.to_csv(self.parms['gen_log_file'])
 
-        xw.XesWriter(final_log, self.parms)
+        log = lr.LogReader(self.parms['gen_log_file'], self.parms)
+        xw.XesWriter(log, self.parms)
 
         if len(files_gen)>0:
             for file_gen in files_gen:
                 os.remove(file_gen)
-
+        
         self.predictions.to_csv(
             os.path.join(
-                self.output_route, 'gen_'+ 
+                self.input_route, 'gen_'+ 
                 self.parms['model_file'].split('.')[0]+'_'+str(r_num+1)+'.csv'), 
             index=False)
 
@@ -273,17 +295,21 @@ class ModelPredictor():
     def _export_results(self, output_path) -> None:
         # Save results
         pd.DataFrame(self.sim_values).to_csv(
-            os.path.join(self.output_route, sup.file_id(prefix='SE_')), 
+            os.path.join(self.input_route, sup.file_id(prefix='SE_')), 
             index=False)
         # Save logs        
         log_test = self.log[~self.log.task.isin(['Start', 'End'])]
         log_test.to_csv(
-            os.path.join(self.output_route, 'tst_'+
+            os.path.join(self.input_route, 'tst_'+
                          self.parms['model_file'].split('.')[0]+'.csv'), 
             index=False)
         
-class EvaluateTask():
 
+###############################################################################################
+# This class is responsible for evaluating the predictive tasks
+###############################################################################################
+
+class EvaluateTask():
     def evaluate(self, parms, log, predictions, rep_num):
         sampler = self._get_evaluator(parms['activity'])
         return sampler(parms, log, predictions, rep_num)
@@ -360,7 +386,6 @@ class EvaluateTask():
         log = log[~log['task'].isin(['Start', 'End', 'start', 'end'])]
         log['caseid'] = log['caseid'].astype(str)
         log['caseid'] = 'Case' + log['caseid']
-
         print(sim_log.columns)
         try:
             sim_log = sim_log[~sim_log['task'].isin(['Start', 'End', 'start', 'end'])]

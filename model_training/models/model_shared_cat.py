@@ -68,15 +68,17 @@ def _training_model(train_vec, valdn_vec, ac_weights, rl_weights,
     l1_c1 = LSTM(args['l_size'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=True,
-                 dropout=0.2,
-                 implementation=args['imp'])(merged)
+                 dropout=0.2
+                #  implementation=args['imp']
+                 )(merged)
 
     l1_c3 = LSTM(args['l_size'],
                  activation=args['lstm_act'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=True,
-                 dropout=0.2,
-                 implementation=args['imp'])(t_input)
+                 dropout=0.2
+                #  implementation=args['imp']
+                 )(t_input)
 
 # =============================================================================
 #    Batch Normalization Layer
@@ -90,23 +92,26 @@ def _training_model(train_vec, valdn_vec, ac_weights, rl_weights,
     l2_c1 = LSTM(args['l_size'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=False,
-                 dropout=0.2,
-                 implementation=args['imp'])(batch1)
+                 dropout=0.2
+                #  implementation=args['imp']
+                 )(batch1)
 
 #   The layer specialized in role prediction
     l2_c2 = LSTM(args['l_size'],
                  kernel_initializer='glorot_uniform',
                  return_sequences=False,
-                 dropout=0.2,
-                 implementation=args['imp'])(batch1)
+                 dropout=0.2
+                #  implementation=args['imp']
+                 )(batch1)
 
 #   The layer specialized in role prediction
     l2_3 = LSTM(args['l_size'],
                 activation=args['lstm_act'],
                 kernel_initializer='glorot_uniform',
                 return_sequences=False,
-                dropout=0.2,
-                implementation=args['imp'])(batch3)
+                dropout=0.2
+                # implementation=args['imp']
+                )(batch3)
 
 # =============================================================================
 # Output Layer

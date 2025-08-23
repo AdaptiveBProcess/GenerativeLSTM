@@ -13,14 +13,15 @@ import itertools
 
 import multiprocessing
 from multiprocessing import Pool
-from tensorflow.keras.models import load_model
+from keras.models import load_model
+from tensorflow.keras.losses import mae
 import keras.utils as ku
 import os
 from glob import glob
 import pandas as pd
 from support_modules import traces_evaluation as te
 
-from datetime import timedelta
+# from datetime import pd.Timedelta
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -87,7 +88,9 @@ class EventLogPredictor():
         def gen(cases, parms, model_path, vectorizer):
             try:
                 s_timestamp = parms['start_time']
-                model = load_model(model_path)
+                # Create a custom objects dictionary
+                custom_objects = {'mae': mae}
+                model = load_model(model_path, custom_objects=custom_objects)
                 new_batch = list()
                 for cid in cases:
                     x_trace = list()
@@ -128,7 +131,7 @@ class EventLogPredictor():
                         x_t_ngram = np.append(x_t_ngram, [pre_times], axis=1)
                         x_t_ngram = np.delete(x_t_ngram, 0, 1)
                         inputs = [x_ac_ngram, x_rl_ngram, x_t_ngram, x_inter_ngram]
-                        preds = model.predict(inputs)
+                        preds = model.predict(inputs, verbose=0)
                         if parms['variant'] == 'Random Choice':
                             # Use this to get a random choice following as PDF
                             pos = np.random.choice(
@@ -155,8 +158,8 @@ class EventLogPredictor():
                             parms['scale_args']['wait'],
                             parms['norm_method'])
                         s_timestamp = (x_trace[i-1]['end_timestamp'] +
-                                       timedelta(seconds=wait))
-                        end_time = (s_timestamp + timedelta(seconds=dur))
+                                       pd.Timedelta(seconds=wait))
+                        end_time = (s_timestamp + pd.Timedelta(seconds=dur))
                         x_trace.append(dict(
                             caseid=cid,
                             task=parms['index_ac'][pos],
@@ -232,7 +235,7 @@ class EventLogPredictor():
                             time = now
                         else:
                             time = (log_trace[i-1]['end_timestamp'] +
-                                    timedelta(seconds=tbtw))
+                                    pd.Timedelta(seconds=tbtw))
                         log_trace.append(dict(caseid=case,
                                               task=parms['index_ac'][event[0]],
                                               role=parms['index_rl'][event[1]],
@@ -248,11 +251,11 @@ class EventLogPredictor():
                                                          parms['norm_method'])
                         if i == 0:
                             now = parms['start_time']
-                            start_time = (now + timedelta(seconds=wait))
+                            start_time = (now + pd.Timedelta(seconds=wait))
                         else:
                             start_time = (log_trace[i-1]['end_timestamp'] +
-                                          timedelta(seconds=wait))
-                        end_time = (start_time + timedelta(seconds=dur))
+                                          pd.Timedelta(seconds=wait))
+                        end_time = (start_time + pd.Timedelta(seconds=dur))
                         log_trace.append(dict(caseid=case,
                                               task=parms['index_ac'][event[0]],
                                               role=parms['index_rl'][event[1]],
@@ -265,6 +268,7 @@ class EventLogPredictor():
                   
             return log_trace
         
+        #creates a trace depending if the rule is fullfilled
         def gen(cases, parms, model_path, vectorizer):
             """Reads the simulation results stats
             Args:
@@ -273,7 +277,8 @@ class EventLogPredictor():
             """
             generated_event_log = list()
             try:
-                model = load_model(model_path)
+                custom_objects = {'mae': mae}
+                model = load_model(model_path, custom_objects=custom_objects)
                 generated_event_log = list()
                 flag = True
                 
@@ -315,16 +320,12 @@ class EventLogPredictor():
                     i = 1
                     
                     while i < parms['max_trace_size']:
-                        predictions = model.predict(inputs)
-
+                        predictions = model.predict(inputs, verbose=0)
+                        
                         if parms['variant'] == 'Random Choice':
                             # Use this to get a random choice following as PDF
-                            pos = np.random.choice(
-                                np.arange(0, len(predictions[0][0])),
-                                p=predictions[0][0])
-                            pos1 = np.random.choice(
-                                np.arange(0, len(predictions[1][0])),
-                                p=predictions[1][0])
+                            pos = np.random.choice(np.arange(0, len(predictions[0][0])), p=predictions[0][0])
+                            pos1 = np.random.choice(np.arange(0, len(predictions[1][0])), p=predictions[1][0])
                         elif parms['variant'] == 'Arg Max':
                             # Use this to get the max prediction
                             pos = np.argmax(predictions[0][0])
@@ -333,22 +334,24 @@ class EventLogPredictor():
                         elif parms['variant'] == 'Rules Based Random Choice':
                             # Use this to get the max prediction
                             possible_tasks = [x for x in parms['index_ac'].keys() if te.evaluate_condition_list(seq_tasks + [x], parms['ac_index'], parms['rules']['path'], parms['rules']['rule'])]
-                            if len(possible_tasks)>0:
-                                pos = possible_tasks[0]
+                            if len(possible_tasks) > 0:
+                                pos = np.random.choice(possible_tasks)
                             else:
                                 pos = np.random.choice(np.arange(0, len(predictions[0][0])), p=predictions[0][0])
                             pos1 = np.random.choice(np.arange(0, len(predictions[1][0])), p=predictions[1][0])
 
                         elif parms['variant'] == 'Rules Based Arg Max':
-
+                            #in the case of task notallowed, take a task with more probability or an ramdom one
                             possible_tasks = [x for x in parms['index_ac'].keys() if te.evaluate_condition_list(seq_tasks + [x], parms['ac_index'], parms['rules']['path'], parms['rules']['rule'])]
-                            if len(possible_tasks)>0:
-                                pos = possible_tasks[0]
+                            if len(possible_tasks) > 0:
+                                probs_poss_tasks = [ [predictions[0][0][x], x] for x in possible_tasks]
+                                pos = max(probs_poss_tasks, key=lambda x: x[0])[1]
                             else:
                                 pos = np.argmax(predictions[0][0])
                             pos1 = np.argmax(predictions[1][0])
                             
                         seq_tasks.append(pos)
+                        # print("seq_tasks",np.array(seq_tasks))
 
                         # Check that the first prediction wont be the end of the trace
                         if (not x_trace) and (parms['index_ac'][pos] == 'end'):
@@ -410,6 +413,7 @@ class EventLogPredictor():
                     if abs((current_prop-parms['new_prop_cases'])/(parms['new_prop_cases'])) <= 0.05 and len(files_gen) >= parms['len_log']:
                         flag = False
                         break
+                    #The trace that fulfill the rule is combined with all traces 
                     elif cond and current_prop < parms['new_prop_cases']:
                         generated_event_log.extend(trace)
                         trace_gen_path = os.path.join(parms['traces_gen_path'],'gen-{}.csv'.format(case))

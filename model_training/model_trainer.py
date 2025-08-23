@@ -27,8 +27,11 @@ class ModelTrainer():
     This is the man class encharged of the model training
     """
 
-    def __init__(self, params):
+    def __init__(self, params, input_folder='GenerativeLSTM/input_files', output_folder='GenerativeLSTM/output_files'):
         """constructor"""
+        self.input_folder = input_folder
+        self.output_folder = output_folder
+
         self.log = self.load_log(params)
         self.params = params
         # Split validation partitions
@@ -48,7 +51,7 @@ class ModelTrainer():
         # Preprocess the event-log
         self.preprocess(params)
         # Train model
-        params['output'] = os.path.join('GenerativeLSTM/output_files', sup.folder_id())
+        params['output'] = os.path.join(self.output_folder, sup.folder_id())
         if params['opt_method'] == 'rand_hpc':
             optimizer = hpc_op.ModelHPCOptimizer(params, 
                                                  self.log, 
@@ -64,7 +67,7 @@ class ModelTrainer():
                                           self.rl_weights)
             optimizer.execute_trials()
         # Export results
-        output_path = os.path.join('GenerativeLSTM','output_files', sup.folder_id())
+        output_path = os.path.join(self.output_folder, sup.folder_id())
         shutil.copytree(optimizer.best_output, output_path)
         shutil.copy(optimizer.file_name, output_path)
         self.export_parms(output_path, optimizer.best_params)
@@ -76,28 +79,23 @@ class ModelTrainer():
         # indexes creation
         self.indexing()
         # split validation
-        self.split_timeline(0.8, params['one_timestamp'])
+        self.split_timeline(0.8, params['read_options']['one_timestamp'])
         # Load embedded matrix
         ac_emb_name = 'ac_' + params['file_name'].split('.')[0]+'.emb'
         rl_emb_name = 'rl_' + params['file_name'].split('.')[0]+'.emb'
-        if os.path.exists(os.path.join('GenerativeLSTM/input_files',
-                                       'embedded_matix',
-                                       ac_emb_name)):
-            self.ac_weights = self.load_embedded(self.index_ac, ac_emb_name)
-            self.rl_weights = self.load_embedded(self.index_rl, rl_emb_name)
-        else:
+        if not os.path.exists(os.path.join(self.input_folder,'embedded_matix',ac_emb_name)):
             em.training_model(params,
                               self.log,
                               self.ac_index, self.index_ac,
-                              self.rl_index, self.index_rl)
-            self.ac_weights = self.load_embedded(self.index_ac, ac_emb_name)
-            self.rl_weights = self.load_embedded(self.index_rl, rl_emb_name)
+                              self.rl_index, self.index_rl,
+                              self.input_folder)
+        self.ac_weights = self.load_embedded(self.index_ac, ac_emb_name)
+        self.rl_weights = self.load_embedded(self.index_rl, rl_emb_name)
 
-    @staticmethod
-    def load_log(params):
+    def load_log(self,params):
         params['read_options']['filter_d_attrib'] = False
 
-        log = lr.LogReader(os.path.join('GenerativeLSTM/input_files', params['file_name']),
+        log = lr.LogReader(os.path.join(self.input_folder, params['file_name']),
                     params['read_options'])
         log_df = pd.DataFrame(log.data)
 
@@ -172,9 +170,7 @@ class ModelTrainer():
                           .reset_index(drop=True))
 
 
-
-    @staticmethod
-    def load_embedded(index, filename):
+    def load_embedded(self,index, filename):
         """Loading of the embedded matrices.
         parms:
             index (dict): index of activities or roles.
@@ -183,7 +179,7 @@ class ModelTrainer():
             numpy array: array of weights.
         """
         weights = list()
-        input_folder = os.path.join('GenerativeLSTM/input_files', 'embedded_matix')
+        input_folder = os.path.join(self.input_folder, 'embedded_matix')
         with open(os.path.join(input_folder, filename), 'r') as csvfile:
             filereader = csv.reader(csvfile, delimiter=',', quotechar='"')
             for row in filereader:

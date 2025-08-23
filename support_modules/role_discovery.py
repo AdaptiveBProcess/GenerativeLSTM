@@ -1,5 +1,5 @@
 ﻿# -*- coding: utf-8 -*-
-import scipy
+import numpy as np
 from scipy.stats import pearsonr
 import networkx as nx
 import utils.support as sup
@@ -88,8 +88,8 @@ class ResourcePoolAnalyser():
         correl_matrix = list()
         for profile_x in profiles:
             for profile_y in profiles:
-                x = scipy.array(profile_x['profile'])
-                y = scipy.array(profile_y['profile'])
+                x = np.array(profile_x['profile'])
+                y = np.array(profile_y['profile'])
                 r_row, p_value = pearsonr(x, y)
                 correl_matrix.append(({'x': profile_x['user'],
                                             'y': profile_y['user'],
