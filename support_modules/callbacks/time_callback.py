@@ -25,6 +25,8 @@ class TimingCallback(Callback):
         self.logs.append(time()-self.starttime)
     def on_train_end(self, logs={}):
         log_file = self.log_path
+        if not os.path.exists(os.path.dirname(log_file)):
+            os.makedirs(os.path.dirname(log_file))
         data = [{'output_folder': self.output_folder,
                 'train_epochs': len(self.logs),
                 'avg_time': np.mean(self.logs),

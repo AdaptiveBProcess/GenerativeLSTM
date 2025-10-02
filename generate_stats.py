@@ -83,8 +83,14 @@ for manual_file in manual_files:
     df_stats_tmp = extract_stats(manual_file, event_log, rule, 'Manual')
     df_stats = pd.concat([df_stats, df_stats_tmp])
 
+# Define the folder path
+folder_path = os.path.join('output_files', 'simulation_stats')
+
+# Create the folder if it doesn't exist
+os.makedirs(folder_path, exist_ok=True)
+
 #Generated files
-generated_files = glob(os.path.join('output_files', 'simulation_stats', '*'))
+generated_files = glob(os.path.join(folder_path, '*'))
 for generated_file in generated_files:
     
     event_log = generated_file.split('\\')[-1].split('.')[0].split(' ')[0]
